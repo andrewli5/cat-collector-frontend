@@ -10,7 +10,7 @@ function importAll(r) {
   };
 
 export default function Mycats() {
-    const catIcons = importAll(require.context('../Database/catIcons', false, /\.(png|jpe?g|svg)$/));
+    const catIcons = importAll(require.context('../assets/catIcons', false, /\.(png|jpe?g|svg)$/));
 
     return (
         <div>
