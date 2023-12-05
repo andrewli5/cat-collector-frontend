@@ -74,7 +74,7 @@ export default function Search() {
 
     
     return (
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="lg">
             <NavBar />
             <h1> Results for: {query}</h1>
             {matches.length === 0 ? (
@@ -84,7 +84,7 @@ export default function Search() {
                     {imageUrls.map((image, index) => (
                         <Grid item>
                             <img src={image['url']} width={'40%'} height={'40%'} alt={`image-${index}`}/>
-                            <div> {image['name']}</div>
+                            <div style={{fontSize: "1.8em"}}> {image['name']}</div>
                         </Grid>
                     ))}
                 </Grid>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container } from "@mui/material";
 import Grid from '@mui/material/Grid';
+import NavBar from '../navbar/NavBar';
 
 function importAll(r) {
     let images = {};
@@ -13,6 +14,7 @@ export default function Mycats() {
 
     return (
         <div>
+            <NavBar />
             <h1>Collection</h1>
             <Container>
                 <Grid container spacing={.5}>

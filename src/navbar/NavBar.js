@@ -7,6 +7,7 @@ import { clearBrowserStorage, getCurrentUser } from "../client";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import * as client from "../client";
+import Link from "@mui/material/Link";
 
 function NavBar() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function NavBar() {
   return (
     <Toolbar>
       <Typography variant="h3" component="a" noWrap>
-        {APP_NAME}
+        <Link style={{color: 'white', textDecoration: "none"}} href="/home"> {APP_NAME} </Link>
       </Typography>
       <Box
         sx={{
