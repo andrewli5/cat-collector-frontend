@@ -1,11 +1,12 @@
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Button, Grid, TextField, IconButton, InputAdornment } from "@mui/material";
+import { Button, Grid, TextField, InputAdornment } from "@mui/material";
 import { APP_NAME } from "../constants";
-import { currentUser } from "../login/loginClient";
+import { clearBrowserStorage, getCurrentUser } from "../client";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import * as client from "../client";
 
 
 function NavBar() {
@@ -20,6 +21,16 @@ function NavBar() {
     // TODO: implement search
     navigate("/home");
   };
+
+  const handleLogout = async () => {
+    try {
+      await client.signOut();
+      clearBrowserStorage();
+      navigate("/home");
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  }
 
   return (
     <Toolbar>
@@ -38,13 +49,11 @@ function NavBar() {
           <TextField
             size="small"
             id="search"
-            label="search cats"
+            label="search cats..."
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton edge="end" color="primary">
-                    <SearchIcon />
-                  </IconButton>
+                  <SearchIcon color="primary" />
                 </InputAdornment>
               ),
             }}
@@ -52,10 +61,25 @@ function NavBar() {
         </Box>
       </Box>
 
-      {currentUser ? (
-        <Button href="/profile" color="white">
-          {"hi, " + currentUser.username + "!"}
-        </Button>
+      {getCurrentUser() ? (
+        <Box>
+          <Grid container spacing={1}>
+            <Grid item>
+              <Button href="/profile" color="white">
+                {"hi, " + getCurrentUser().firstName + "!"}
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="tertiary"
+                onClick={handleLogout}
+              >
+                log out
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
       ) : (
         <Box>
           <Grid container spacing={1}>

@@ -9,23 +9,36 @@ import { useEffect } from "react";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useNavigate } from "react-router-dom";
 import { APP_NAME } from "../constants";
+import * as client from "../client";
 
 export default function SignUp() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
-    // TODO: send signup request
-    navigate("/home");
+
+    try {
+      const user = await client.signUp({
+        username: data.get("username"),
+        password: data.get("password"),
+        firstName: data.get("firstName"),
+        lastName: data.get("password"),
+        role: "USER", // TODO: implement signup for both USER and ADMIN
+      });
+      client.storeCurrentUser(user);
+      navigate("/home");
+    } catch (error) {
+      // TODO: handle error
+      console.log(error.response.data.message);
+    }
   };
 
   useEffect(() => {
     document.title = "sign up | " + APP_NAME;
+    if (client.getCurrentUser()) {
+      navigate("/home");
+    }
   });
 
   return (
