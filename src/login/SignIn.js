@@ -1,12 +1,17 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useEffect } from "react";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { useNavigate } from "react-router-dom";
+import { APP_NAME } from "../constants";
 
 export default function SignIn() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -15,7 +20,12 @@ export default function SignIn() {
       password: data.get("password"),
     });
     // TODO: send login request
+    navigate("/home");
   };
+
+  useEffect(() => {
+    document.title = APP_NAME + " | sign in";
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -27,6 +37,7 @@ export default function SignIn() {
           alignItems: "center",
         }}
       >
+        <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
         <Typography component="h1" variant="h4">
           sign in
         </Typography>
@@ -60,9 +71,18 @@ export default function SignIn() {
             sign in
           </Button>
 
-          <Box sx={{ textAlign: "center" }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <Link href="/signup" variant="body2">
               {"don't have an account? sign up"}
+            </Link>
+            <Link href="/" variant="body2">
+              {"back to home"}
             </Link>
           </Box>
         </Box>

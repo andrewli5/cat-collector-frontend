@@ -5,8 +5,14 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useEffect } from "react";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import { useNavigate } from "react-router-dom";
+import { APP_NAME } from "../constants";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -14,7 +20,13 @@ export default function SignUp() {
       username: data.get("username"),
       password: data.get("password"),
     });
+    // TODO: send signup request
+    navigate("/home");
   };
+
+  useEffect(() => {
+    document.title = APP_NAME + " - sign up";
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -26,6 +38,7 @@ export default function SignUp() {
           alignItems: "center",
         }}
       >
+        <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
         <Typography component="h1" variant="h4">
           sign up
         </Typography>
@@ -74,17 +87,21 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+          <Box
+            sx={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            sign up
-          </Button>
-          <Box sx={{ textAlign: "center" }}>
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+              sign up
+            </Button>
             <Link href="/signin" variant="body2">
-              already have an account? sign in
+              {"already have an account? sign in"}
+            </Link>
+            <Link href="/" variant="body2">
+              {"back to home"}
             </Link>
           </Box>
         </Box>

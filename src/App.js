@@ -4,6 +4,7 @@ import { ThemeProvider } from "@emotion/react";
 import { THEME } from "./theme/theme";
 import { CssBaseline } from "@mui/material";
 import SignUp from "./login/SignUp";
+import Home from "./home/Home";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <CssBaseline />
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
