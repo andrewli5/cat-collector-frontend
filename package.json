@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.2",
+    "eslint": "^8.55.0",
     "list-react-files": "^0.2.0",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
