@@ -1,11 +1,12 @@
 import axios from "axios";
+import { LOCAL_API_URL } from "./constants";
 
-export const BASE_API = process.env.BASE_API;
-export const USERS_API = `${BASE_API}/users`;
+export const BASE_API_URL = process.env.REACT_APP_API_URL || LOCAL_API_URL;
+export const USERS_API = `${BASE_API_URL}/users`;
 
-export const getCurrentUser = () => { 
+export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
- };
+};
 
 export const storeCurrentUser = (user) => {
   localStorage.setItem("user", JSON.stringify(user));
@@ -13,7 +14,7 @@ export const storeCurrentUser = (user) => {
 
 export const clearBrowserStorage = () => {
   localStorage.clear();
-}
+};
 
 const request = axios.create({
   withCredentials: true,
@@ -63,4 +64,3 @@ export const deleteUser = async (user) => {
   const response = await request.delete(`${USERS_API}/${user._id}`);
   return response.data;
 };
-

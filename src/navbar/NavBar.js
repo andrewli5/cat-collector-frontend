@@ -8,7 +8,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import * as client from "../client";
 
-
 function NavBar() {
   const navigate = useNavigate();
 
@@ -43,7 +42,7 @@ function NavBar() {
 
   return (
     <Toolbar>
-      <Typography variant="h4" component="a" noWrap>
+      <Typography variant="h3" component="a" noWrap>
         {APP_NAME}
       </Typography>
       <Box

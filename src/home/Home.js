@@ -18,7 +18,7 @@ export default function Home() {
 
 
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main" maxWidth="lg">
       <NavBar />
       <Button color="white" variant="contained" onClick={mycats}>
         My Collection

@@ -52,7 +52,7 @@ export default function SignUp() {
         }}
       >
         <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h3" textAlign="center">
           sign up for {APP_NAME}
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
