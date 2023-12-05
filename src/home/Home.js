@@ -9,7 +9,7 @@ export default function Home() {
   });
 
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main" maxWidth="lg">
       <NavBar />
     </Container>
   );

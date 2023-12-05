@@ -33,7 +33,7 @@ function NavBar() {
 
   return (
     <Toolbar>
-      <Typography variant="h4" component="a" noWrap>
+      <Typography variant="h3" component="a" noWrap>
         {APP_NAME}
       </Typography>
       <Box

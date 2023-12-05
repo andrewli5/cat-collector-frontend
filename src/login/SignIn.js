@@ -45,7 +45,7 @@ export default function SignIn() {
         }}
       >
         <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h3" textAlign="center">
           sign in to {APP_NAME}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
