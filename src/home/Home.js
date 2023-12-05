@@ -2,6 +2,7 @@ import { Container } from "@mui/material";
 import Nav from "../Nav";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
+import Collection from "../collection/Collection";
 
 export default function Home() {
   useEffect(() => {
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <Container component="main" maxWidth="md">
       <Nav />
+      <Collection />
     </Container>
   );
 }
