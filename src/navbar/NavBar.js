@@ -8,7 +8,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import * as client from "../client";
 
-
 function NavBar() {
   const navigate = useNavigate();
 
