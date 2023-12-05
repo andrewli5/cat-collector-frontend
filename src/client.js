@@ -1,7 +1,6 @@
 import axios from "axios";
-import { LOCAL_API_URL, PROD_API_URL } from "./constants";
+import { PROD_API_URL } from "./constants";
 
-// export const USERS_API = `${LOCAL_API_URL}/users`;
 export const USERS_API = `${PROD_API_URL}/users`;
 
 export const getCurrentUser = () => {
