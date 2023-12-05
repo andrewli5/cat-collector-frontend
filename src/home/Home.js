@@ -3,26 +3,29 @@ import NavBar from "../navbar/NavBar";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import MyCats from "../mycats/MyCats";
+import EmptySearch from "../search/EmptySearch";
+import Search from "../search/Search";
 
 export default function Home() {
-  const navigate = useNavigate();
-
   useEffect(() => {
     document.title = APP_NAME + " | home";
   });
 
-  const mycats = async () => {
-    navigate("/mycats");
-  };
-
-
   return (
     <Container component="main" maxWidth="lg">
       <NavBar />
-      <Button color="white" variant="contained" onClick={mycats}>
-        My Collection
+      <Button color="white" variant="contained" href="/mycats">
+        my cats
       </Button>
+      <div>
+        <Routes>
+          <Route path="/mycats" element={<MyCats />} />
+          <Route path="/search" element={<EmptySearch />} />
+          <Route path="/search/:query" element={<Search />} />
+        </Routes>
+      </div>
     </Container>
   );
 }
