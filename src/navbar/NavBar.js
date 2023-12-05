@@ -13,13 +13,22 @@ function NavBar() {
   const navigate = useNavigate();
 
   const handleSearch = (event) => {
+    const query = event.currentTarget.search.value
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      search: data.get("search")
-    });
+    // console.log({
+    //   search: data.get("search")
+    // });
+    console.log("Query: ", query);
     // TODO: implement search
-    navigate("/home");
+    // if query is empty, navigate to /search
+    // else, navigate to /search/:query
+    if (((query.length) === 0)) {
+      console.log("navigating to /search")
+      navigate("/search")
+    } else {
+      navigate(`/search/${query}`);
+    }
   };
 
   const handleLogout = async () => {
