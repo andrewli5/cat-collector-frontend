@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <Container component="main" maxWidth="md">
-      <Nav />
+      <NavBar />
       <Collection />
     </Container>
   );
