@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import Nav from "../Nav";
+import NavBar from "../navbar/NavBar";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 
@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <Container component="main" maxWidth="md">
-      <Nav />
+      <NavBar />
     </Container>
   );
 }

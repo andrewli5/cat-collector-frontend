@@ -25,7 +25,7 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-    document.title = APP_NAME + " - sign up";
+    document.title = "sign up | " + APP_NAME;
   });
 
   return (
@@ -40,7 +40,7 @@ export default function SignUp() {
       >
         <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
         <Typography component="h1" variant="h4">
-          sign up
+          sign up for {APP_NAME}
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>

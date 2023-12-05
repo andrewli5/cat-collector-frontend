@@ -24,7 +24,7 @@ export default function SignIn() {
   };
 
   useEffect(() => {
-    document.title = APP_NAME + " | sign in";
+    document.title = "sign in | " + APP_NAME;
   });
 
   return (
@@ -39,7 +39,7 @@ export default function SignIn() {
       >
         <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
         <Typography component="h1" variant="h4">
-          sign in
+          sign in to {APP_NAME}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
