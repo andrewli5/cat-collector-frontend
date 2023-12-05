@@ -1,7 +1,7 @@
 import axios from "axios";
-import { PROD_API_URL } from "./constants";
+import { LOCAL_API_URL } from "./constants";
 
-export const USERS_API = `${PROD_API_URL}/users`;
+export const USERS_API = `${LOCAL_API_URL}/users`;
 
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
