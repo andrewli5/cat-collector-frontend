@@ -8,23 +8,30 @@ import { useEffect } from "react";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useNavigate } from "react-router-dom";
 import { APP_NAME } from "../constants";
+import * as client from "../client";
 
 export default function SignIn() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
-    // TODO: send login request
-    navigate("/home");
+
+    try {
+        const user = await client.signIn({username: data.get("username"), password: data.get("password")});
+        client.storeCurrentUser(user);
+        navigate("/home");
+    } catch (error) {
+        // TODO: handle error
+        console.log(error.response.data.message);
+    }
   };
 
   useEffect(() => {
-    document.title = APP_NAME + " | sign in";
+    document.title = "sign in | " + APP_NAME;
+    if (client.getCurrentUser()) {
+        navigate("/home");
+    }
   });
 
   return (
@@ -39,7 +46,7 @@ export default function SignIn() {
       >
         <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
         <Typography component="h1" variant="h4">
-          sign in
+          sign in to {APP_NAME}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
