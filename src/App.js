@@ -5,6 +5,7 @@ import { THEME } from "./theme/theme";
 import { CssBaseline } from "@mui/material";
 import SignUp from "./login/SignUp";
 import Home from "./home/Home";
+import Mycats from "./mycats/Mycats"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/mycats" element={<Mycats />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

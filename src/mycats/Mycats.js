@@ -8,7 +8,7 @@ function importAll(r) {
     return images;
   };
 
-export default function Collection() {
+export default function Mycats() {
     const catIcons = importAll(require.context('../Database/catIcons', false, /\.(png|jpe?g|svg)$/));
 
     return (
@@ -20,7 +20,7 @@ export default function Collection() {
                         const name = catIcon.replace('.png', '').replace('_', ' ');
                         return (
                             <Grid display="flex" flexDirection="column" alignItems="center" item xs={2} key={index}>
-                                <img src={catIcons[catIcon]} width={60} height={60} alt={`image-${index}`} />
+                                <img style={{WebkitFilter: 'grayscale(100%)'}} src={catIcons[catIcon]} width={60} height={60} alt={`image-${index}`} />
                                 <div style={{textAlign: "center"}}> {name} </div>
                             </Grid>
                         );
