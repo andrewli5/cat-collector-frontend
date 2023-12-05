@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const BASE_API = process.env.BASE_API || "http://localhost:4000/api";
 export const USERS_API = `${BASE_API}/users`;
+console.log("BASE API: " + BASE_API);
 
 export const getCurrentUser = () => { 
   return JSON.parse(localStorage.getItem("user"));
