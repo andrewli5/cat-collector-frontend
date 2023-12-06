@@ -19,7 +19,9 @@ export default function SignIn() {
 
     try {
         const user = await client.signIn({username: data.get("username"), password: data.get("password")});
-        client.storeCurrentUser(user);
+        const cats = await client.getCatsByUsername(user.username);
+        const userWithCats = {...user, cats: cats};
+        client.storeCurrentUser(userWithCats);
         navigate("/");
     } catch (error) {
         // TODO: handle error with snackbar
