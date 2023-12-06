@@ -6,7 +6,7 @@ import {
     APP_NAME,
   CAT_API_KEY,
   CAT_API_URL_BREEDS,
-  CAT_API_URL_IMAGES,
+  CAT_API_URL_IMAGE,
 } from "../constants";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
@@ -43,7 +43,6 @@ export default function Search() {
   const [imageUrls, setImageUrls] = useState([]);
   const params = useParams();
   const query = params.query;
-  const navigate = useNavigate();
 
   const isMatch = (query, breed) => {
     return breed.toLowerCase().includes(query.toLowerCase());
@@ -93,7 +92,7 @@ export default function Search() {
       } else {
         await Promise.all(
           matches.map(async (match) => {
-            const response = await fetch(CAT_API_URL_IMAGES + match["id"], {
+            const response = await fetch(CAT_API_URL_IMAGE + match["id"], {
               headers: {
                 "x-api-key": CAT_API_KEY,
               },
