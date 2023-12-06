@@ -54,7 +54,7 @@ export default function SignUp() {
     if (client.getCurrentUser()) {
       navigate("/");
     }
-  });
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">

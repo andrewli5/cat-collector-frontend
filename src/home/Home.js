@@ -10,6 +10,7 @@ import NavBar from "./NavBar";
 import Roll from "../roll/Roll";
 import Shop from "../shop/Shop";
 import Favorites from "../favorites/Favorites";
+import Admin from "../admin/Admin";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -36,6 +37,7 @@ export default function Home() {
         <Route path="/roll" element={<Roll />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </Container>
   );

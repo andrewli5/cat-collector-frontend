@@ -36,7 +36,7 @@ export default function SignIn() {
     if (client.getCurrentUser()) {
         navigate("/");
     }
-  });
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">

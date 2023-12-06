@@ -52,16 +52,34 @@ export default function NavBar() {
       >
         favorites
       </Button>
-      {getCurrentUser() ? (
+      {getCurrentUser() && getCurrentUser().role === "ADMIN" && (
+        <>
+          <Typography variant="h4" noWrap>
+            {"|"}
+          </Typography>
+          <Button
+            color={path.includes("admin") ? "quintenary" : "red"}
+            href="/admin"
+          >
+            admin tools
+          </Button>
+        </>
+      )}
+
+      {getCurrentUser() && (
         <div
-          style={{ marginLeft: "auto", flexDirection: "row", display: "flex" }}
+          style={{
+            marginLeft: "auto",
+            flexDirection: "row",
+            display: "flex",
+          }}
         >
           <Typography variant="h4" noWrap marginRight={1}>
             {getCurrentUser().coins.toLocaleString()}
           </Typography>
           <img src={coinIcon} style={{ height: 40, width: 40 }} />
         </div>
-      ) : null}
+      )}
     </Toolbar>
   );
 }
