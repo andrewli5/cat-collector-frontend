@@ -3,14 +3,7 @@ import { Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
 import { APP_NAME } from '../constants';
-
-function importAll(r) {
-  let images = {};
-  r.keys().map((item, index) => {
-    images[item.replace("./", "")] = r(item);
-  });
-  return images;
-}
+import { importAll } from '../utils/importAll';
 
 export default function MyCats() {
   const catIcons = importAll(
