@@ -20,7 +20,7 @@ export default function SignIn() {
     try {
         const user = await client.signIn({username: data.get("username"), password: data.get("password")});
         client.storeCurrentUser(user);
-        navigate("/home");
+        navigate("/");
     } catch (error) {
         // TODO: handle error
         console.log(error.response.data.message);
@@ -30,7 +30,7 @@ export default function SignIn() {
   useEffect(() => {
     document.title = "sign in | " + APP_NAME;
     if (client.getCurrentUser()) {
-        navigate("/home");
+        navigate("/");
     }
   });
 
@@ -45,7 +45,7 @@ export default function SignIn() {
         }}
       >
         <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
-        <Typography component="h1" variant="h3" textAlign="center">
+        <Typography variant="h3" textAlign="center">
           sign in to {APP_NAME}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

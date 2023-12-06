@@ -27,7 +27,7 @@ export default function SignUp() {
         role: "USER", // TODO: implement signup for both USER and ADMIN
       });
       client.storeCurrentUser(user);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       // TODO: handle error
       console.log(error.response.data.message);
@@ -37,7 +37,7 @@ export default function SignUp() {
   useEffect(() => {
     document.title = "sign up | " + APP_NAME;
     if (client.getCurrentUser()) {
-      navigate("/home");
+      navigate("/");
     }
   });
 
@@ -52,7 +52,7 @@ export default function SignUp() {
         }}
       >
         <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
-        <Typography component="h1" variant="h3" textAlign="center">
+        <Typography variant="h3" textAlign="center">
           sign up for {APP_NAME}
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>

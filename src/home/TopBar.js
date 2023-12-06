@@ -1,15 +1,25 @@
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Button, Grid, TextField, InputAdornment, styled } from "@mui/material";
+import {
+  Button,
+  Grid,
+  TextField,
+  InputAdornment,
+  styled,
+  Dialog,
+  DialogTitle,
+} from "@mui/material";
 import { APP_NAME } from "../constants";
 import { clearBrowserStorage, getCurrentUser } from "../client";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import * as client from "../client";
 import Link from "@mui/material/Link";
+import { useState } from "react";
 
 export default function TopBar() {
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const SearchField = styled(
@@ -40,6 +50,7 @@ export default function TopBar() {
     try {
       await client.signOut();
       clearBrowserStorage();
+      setIsLogoutDialogOpen(false);
       window.location.reload();
     } catch (error) {
       console.log(error.response.data.message);
@@ -83,7 +94,27 @@ export default function TopBar() {
           />
         </Box>
       </Box>
-
+      <Dialog
+        onClose={() => setIsLogoutDialogOpen(false)}
+        open={isLogoutDialogOpen}
+        aria-labelledby="alert-dialog-title"
+      >
+        <DialogTitle id="alert-dialog-title" variant="h3">
+          {"Log out?"}
+        </DialogTitle>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
+          <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
+            <Typography variant="h4" textAlign="center">
+              No
+            </Typography>
+          </Button>
+          <Button color="error" onClick={handleLogout}>
+            <Typography variant="h4" textAlign="center">
+              Yes
+            </Typography>
+          </Button>
+        </div>
+      </Dialog>
       {getCurrentUser() ? (
         <Box>
           <Grid container spacing={1}>
@@ -96,7 +127,7 @@ export default function TopBar() {
               <Button
                 variant="contained"
                 color="tertiary"
-                onClick={handleLogout}
+                onClick={() => setIsLogoutDialogOpen(true)}
               >
                 log out
               </Button>
