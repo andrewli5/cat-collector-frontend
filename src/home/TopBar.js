@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import * as client from "../client";
 import Link from "@mui/material/Link";
 import { useState } from "react";
+import SadCat from "../assets/crying_cat_icon.png";
 
 export default function TopBar() {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
@@ -102,6 +103,9 @@ export default function TopBar() {
         <DialogTitle id="alert-dialog-title" variant="h3">
           {"Log out?"}
         </DialogTitle>
+        <Box textAlign={'center'}> 
+          <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
+        </Box>
         <div
           style={{
             display: "flex",
