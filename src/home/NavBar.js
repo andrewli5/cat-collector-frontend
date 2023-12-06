@@ -1,9 +1,10 @@
 import { Toolbar, Button, Typography } from "@mui/material";
 import { getCurrentUser } from "../client";
 import coinIcon from "../assets/coin_icon.png";
+import { useLocation } from "react-router-dom";
 
 export default function NavBar() {
-  const path = window.location.pathname;
+  const path = useLocation().pathname;
 
   return (
     <Toolbar>
