@@ -21,11 +21,11 @@ import Admin from "../admin/Admin";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
 import { getCurrentUser, storeCurrentUser, updateUserCoins } from "../client";
-import { get } from "mongoose";
 
 export default function Home() {
   const path = useLocation().pathname;
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [warning, setWarning] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [coins, setCoins] = useState(0); // used to force rerender of NavBar
   const coinRate = 1;
 
@@ -40,7 +40,7 @@ export default function Home() {
 
   const handleCoinClick = () => {
     if (!getCurrentUser()) {
-      setSnackbarOpen(true);
+      setWarning(true);
       return;
     } else {
       storeCurrentUser({...getCurrentUser(), coins: coins + coinRate});
@@ -50,11 +50,13 @@ export default function Home() {
 
   const handleSaveCoins = async () => {
     if (!getCurrentUser()) {
-      setSnackbarOpen(true);
+      setWarning(true);
       return;
     }
     const response = await updateUserCoins(getCurrentUser().username, coins);
-    console.log(response); 
+    if (response.acknowledged) {
+      setSuccess(true);
+    }
   };
 
   return (
@@ -62,17 +64,31 @@ export default function Home() {
       <TopBar />
       <NavBar coins={coins} />
       <Snackbar
-        open={snackbarOpen}
+        open={warning}
         autoHideDuration={2000}
-        onClose={() => setSnackbarOpen(false)}
+        onClose={() => setWarning(false)}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
-          onClose={() => setSnackbarOpen(false)}
+          onClose={() => setWarning(false)}
           severity="warning"
           sx={{ width: "100%" }}
         >
           please sign in to do that!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={success}
+        autoHideDuration={2000}
+        onClose={() => setSuccess(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSuccess(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          successfully saved to cloud!
         </Alert>
       </Snackbar>
       {path === "/" && (
@@ -95,7 +111,6 @@ export default function Home() {
             />
             /click
           </Typography>
-
           <Button
             variant="contained"
             color="primary"
@@ -118,7 +133,7 @@ export default function Home() {
             sx={{ maxWidth: 300 }}
           >
             <CloudUploadIcon sx={{ marginRight: 1.3 }} />
-            save coins to cloud
+            save coin balance to cloud
           </Button>
         </div>
       )}
