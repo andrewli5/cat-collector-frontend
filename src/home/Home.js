@@ -21,6 +21,7 @@ import Admin from "../admin/Admin";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
 import { getCurrentUser, storeCurrentUser, updateUserCoins } from "../client";
+import Details from "../details/Details";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -43,7 +44,7 @@ export default function Home() {
       setWarning(true);
       return;
     } else {
-      storeCurrentUser({...getCurrentUser(), coins: coins + coinRate});
+      storeCurrentUser({ ...getCurrentUser(), coins: coins + coinRate });
       setCoins(coins + 1);
     }
   };
@@ -145,6 +146,7 @@ export default function Home() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/details/:id" element={<Details />} />
       </Routes>
     </Container>
   );

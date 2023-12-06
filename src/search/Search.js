@@ -1,10 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Route, Routes } from "react-router-dom";
 import { Typography } from "@mui/material";
+import Link from "@mui/material/Link";
+
 import {
-    APP_NAME,
+  APP_NAME,
   CAT_API_KEY,
   CAT_API_URL_BREEDS,
-  CAT_API_URL_IMAGES,
+  CAT_API_URL_IMAGE,
 } from "../constants";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
@@ -76,8 +78,8 @@ export default function Search() {
       setMatches(TEST_MATCHES);
       setBreeds(TEST_MATCHES);
     } else {
-      getMatches();
       getBreeds();
+      getMatches();
     }
   }, [query]);
 
@@ -90,7 +92,7 @@ export default function Search() {
       } else {
         await Promise.all(
           matches.map(async (match) => {
-            const response = await fetch(CAT_API_URL_IMAGES + match["id"], {
+            const response = await fetch(CAT_API_URL_IMAGE + match["id"], {
               headers: {
                 "x-api-key": CAT_API_KEY,
               },
@@ -101,13 +103,15 @@ export default function Search() {
                 ? {
                     url: "",
                     name: match["name"],
+                    id: match["id"],
                   }
                 : {
                     url: data[0]["url"],
                     name: match["name"],
-                  }
+                    id: match["id"],
+                  },
             );
-          })
+          }),
         );
       }
 
@@ -143,7 +147,7 @@ export default function Search() {
             </span>
           ) : (
             <span key={index}>{part}</span>
-          )
+          ),
         )}
       </>
     );
@@ -157,32 +161,39 @@ export default function Search() {
       {matches.length === 0 ? (
         <EmptySearch />
       ) : (
-        <Grid container rowSpacing={5} columnSpacing={30}>
+        <Grid container spacing={3} sx={{ marginTop: 3, marginLeft: 2 }}>
           {imageUrls.map((image, index) => (
             <Grid
               display="flex"
               flexDirection="column"
               alignItems="center"
               item
-              xs={2}
+              xs={6}
+              sm={4}
+              md={2.5}
               key={index}
-              sx={{ marginBottom: 3 }}
+              sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
             >
-              <img
-                src={image["url"]}
-                width={"200px"}
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  height: "200px",
-                  borderRadius: "10px",
-                  border: "2px solid white",
-                }}
-                alt={`image-${index}`}
-              />
-              <Typography variant="h5" textAlign="center" noWrap>
-                <HighlightedText text={image["name"]} highlight={query} />
-              </Typography>
+              <Link
+                style={{ color: "white", textDecoration: "none" }}
+                href={`/details/${image["id"]}`}
+              >
+                <img
+                  src={image["url"]}
+                  width={"200px"}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    height: "200px",
+                    borderRadius: "10px",
+                    border: "2px solid white",
+                  }}
+                  alt={image["id"]}
+                />
+                <Typography variant="h5" textAlign="center" noWrap>
+                  <HighlightedText text={image["name"]} highlight={query} />
+                </Typography>
+              </Link>
             </Grid>
           ))}
         </Grid>
