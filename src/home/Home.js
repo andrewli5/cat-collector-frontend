@@ -3,7 +3,7 @@ import TopBar from "./TopBar";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import { Route, Routes } from "react-router-dom";
-import MyCats from "../mycats/MyCats";
+import MyCats from "../mycats/Mycats";
 import EmptySearch from "../search/EmptySearch";
 import Search from "../search/Search";
 import NavBar from "./NavBar";
