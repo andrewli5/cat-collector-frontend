@@ -1,11 +1,14 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { CAT_API_KEY, CAT_API_URL_BREEDS, CAT_API_URL_IMAGE, CAT_API_URL_IMAGES } from "../constants";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { importAll } from "../utils/importAll";
 import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
 import "../css/styles.css";
+import {Button } from "@mui/material";
+
+const IMAGE_SIZE = 400;
 
 export default function Details() {
     const [breedData, setBreedData] = useState(''); 
@@ -46,7 +49,9 @@ export default function Details() {
             });
             const data = await response.json();
             for (const datum of data) {
-                urls.push(datum['url']);
+                if (datum['url'] !== undefined) {
+                    urls.push(datum['url']);
+                }
             }
             setImageUrls(urls);
         }
@@ -64,6 +69,15 @@ export default function Details() {
         setImageIdx((imageIdx + 1) % imageUrls.length);
     }
 
+    function prevImage() {
+        const idx = imageIdx - 1;
+        if (idx < 0) {
+            setImageIdx(imageUrls.length - 1);
+        }
+        else { setImageIdx((imageIdx - 1) % imageUrls.length);
+        }
+    }
+
     function toggleIcon() {
         setFavorite(!favorite);
     }
@@ -71,19 +85,30 @@ export default function Details() {
     return (
         <div>
             <Grid container spacing={2} maxHeight='lg' maxWidth='lg' sx={{marginTop: 2}}>
-                <Grid style={{paddingLeft: '70px'}}item xs={4} sm={5} md={6}>
+                <Grid alignItems="center" style={{paddingLeft: '70px'}}item xs={4} sm={5} md={6} >
                     <img 
                         src={imageUrls[imageIdx]}
-                        width={400}
-                        height={400}
+                        width={IMAGE_SIZE}
+                        height={IMAGE_SIZE}
                         style={{
                             objectFit: "cover",
                             objectPosition: "center",
                             borderRadius: "10px",
                             border: "2px solid white",
                         }}
-                        onClick={nextImage}
                         alt={`display`}/>
+                    <Grid width={IMAGE_SIZE} justifyContent={'center'} container spacing={1}> 
+                        <Grid item>
+                            <Button variant="contained" onClick={prevImage}> 
+                                <Typography variant="h4" > {"<"} </Typography>
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" onClick={nextImage}> 
+                            <Typography variant="h4" > {">"} </Typography>
+                            </Button>
+                        </Grid>
+                     </Grid>
                 </Grid>
                 <Grid item xs={10} sm={8} md={6}>
                     <h1 style={{margin: '0px', marginBottom: '20px'}}> {breedData.name} 
@@ -102,7 +127,7 @@ export default function Details() {
                     <span style={{float: "right"}}> {breedData.origin}</span>
                     <br></br>
                     <span style={{fontSize: "18px", fontWeight: 'bold'}}> Weight: </span> 
-                    <span style={{float: "right"}}> {breedData.weight.imperial} lbs </span>
+                    <span style={{float: "right"}}> {breedData.weight ? breedData.weight.imperial : ""} lbs </span>
                     <br></br>
                     <span style={{fontSize: "18px", fontWeight: 'bold'}}> Temperament: </span> 
                     <span style={{float: "right"}}> {breedData.temperament} </span>
