@@ -1,11 +1,10 @@
-import NavBar from "../navbar/NavBar";
-import { Container } from "@mui/material";
+import { Typography } from "@mui/material";
+import TextField from "@mui/material/TextField";
 
 export default function EmptySearch() {
     return (
-        <Container component="main" maxWidth="md">
-            <NavBar />
-            <h1> no cats found ;-;</h1>
-        </Container>
-  );
+      <Typography variant="h4" color="grey" textAlign="center">
+        no cats found ;-;
+      </Typography>
+    );
 }

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Button, Grid, TextField, InputAdornment } from "@mui/material";
+import { Button, Grid, TextField, InputAdornment, styled } from "@mui/material";
 import { APP_NAME } from "../constants";
 import { clearBrowserStorage, getCurrentUser } from "../client";
 import SearchIcon from "@mui/icons-material/Search";
@@ -12,20 +12,25 @@ import Link from "@mui/material/Link";
 function NavBar() {
   const navigate = useNavigate();
 
+  const SearchField = styled(
+    TextField,
+    {}
+  )(() => ({
+    "& .MuiOutlinedInput-root": {
+      width: "40%",
+      transition: "width ease-in-out 0.3s",
+      minWidth: "200px",
+      "&.Mui-focused": {
+        width: "90%",
+      },
+    },
+  }));
+
   const handleSearch = (event) => {
-    const query = event.currentTarget.search.value
+    const query = event.currentTarget.search.value;
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // console.log({
-    //   search: data.get("search")
-    // });
-    console.log("Query: ", query);
-    // TODO: implement search
-    // if query is empty, navigate to /search
-    // else, navigate to /search/:query
-    if (((query.length) === 0)) {
-      console.log("navigating to /search")
-      navigate("/search")
+    if (query.length === 0) {
+      navigate("/search");
     } else {
       navigate(`/search/${query}`);
     }
@@ -39,26 +44,35 @@ function NavBar() {
     } catch (error) {
       console.log(error.response.data.message);
     }
-  }
+  };
 
   return (
     <Toolbar>
-      <Typography variant="h3" component="a" noWrap>
-        <Link style={{color: 'white', textDecoration: "none"}} href="/home"> {APP_NAME} </Link>
+      <Typography variant="h3" noWrap>
+        <Link style={{ color: "white", textDecoration: "none" }} href="/home">
+          {APP_NAME}
+        </Link>
       </Typography>
       <Box
         sx={{
           marginLeft: 5,
-          flexGrow: 4,
+          flexGrow: 1,
           height: 80,
           display: { xs: "none", md: "flex", alignItems: "center" },
         }}
       >
-        <Box component="form" onSubmit={handleSearch} noValidate>
-          <TextField
+        <Box
+          component="form"
+          onSubmit={handleSearch}
+          noValidate
+          sx={{ width: "100%" }}
+        >
+          <SearchField
             size="small"
             id="search"
             label="search cats..."
+            variant="outlined"
+            fullWidth
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

@@ -1,6 +1,7 @@
 import React from 'react'
-import { Container, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import "../css/styles.css";
 
 function importAll(r) {
   let images = {};
@@ -32,6 +33,7 @@ export default function MyCats() {
               xs={2}
               key={index}
               sx={{ marginBottom: 3 }}
+              className='hover'
             >
               <img
                 style={{

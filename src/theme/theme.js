@@ -23,18 +23,18 @@ export const THEME = createTheme({
       },
     },
     MuiOutlinedInput: {
-        styleOverrides: {
-            root: {
-            fontSize: "1.3rem",
-            },
+      styleOverrides: {
+        root: {
+          fontSize: "1.3rem",
         },
+      },
     },
     MuiInputLabel: {
-        styleOverrides: {
-            root: {
-            fontSize: "1.3rem",
-            },
+      styleOverrides: {
+        root: {
+          fontSize: "1.3rem",
         },
+      },
     },
   },
   typography: {

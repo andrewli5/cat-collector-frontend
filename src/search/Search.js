@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import NavBar from "../navbar/NavBar";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { CAT_API_KEY, CAT_API_URL_BREEDS, CAT_API_URL_IMAGES } from "../constants";
 import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid';
+import EmptySearch from "./EmptySearch";
 
 export default function Search() {
     const [matches, setMatches] = useState([]);
@@ -74,21 +75,25 @@ export default function Search() {
 
     
     return (
-        <Container component="main" maxWidth="lg">
-            <NavBar />
-            <h1> Results for: {query}</h1>
-            {matches.length === 0 ? (
-                <h1> no cats found ;-;</h1>
-            ) : (
-                <Grid>
-                    {imageUrls.map((image, index) => (
-                        <Grid item>
-                            <img src={image['url']} width={'40%'} height={'40%'} alt={`image-${index}`}/>
-                            <div style={{fontSize: "1.8em"}}> {image['name']}</div>
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-        </Container>
+      <>
+        <Typography variant="h3" textAlign="center"> results for: {query}</Typography>
+        {matches.length === 0 ? (
+          <EmptySearch />
+        ) : (
+          <Grid>
+            {imageUrls.map((image, index) => (
+              <Grid item>
+                <img
+                  src={image["url"]}
+                  width={"40%"}
+                  height={"40%"}
+                  alt={`image-${index}`}
+                />
+                <div style={{ fontSize: "1.8em" }}> {image["name"]}</div>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </>
     );
 }
