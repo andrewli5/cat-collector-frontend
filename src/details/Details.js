@@ -12,6 +12,8 @@ export default function Details() {
     const [imageUrls, setImageUrls] = useState([]);
     const [imageIdx, setImageIdx] = useState(0);
     const [catIcon, setCatIcon] = useState('');
+    const [owned, setOwned] = useState(false);
+    const [favorite, setFavorite] = useState(false);
     const params = useParams();
     const id = params.id;
     const catIcons = importAll(
@@ -62,6 +64,10 @@ export default function Details() {
         setImageIdx((imageIdx + 1) % imageUrls.length);
     }
 
+    function toggleIcon() {
+        setFavorite(!favorite);
+    }
+
     return (
         <div>
             <Grid container spacing={2} maxHeight='lg' maxWidth='lg' sx={{marginTop: 2}}>
@@ -81,11 +87,11 @@ export default function Details() {
                 </Grid>
                 <Grid item xs={10} sm={8} md={6}>
                     <h1 style={{margin: '0px', marginBottom: '20px'}}> {breedData.name} 
-                    <span title="Owned" style={{marginLeft: '8px'}}>
-                        <img className="detailsIcon hover inactive" src={Star} width={30} height={30} alt={`star`}/>
+                    <span title="Owned" >
+                        <img className={owned ? "detailsIcon hover" : "detailsIcon hover inactive"} src={Star} width={30} height={30} alt={`star`}/>
                     </span>
-                    <span title="Favorite" style={{marginLeft: '8px'}}> 
-                        <img className="hover inactive" src={Heart} width={30} height={30} alt={`heart`}/>
+                    <span title="Favorite">
+                        <img className={favorite ? "detailsIcon hover" : "detailsIcon hover inactive"} src={Heart} width={32} height={32} alt={`heart`} onClick={toggleIcon}/>
                     </span>
                     <span style={{float: "right"}}> <img style={{float: "right"}} src={catIcons[catIcon]} width={60} height={60} alt={`icon`}/> </span>
                     </h1>
@@ -95,16 +101,39 @@ export default function Details() {
                     <span style={{fontSize: "18px", fontWeight: "bold"}}> Origin: </span> 
                     <span style={{float: "right"}}> {breedData.origin}</span>
                     <br></br>
+                    <span style={{fontSize: "18px", fontWeight: 'bold'}}> Weight: </span> 
+                    <span style={{float: "right"}}> {breedData.weight.imperial} lbs </span>
+                    <br></br>
                     <span style={{fontSize: "18px", fontWeight: 'bold'}}> Temperament: </span> 
                     <span style={{float: "right"}}> {breedData.temperament} </span>
                     <br></br>
                     <br></br>
-                    {breedData.description}
+                    <span style={{fontSize: "18px", fontWeight: 'bold'}}> Adaptability: </span> 
+                    {[...Array(breedData.adaptability)].map((e, i) => 
+                    <span style={{float: "right"}}>
+                        <img src={Star} width={17} height={17}/>
+                    </span>)}                    <br></br>
+                    <span style={{fontSize: "18px", fontWeight: 'bold'}}> Affection: </span> 
+                    {[...Array(breedData.affection_level)].map((e, i) => 
+                    <span style={{float: "right"}}>
+                        <img src={Star} width={17} height={17}/>
+                    </span>)}                    <br></br>
+                    <span style={{fontSize: "18px", fontWeight: 'bold'}}> Energy: </span> 
+                    {[...Array(breedData.energy_level)].map((e, i) => 
+                    <span style={{float: "right"}}>
+                        <img src={Star} width={17} height={17}/>
+                    </span>)}
+                    <br></br>
+                    <span style={{fontSize: "18px", fontWeight: 'bold'}}> Intelligence: </span> 
+                    {[...Array(breedData.intelligence)].map((e, i) => 
+                    <span style={{float: "right"}}>
+                        <img src={Star} width={17} height={17}/>
+                    </span>)}                    <br></br>
+                    <br></br>
+                    <span style={{fontSize: "19px"}}> {breedData.description} </span>
 
                 </Grid>
             </Grid>
-            <div> {JSON.stringify(breedData)} </div>
-
         </div>
     )
 }

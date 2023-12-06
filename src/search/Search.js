@@ -78,8 +78,8 @@ export default function Search() {
       setMatches(TEST_MATCHES);
       setBreeds(TEST_MATCHES);
     } else {
-      getMatches();
       getBreeds();
+      getMatches();
     }
   }, [query]);
 
