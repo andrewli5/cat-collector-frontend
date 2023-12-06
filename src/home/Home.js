@@ -2,7 +2,7 @@ import { Container, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import MyCats from "../mycats/MyCats";
 import EmptySearch from "../search/EmptySearch";
 import Search from "../search/Search";
@@ -12,12 +12,13 @@ import Shop from "../shop/Shop";
 import Favorites from "../favorites/Favorites";
 
 export default function Home() {
-  const path = window.location.pathname;
+  const path = useLocation().pathname;
+
   useEffect(() => {
     if (path === "/") {
       document.title = "home | " + APP_NAME;
     }
-  });
+  }, [path]);
 
   return (
     <Container component="main" maxWidth="lg">
