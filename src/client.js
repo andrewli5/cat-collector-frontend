@@ -21,10 +21,11 @@ export const clearBrowserStorage = () => {
   localStorage.clear();
 };
 
-
 // USERS API FUNCTIONS
 export const updateUserCoins = async (username, coins) => {
-  const response = await REQUEST.put(`${USERS_API}/${username}/coins`, {coins: coins});
+  const response = await REQUEST.put(`${USERS_API}/${username}/coins`, {
+    coins: coins,
+  });
   return response.data;
 };
 
@@ -57,4 +58,4 @@ export const findAllUsers = async () => {
 export const getCatsByUsername = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/${username}`);
   return response.data;
-}
+};

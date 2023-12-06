@@ -12,7 +12,7 @@ export default function Admin() {
   }, []);
 
   if (!getCurrentUser() || getCurrentUser().role !== "ADMIN") {
-    return (<Forbidden />);
+    return <Forbidden />;
   } else {
     return (
       <Typography variant="h4" color="grey" textAlign="center">

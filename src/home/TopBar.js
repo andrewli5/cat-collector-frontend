@@ -24,7 +24,7 @@ export default function TopBar() {
 
   const SearchField = styled(
     TextField,
-    {}
+    {},
   )(() => ({
     "& .MuiOutlinedInput-root": {
       width: "40%",
@@ -102,7 +102,13 @@ export default function TopBar() {
         <DialogTitle id="alert-dialog-title" variant="h3">
           {"Log out?"}
         </DialogTitle>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 10,
+          }}
+        >
           <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
             <Typography variant="h4" textAlign="center">
               No

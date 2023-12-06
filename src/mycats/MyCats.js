@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
-import { APP_NAME } from '../constants';
-import { importAll } from '../utils/importAll';
+import { APP_NAME } from "../constants";
+import { importAll } from "../utils/importAll";
 
 export default function MyCats() {
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   useEffect(() => {
@@ -16,9 +16,9 @@ export default function MyCats() {
 
   return (
     <>
-    <Typography variant="h4" color="white" textAlign="center">
-       {"my cats (0/67)"}
-    </Typography>
+      <Typography variant="h4" color="white" textAlign="center">
+        {"my cats (0/67)"}
+      </Typography>
 
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
         {Object.keys(catIcons).map((catIcon, index) => {
@@ -33,7 +33,7 @@ export default function MyCats() {
               sm={2}
               key={index}
               sx={{ marginBottom: 3 }}
-              className='hover'
+              className="hover"
             >
               <img
                 style={{

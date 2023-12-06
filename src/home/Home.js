@@ -44,7 +44,7 @@ export default function Home() {
       setWarning(true);
       return;
     } else {
-      storeCurrentUser({...getCurrentUser(), coins: coins + coinRate});
+      storeCurrentUser({ ...getCurrentUser(), coins: coins + coinRate });
       setCoins(coins + 1);
     }
   };

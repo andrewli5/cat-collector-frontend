@@ -18,25 +18,28 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
 
     try {
-        const user = await client.signIn({username: data.get("username"), password: data.get("password")});
-        const cats = await client.getCatsByUsername(user.username);
-        const userWithCats = {...user, cats: cats};
-        client.storeCurrentUser(userWithCats);
-        navigate("/");
+      const user = await client.signIn({
+        username: data.get("username"),
+        password: data.get("password"),
+      });
+      const cats = await client.getCatsByUsername(user.username);
+      const userWithCats = { ...user, cats: cats };
+      client.storeCurrentUser(userWithCats);
+      navigate("/");
     } catch (error) {
-        // TODO: handle error with snackbar
-        if (error.response) {
-          console.log(error.response.data.message);
-        } else {
-          console.log(error.message);
-        }
+      // TODO: handle error with snackbar
+      if (error.response) {
+        console.log(error.response.data.message);
+      } else {
+        console.log(error.message);
+      }
     }
   };
 
   useEffect(() => {
     document.title = "sign in | " + APP_NAME;
     if (client.getCurrentUser()) {
-        navigate("/");
+      navigate("/");
     }
   }, []);
 

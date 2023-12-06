@@ -65,18 +65,18 @@ export default function NavBar({ coins }) {
           </Button>
         </>
       )}
-        <div
-          style={{
-            marginLeft: "auto",
-            flexDirection: "row",
-            display: "flex",
-          }}
-        >
-          <Typography variant="h4" noWrap marginRight={1}>
-            {coins.toLocaleString()}
-          </Typography>
-          <img src={coinIcon} style={{ height: 40, width: 40 }} />
-        </div>
+      <div
+        style={{
+          marginLeft: "auto",
+          flexDirection: "row",
+          display: "flex",
+        }}
+      >
+        <Typography variant="h4" noWrap marginRight={1}>
+          {coins.toLocaleString()}
+        </Typography>
+        <img src={coinIcon} style={{ height: 40, width: 40 }} />
+      </div>
     </Toolbar>
   );
 }

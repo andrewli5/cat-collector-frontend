@@ -1,9 +1,9 @@
-import { useParams, useNavigate, Route, Routes} from "react-router-dom";
-import { Typography, } from "@mui/material";
+import { useParams, useNavigate, Route, Routes } from "react-router-dom";
+import { Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 
 import {
-    APP_NAME,
+  APP_NAME,
   CAT_API_KEY,
   CAT_API_URL_BREEDS,
   CAT_API_URL_IMAGE,
@@ -109,9 +109,9 @@ export default function Search() {
                     url: data[0]["url"],
                     name: match["name"],
                     id: match["id"],
-                  }
+                  },
             );
-          })
+          }),
         );
       }
 
@@ -147,7 +147,7 @@ export default function Search() {
             </span>
           ) : (
             <span key={index}>{part}</span>
-          )
+          ),
         )}
       </>
     );
@@ -161,7 +161,7 @@ export default function Search() {
       {matches.length === 0 ? (
         <EmptySearch />
       ) : (
-      <Grid container spacing={3}  sx={{ marginTop: 3, marginLeft: 2 }}>
+        <Grid container spacing={3} sx={{ marginTop: 3, marginLeft: 2 }}>
           {imageUrls.map((image, index) => (
             <Grid
               display="flex"
@@ -172,25 +172,28 @@ export default function Search() {
               sm={4}
               md={2.5}
               key={index}
-              sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2}}
+              sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
             >
-                  <Link style={{color: 'white', textDecoration: 'none'}} href={`/details/${image['id']}`}>
-                    <img
-                        src={image["url"]}
-                        width={"200px"}
-                        style={{
-                        objectFit: "cover",
-                        objectPosition: "center",
-                        height: "200px",
-                        borderRadius: "10px",
-                        border: "2px solid white",
-                        }}
-                        alt={image["id"]}
-                    />
-                    <Typography  variant="h5" textAlign="center" noWrap>
-                        <HighlightedText text={image["name"]} highlight={query} />
-                    </Typography>
-                </Link>
+              <Link
+                style={{ color: "white", textDecoration: "none" }}
+                href={`/details/${image["id"]}`}
+              >
+                <img
+                  src={image["url"]}
+                  width={"200px"}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    height: "200px",
+                    borderRadius: "10px",
+                    border: "2px solid white",
+                  }}
+                  alt={image["id"]}
+                />
+                <Typography variant="h5" textAlign="center" noWrap>
+                  <HighlightedText text={image["name"]} highlight={query} />
+                </Typography>
+              </Link>
             </Grid>
           ))}
         </Grid>

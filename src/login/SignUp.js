@@ -115,7 +115,7 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12}>
-              <div style={{display: "flex", flexDirection: "row"}}>
+              <div style={{ display: "flex", flexDirection: "row" }}>
                 <FormControlLabel
                   control={
                     <Switch
