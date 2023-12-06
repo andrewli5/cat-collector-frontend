@@ -36,7 +36,8 @@ export default function MyCats() {
               flexDirection="column"
               alignItems="center"
               item
-              xs={2}
+              xs={4}
+              sm={2}
               key={index}
               sx={{ marginBottom: 3 }}
               className='hover'

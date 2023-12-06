@@ -162,18 +162,20 @@ export default function Search() {
       {matches.length === 0 ? (
         <EmptySearch />
       ) : (
-        <Grid container rowSpacing={5} columnSpacing={30}>
+      <Grid container spacing={3}  sx={{ marginTop: 3, marginLeft: 2 }}>
           {imageUrls.map((image, index) => (
             <Grid
               display="flex"
               flexDirection="column"
               alignItems="center"
               item
-              xs={2}
+              xs={6}
+              sm={4}
+              md={2.5}
               key={index}
-              sx={{ marginBottom: 3 }}
+              sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2}}
             >
-                <Link style={{color: 'white', textDecoration: 'none'}} href={`/details/${image['id']}`}>
+                  <Link style={{color: 'white', textDecoration: 'none'}} href={`/details/${image['id']}`}>
                     <img
                         src={image["url"]}
                         width={"200px"}
