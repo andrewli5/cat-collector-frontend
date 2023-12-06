@@ -7,6 +7,7 @@ import CatImg from "../assets/catIcons/aegean.png";
 export default function Details() {
     const [breedData, setBreedData] = useState(''); 
     const [imageUrls, setImageUrls] = useState([]);
+    const [imageIdx, setImageIdx] = useState(0);
     const params = useParams();
     const id = params.id;
 
@@ -18,26 +19,31 @@ export default function Details() {
             },
             });
             const data = await response.json();
-            // get current breed's data using id
             const currentBreed = data.find((breed) => breed.id === id);
             setBreedData(currentBreed);
         }
 
         getBreedData();
-    });
+    }, []);
 
     useEffect(() => {
         async function getImageURLS() { 
-            const response = await fetch(CAT_API_URL_IMAGE + id, {
+            const urls = []
+            const response = await fetch(CAT_API_URL_IMAGES.replace("{}", id), {
                 headers: {
                     "x-api-key": CAT_API_KEY,
                 },
             });
             const data = await response.json();
-            setImageUrls(data);
-            console.log("Image urls: ", data)
+            for (const datum of data) {
+                urls.push(datum['url']);
+            }
+            setImageUrls(urls);
+            console.log("Image urls: ", urls)
         }
-    }, [breedData])
+
+        getImageURLS();
+    }, [])
 
     return (
         <div>
@@ -46,10 +52,17 @@ export default function Details() {
             <Grid container spacing={2} maxHeight='lg' maxWidth='lg'>
                 <Grid style={{paddingLeft: '70px'}}item xs={4} sm={5} md={6}>
                     <img 
-                        src={CatImg}
+                        src={imageUrls[imageIdx]}
                         width={400}
                         height={400}
-                        alt={`image-${1}`}/>
+                        style={{
+                            objectFit: "cover",
+                            objectPosition: "center",
+                            borderRadius: "10px",
+                            border: "2px solid white",
+                        }}
+                        onClick={setImageIdx(imageIdx += 1)}
+                        alt={`display`}/>
                 </Grid>
                 <Grid item xs={10} sm={8} md={6}>
                     <h1 style={{margin: '0px'}}> {breedData.name} </h1>
