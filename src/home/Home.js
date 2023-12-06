@@ -1,31 +1,41 @@
-import { Container } from "@mui/material";
-import NavBar from "../navbar/NavBar";
+import { Container, Typography } from "@mui/material";
+import TopBar from "./TopBar";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
-import { Button } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import MyCats from "../mycats/MyCats";
 import EmptySearch from "../search/EmptySearch";
 import Search from "../search/Search";
+import NavBar from "./NavBar";
+import Roll from "../roll/Roll";
+import Shop from "../shop/Shop";
+import Favorites from "../favorites/Favorites";
 
 export default function Home() {
-    useEffect(() => {
-        document.title = APP_NAME + " | home";
-    });
+  const path = window.location.pathname;
+  useEffect(() => {
+    if (path === "/") {
+      document.title = "home | " + APP_NAME;
+    }
+  });
 
-    return (
-        <Container component="main" maxWidth="lg">
-            <NavBar />
-            <Button color="white" href="/mycats">
-                my cats
-            </Button>
-            <div style={{ marginTop: "20px" }}>
-                <Routes>
-                    <Route path="/mycats" element={<MyCats />} />
-                    <Route path="/search" element={<EmptySearch />} />
-                    <Route path="/search/:query" element={<Search />} />
-                </Routes>
-            </div>
-        </Container>
-    );
+  return (
+    <Container component="main" maxWidth="lg">
+      <TopBar />
+      <NavBar />
+      {path === "/" && (
+        <Typography variant="h4" color="grey" textAlign="center">
+          Homepage is in development...
+        </Typography>
+      )}
+      <Routes>
+        <Route path="/mycats" element={<MyCats />} />
+        <Route path="/search" element={<EmptySearch />} />
+        <Route path="/search/:query" element={<Search />} />
+        <Route path="/roll" element={<Roll />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/favorites" element={<Favorites />} />
+      </Routes>
+    </Container>
+  );
 }

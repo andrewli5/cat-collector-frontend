@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
+import { APP_NAME } from '../constants';
 
 function importAll(r) {
   let images = {};
@@ -16,11 +17,16 @@ export default function MyCats() {
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
+  useEffect(() => {
+    document.title = "my cats | " + APP_NAME;
+  });
+
   return (
     <>
-      <Typography component="h1" variant="h2" textAlign="center">
-        my cats
-      </Typography>
+    <Typography variant="h4" color="white" textAlign="center">
+       {"my cats (0/67)"}
+    </Typography>
+
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
         {Object.keys(catIcons).map((catIcon, index) => {
           const name = catIcon.replace(".png", "").replace("_", " ");

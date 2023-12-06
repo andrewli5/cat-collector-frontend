@@ -110,10 +110,10 @@ export default function SignUp() {
             <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
               sign up
             </Button>
-            <Link href="/signin" variant="body2">
+            <Link href="/signin" variant="h5">
               {"already have an account? sign in"}
             </Link>
-            <Link href="/" variant="body2">
+            <Link href="/" variant="h5">
               {"back to home"}
             </Link>
           </Box>

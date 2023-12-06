@@ -84,10 +84,10 @@ export default function SignIn() {
               flexDirection: "column",
             }}
           >
-            <Link href="/signup" variant="body2">
+            <Link href="/signup" variant="h5">
               {"don't have an account? sign up"}
             </Link>
-            <Link href="/" variant="body2">
+            <Link href="/" variant="h5">
               {"back to home"}
             </Link>
           </Box>

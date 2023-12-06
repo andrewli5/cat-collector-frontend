@@ -1,5 +1,4 @@
 import { Typography } from "@mui/material";
-import TextField from "@mui/material/TextField";
 
 export default function EmptySearch() {
     return (
