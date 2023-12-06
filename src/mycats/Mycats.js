@@ -12,7 +12,7 @@ export default function MyCats() {
 
   useEffect(() => {
     document.title = "my cats | " + APP_NAME;
-  });
+  }, []);
 
   return (
     <>

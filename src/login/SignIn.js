@@ -22,8 +22,12 @@ export default function SignIn() {
         client.storeCurrentUser(user);
         navigate("/");
     } catch (error) {
-        // TODO: handle error
-        console.log(error.response.data.message);
+        // TODO: handle error with snackbar
+        if (error.response) {
+          console.log(error.response.data.message);
+        } else {
+          console.log(error.message);
+        }
     }
   };
 
@@ -32,7 +36,7 @@ export default function SignIn() {
     if (client.getCurrentUser()) {
         navigate("/");
     }
-  });
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">

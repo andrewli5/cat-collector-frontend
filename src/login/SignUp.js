@@ -5,32 +5,47 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useNavigate } from "react-router-dom";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
+import { FormControlLabel, Switch } from "@mui/material";
 
 export default function SignUp() {
+  const [admin, setAdmin] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const userObj = {
+      username: data.get("username"),
+      password: data.get("password"),
+      firstName: data.get("firstName"),
+      lastName: data.get("password"),
+    };
 
     try {
-      const user = await client.signUp({
-        username: data.get("username"),
-        password: data.get("password"),
-        firstName: data.get("firstName"),
-        lastName: data.get("password"),
-        role: "USER", // TODO: implement signup for both USER and ADMIN
-      });
-      client.storeCurrentUser(user);
+      if (admin) {
+        const user = await client.signUpAsAdmin({
+          ...userObj,
+          admin_password: data.get("adminPassword"),
+        });
+        client.storeCurrentUser(user);
+      } else {
+        const user = await client.signUpAsUser(userObj);
+        client.storeCurrentUser(user);
+      }
+
       navigate("/");
     } catch (error) {
-      // TODO: handle error
-      console.log(error.response.data.message);
+      // TODO: handle error with snackbar
+      if (error.response) {
+        console.log(error.response.data.message);
+      } else {
+        console.log(error.message);
+      }
     }
   };
 
@@ -39,7 +54,7 @@ export default function SignUp() {
     if (client.getCurrentUser()) {
       navigate("/");
     }
-  });
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -98,6 +113,28 @@ export default function SignUp() {
                 id="password"
                 autoComplete="new-password"
               />
+            </Grid>
+            <Grid item xs={12}>
+              <div style={{display: "flex", flexDirection: "row"}}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      onChange={(event) => setAdmin(event.target.checked)}
+                    />
+                  }
+                  label="admin"
+                />
+                {admin && (
+                  <TextField
+                    required
+                    fullWidth
+                    name="adminPassword"
+                    label="admin password"
+                    type="password"
+                    id="adminPassword"
+                  />
+                )}
+              </div>
             </Grid>
           </Grid>
           <Box

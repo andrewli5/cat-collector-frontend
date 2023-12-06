@@ -3,7 +3,7 @@ import { getCurrentUser } from "../client";
 import coinIcon from "../assets/coin_icon.png";
 import { useLocation } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({ coins }) {
   const path = useLocation().pathname;
 
   return (
@@ -52,16 +52,31 @@ export default function NavBar() {
       >
         favorites
       </Button>
-      {getCurrentUser() ? (
+      {getCurrentUser() && getCurrentUser().role === "ADMIN" && (
+        <>
+          <Typography variant="h4" noWrap>
+            {"|"}
+          </Typography>
+          <Button
+            color={path.includes("admin") ? "quintenary" : "red"}
+            href="/admin"
+          >
+            admin tools
+          </Button>
+        </>
+      )}
         <div
-          style={{ marginLeft: "auto", flexDirection: "row", display: "flex" }}
+          style={{
+            marginLeft: "auto",
+            flexDirection: "row",
+            display: "flex",
+          }}
         >
           <Typography variant="h4" noWrap marginRight={1}>
-            {getCurrentUser().coins.toLocaleString()}
+            {coins.toLocaleString()}
           </Typography>
           <img src={coinIcon} style={{ height: 40, width: 40 }} />
         </div>
-      ) : null}
     </Toolbar>
   );
 }

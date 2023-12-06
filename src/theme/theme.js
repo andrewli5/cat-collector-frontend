@@ -13,6 +13,7 @@ export const THEME = createTheme({
     quaternary: createColor("#98A886"),
     quintenary: createColor("#C4A69D"),
     white: createColor("#FFFFFF"),
+    red: createColor("#FF0000"),
   },
   components: {
     MuiTextField: {
