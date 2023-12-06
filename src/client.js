@@ -20,6 +20,11 @@ const request = axios.create({
   withCredentials: true,
 });
 
+export const updateUserCoins = async (username, coins) => {
+  const response = await request.put(`${USERS_API}/${username}/coins`, {coins: coins});
+  return response.data;
+};
+
 export const signIn = async (credentials) => {
   const response = await request.post(`${USERS_API}/signin`, credentials);
   return response.data;
