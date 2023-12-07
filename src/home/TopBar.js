@@ -62,7 +62,7 @@ export default function TopBar() {
     <Toolbar>
       <Typography variant="h3" noWrap>
         <Link style={{ color: "white", textDecoration: "none" }} href="/">
-          {APP_NAME}
+          {APP_NAME + "."}
         </Link>
       </Typography>
       <Box
