@@ -1,7 +1,6 @@
-import { useParams, useNavigate, Route, Routes } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 import Link from "@mui/material/Link";
-
 import {
   APP_NAME,
   CAT_API_KEY,
@@ -125,37 +124,6 @@ export default function Search() {
     getMatchImageUrls();
   }, [matches]);
 
-  // Return text where the query is highlighted
-  const HighlightedText = ({ text, highlight }) => {
-    if (!highlight.trim()) {
-      return <>{text}</>;
-    }
-
-    const regex = new RegExp(`(${highlight})`, "gi");
-    const parts = text.split(regex);
-
-    return (
-      <>
-        {parts.map((part, index) =>
-          regex.test(part) ? (
-            <span
-              key={index}
-              style={{
-                fontWeight: "bold",
-                backgroundColor: "yellow",
-                color: "black",
-              }}
-            >
-              {part}
-            </span>
-          ) : (
-            <span key={index}>{part}</span>
-          ),
-        )}
-      </>
-    );
-  };
-
   return (
     <>
       <Typography variant="h3" textAlign="center" sx={{ marginBottom: 5 }}>
@@ -194,7 +162,7 @@ export default function Search() {
                   alt={image["id"]}
                 />
                 <Typography variant="h5" textAlign="center" noWrap>
-                  <HighlightedText text={image["name"]} highlight={query} />
+                  {image["name"].toLowerCase()}
                 </Typography>
               </Link>
             </Grid>

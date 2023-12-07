@@ -8,7 +8,7 @@ export const CAT_API_URL_IMAGE =
 export const CAT_API_URL_IMAGES =
   "https://api.thecatapi.com/v1/images/search?limit=10&breed_ids={}&api_key=" +
   CAT_API_KEY;
-  
+
 export const BREEDID_TO_CATICON = {
   abys: "abyssinian.png",
   aege: "aegean.png",

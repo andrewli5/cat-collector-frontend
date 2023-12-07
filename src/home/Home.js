@@ -2,7 +2,6 @@ import {
   Alert,
   Button,
   Container,
-  IconButton,
   Snackbar,
   Typography,
 } from "@mui/material";
@@ -11,8 +10,8 @@ import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
 import { Route, Routes, useLocation } from "react-router-dom";
 import MyCats from "../mycats/MyCats";
-import EmptySearch from "../search/EmptySearch";
 import Search from "../search/Search";
+import EmptySearch from "../search/EmptySearch";
 import NavBar from "./NavBar";
 import Roll from "../roll/Roll";
 import Shop from "../shop/Shop";
