@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
+  APP_NAME,
   CAT_API_KEY,
   CAT_API_URL_BREEDS,
   CAT_API_URL_IMAGE,
@@ -12,6 +13,7 @@ import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
 import "../css/styles.css";
 import { Button } from "@mui/material";
+import { doc } from "prettier";
 
 const IMAGE_SIZE = 400;
 
@@ -29,6 +31,7 @@ export default function Details() {
   );
 
   useEffect(() => {
+    
     async function getBreedData() {
       const response = await fetch(CAT_API_URL_BREEDS, {
         headers: {
@@ -40,10 +43,6 @@ export default function Details() {
       setBreedData(currentBreed);
     }
 
-    getBreedData();
-  }, []);
-
-  useEffect(() => {
     async function getImageURLS() {
       const urls = [];
       const response = await fetch(CAT_API_URL_IMAGES.replace("{}", id), {
@@ -61,9 +60,16 @@ export default function Details() {
     }
 
     getImageURLS();
+    getBreedData();
   }, []);
 
   useEffect(() => {
+    document.title = 
+      breedData.name === undefined
+        ? "details | " + APP_NAME
+        :
+      breedData.name.toLowerCase() + " | " + APP_NAME
+    
     const catIconName =
       breedData.name === undefined
         ? ""
