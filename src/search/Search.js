@@ -60,7 +60,6 @@ export default function Search() {
     }
 
     getBreeds();
-
   }, []);
 
   useEffect(() => {

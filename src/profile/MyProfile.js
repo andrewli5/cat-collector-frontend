@@ -20,27 +20,27 @@ export default function MyProfile() {
   const navigate = useNavigate();
   const user = getCurrentUser();
 
-const handleSave = async () => {
+  const handleSave = async () => {
     const updatedFields = { firstName, lastName };
     const updatedUser = { ...user, ...updatedFields };
     try {
-        const _ = await client.updateUser(user.username, {
-            ...updatedFields,
-            from_username: user.username,
-        });
-        storeCurrentUser(updatedUser);
-        setSuccess(true);
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
+      const _ = await client.updateUser(user.username, {
+        ...updatedFields,
+        from_username: user.username,
+      });
+      storeCurrentUser(updatedUser);
+      setSuccess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
-        if (error.response) {
-            console.log(error.response.data.message);
-        } else {
-            console.log(error.message);
-        }
+      if (error.response) {
+        console.log(error.response.data.message);
+      } else {
+        console.log(error.message);
+      }
     }
-};
+  };
 
   useEffect(() => {
     document.title = "my profile | " + APP_NAME;
