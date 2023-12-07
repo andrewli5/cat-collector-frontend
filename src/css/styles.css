@@ -9,7 +9,7 @@
   margin-left: 8px;
 }
 .inactive {
-  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
 }
 .detail {
   float: right;
