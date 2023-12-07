@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 
@@ -8,8 +8,12 @@ export default function Shop() {
   }, []);
 
   return (
-    <Typography variant="h4" color="grey" textAlign="center">
-      The shop is in development...
-    </Typography>
+    <Box>
+      <Grid maxHeight='md' maxWidth='lg' >
+        <Grid item xs={12}>
+          item 1
+        </Grid> 
+      </Grid>
+    </Box>
   );
 }
