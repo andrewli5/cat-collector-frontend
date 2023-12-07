@@ -11,3 +11,14 @@
 .inactive {
   -webkit-filter: grayscale(100%);
 }
+.detail {
+  float: right;
+}
+.detailTitle {
+  font-size: 18px;
+  font-weight: bold;
+}
+.detail img {
+  width: 17px;
+  height: 17px;
+}
