@@ -1,6 +1,7 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, Item } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
+import ShopItem from "./ShopItem";
 
 export default function Shop() {
   useEffect(() => {
@@ -9,10 +10,10 @@ export default function Shop() {
 
   return (
     <Box>
-      <Grid maxHeight='md' maxWidth='lg' >
-        <Grid item xs={12}>
-          item 1
-        </Grid> 
+      <Grid container spacing={2}>
+        <ShopItem icon="icon" title="title" description="description" price="price" />
+        <ShopItem icon="test" title="test" description="test" price="test" />
+
       </Grid>
     </Box>
   );
