@@ -15,18 +15,18 @@ export default function Shop() {
   }, []);
 
   return (
-    <Grid className="shop" container spacing={1}>
-      <Grid className="shop" item xs={7}>
+    <Grid className="shop" container spacing={1} mb={3}>
+      <Grid className="shop" item xs={7} px={3} py={1} p>
       <Typography variant="h4" color="white" textAlign="center"> Accessories </Typography>
-          {accessories.map((item) => (
-            <ShopItem icon={item.icon} title={item.title} description={item.description} price={item.price} />
+          {accessories.map((item, index) => (
+            <ShopItem icon={item.icon} title={item.title} description={item.description} price={item.price} filter={item.filter} />
           ))}
       </Grid>
       <Grid className="shop" item xs={5}>
       <Typography variant="h4" color="white" textAlign="center"> Items </Typography>
         <Grid container>
           {items.map((item) => (
-            <SmallShopItem icon={item.icon} title={item.title} desc={item.description} price={item.price} />
+            <SmallShopItem icon={item.icon} title={item.title} desc={item.description} price={item.price} filter={item.filter} />
           ))}
         </Grid>
       </Grid>
@@ -34,7 +34,7 @@ export default function Shop() {
         <Typography variant="h4" color="white" textAlign="center"> Skills </Typography>
         <Grid container>
           {skills.map((item) => (
-            <ShopItem icon={item.icon} title={item.title} description={item.description} price={item.price} />
+            <ShopItem icon={item.icon} title={item.title} description={item.description} price={item.price} filter={item.filter} />
           ))}
         </Grid>
       </Grid>

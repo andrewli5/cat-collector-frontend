@@ -1,22 +1,24 @@
 { 
     "skills": [
         {
-            "icon": "lucky_cat_icon.png",
+            "icon": "gambling.png",
             "title": "Luck of the Draw I",
-            "description": "description",
-            "price": "10000"
+            "description": "Improved roll odds",
+            "price": "10000",
+            "filter": "270"
         },
         {
-            "icon": "lucky_cat_icon.png",
+            "icon": "gambling.png",
             "title": "Luck of the Draw II",
-            "description": "description",
+            "description": "Greatly improved roll odds",
             "price": "20000"
         },
         {
-            "icon": "lucky_cat_icon.png",
+            "icon": "gambling.png",
             "title": "Luck of the Draw III",
-            "description": "description",
-            "price": "30000"
+            "description": "Drastically improved roll odds",
+            "price": "30000",
+            "filter": "70"
         }
     ],
     "accessories": [
@@ -24,25 +26,34 @@
             "icon": "necklace_icon.png",
             "title": "Cat Collar",
             "description": "Cat collar description",
-            "price": "10000"
+            "price": "10000",
+            "filter": "295"
         },
         {
             "icon": "necklace_icon.png",
             "title": "Amulet Coin",
-            "description": "description",
+            "description": "Increases coins earned from duplicate cat rolls by X%.",
             "price": "20000"
         },
         {
             "icon": "necklace_icon.png",
             "title": "Gambler's Pet Necklace",
-            "description": "description",
-            "price": "30000"
+            "description": "Reduce cost of rolls by X%.",
+            "price": "30000",
+            "filter": "180"
         },
         {
             "icon": "gem_icon.png",
-            "title": "Cat Gem",
-            "description": "description",
+            "title": "Pretty Gem",
+            "description": "A pretty gem...",
             "price": "10000"
+        },
+        {
+            "icon":"gem_icon.png",
+            "title": "Catseye",
+            "description": "A gem that's totally not just the original gem icon but colored orange!",
+            "price": "20000",
+            "filter": "180"
         }
     ],
     "items": [
@@ -50,19 +61,28 @@
             "icon": "fish_icon.png",
             "title": "Select Wet Cat Food",
             "description": "description",
-            "price": "500"
+            "price": "500",
+            "filter": "270"
         },
         {
             "icon": "fish_icon.png",
             "title": "Choice Wet Cat Food",
             "description": "description",
-            "price": "5000"
+            "price": "5000",
+            "filter": "180"
         },
         {
             "icon": "fish_icon.png",
             "title": "Premium Wet Cat Food",
             "description": "description",
             "price": "50000"
+        },
+        {
+            "icon": "egg_icon.png",
+            "title": "Lucky Egg",
+            "description": "an egg!!!!",
+            "price": "500",
+            "filter": "270"
         }
     ]
 }
