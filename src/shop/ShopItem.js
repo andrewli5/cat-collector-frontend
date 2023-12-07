@@ -6,8 +6,7 @@ export default function ShopItem({ icon, title, description, price }) {
       <Grid item xs={3} md={2} flex={1} minWidth={30}>
         {
           <img
-            src={require("../assets/fish_icon.png")}
-            alt="icon"
+            src={"/images/" + icon}
             width="30"
             height="30"
           />

@@ -11,7 +11,7 @@ export default function SmallShopItem({ icon, title, desc, price }) {
         {console.log(icon)}
         {
           <img
-            src={require("../assets/fish_icon.png")}
+            src={"/images/" + icon}
             alt="icon"
             width="30"
             height="30"
