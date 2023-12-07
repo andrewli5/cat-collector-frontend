@@ -3,8 +3,13 @@ import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import ShopItem from "./ShopItem";
 import "../css/styles.css";
-
+import SmallShopItem from "./SmallShopItem";
+import shopItems from "./shopItems.json";
 export default function Shop() {
+  const skills = shopItems.skills;
+  const accessories = shopItems.accessories;
+  const items = shopItems.items;
+
   useEffect(() => {
     document.title = "shop | " + APP_NAME;
   }, []);
@@ -12,35 +17,35 @@ export default function Shop() {
   return (
     <Grid className="shop" container spacing={1}>
       <Grid className="shop" item xs={7}>
-        <Grid container spacing={1} maxHeight={'100vh'} overflow="auto">
-          <ShopItem icon="cat1.png" title="test title." description="test description. i am writing words." name="cat1" price="1,000,000" />
-          <ShopItem icon="cat1.png" title="test title." description="test description. i am writing words." name="cat1" price="1,000,000" />
-        </Grid>
+      <Typography variant="h4" color="white" textAlign="center"> Accessories </Typography>
+          {accessories.map((item) => (
+            <ShopItem icon={item.icon} title={item.title} description={item.description} price={item.price} />
+          ))}
       </Grid>
       <Grid className="shop" item xs={5}>
-        <Grid container spacing={1}>
-          <Grid item>
-            icon
-          </Grid>
-          <Grid item xs={2}>
-            title
-          </Grid>
-          <Grid item xs={5}>
-            desc
-          </Grid>
-          <Grid item xs={3}>
-            1,000,000
-          </Grid>
+      <Typography variant="h4" color="white" textAlign="center"> Items </Typography>
+        <Grid container>
+          {items.map((item) => (
+            <SmallShopItem icon={item.icon} title={item.title} desc={item.description} price={item.price} />
+          ))}
         </Grid>
       </Grid>
       <Grid className="shop" item xs={12}>
+        <Typography variant="h4" color="white" textAlign="center"> Skills </Typography>
         <Grid container>
-          <Grid item xs={12}>
-            <ShopItem icon="cat3.png" title="test title3." description="test description3" name="cat1" price={100} />
-
-          </Grid>
+          {skills.map((item) => (
+            <ShopItem icon={item.icon} title={item.title} description={item.description} price={item.price} />
+          ))}
         </Grid>
       </Grid>
     </Grid>
   );
 }
+
+//{skills.map((item) => (
+//   <ShopItem 
+//   icon={<img src={require(item.icon)} width="100" height="100" />} 
+//   title={item.title} 
+//   description={item.description} 
+//   price={item.price} />
+// ))}
