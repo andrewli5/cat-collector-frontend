@@ -13,7 +13,7 @@ import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
 import "../css/styles.css";
 import { Button } from "@mui/material";
-import { doc } from "prettier";
+import { getCurrentUser } from "../client";
 
 const IMAGE_SIZE = 400;
 
@@ -29,6 +29,11 @@ export default function Details() {
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
+
+  var cats = [];
+  if (getCurrentUser()) {
+    cats = getCurrentUser().cats;
+  }
 
   useEffect(() => {
     
@@ -59,8 +64,13 @@ export default function Details() {
       setImageUrls(urls);
     }
 
+    if (cats.includes(id)) {
+      setOwned(true);
+    }
+
     getImageURLS();
     getBreedData();
+    
   }, []);
 
   useEffect(() => {
@@ -76,6 +86,7 @@ export default function Details() {
         : breedData.name.toLowerCase().replace(" ", "_") + ".png";
     console.log("catIconName: " + catIconName);
     setCatIcon(catIconName);
+
   }, [breedData]);
 
   function nextImage() {
@@ -182,67 +193,59 @@ export default function Details() {
           </h1>
           <h3 style={{ margin: 0 }}> Rarity: </h3>
           <hr></hr>
-          <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {" "}
+          <span className="detailTitle">
             Origin:{" "}
           </span>
-          <span style={{ float: "right" }}> {breedData.origin}</span>
+          <span className="detail"> {breedData.origin}</span>
           <br></br>
-          <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {" "}
+          <span className="detailTitle">
             Weight:{" "}
           </span>
-          <span style={{ float: "right" }}>
-            {" "}
+          <span className="detail">
             {breedData.weight ? breedData.weight.imperial : ""} lbs{" "}
           </span>
           <br></br>
-          <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {" "}
+          <span className="detailTitle">
             Temperament:{" "}
           </span>
-          <span style={{ float: "right" }}> {breedData.temperament} </span>
+          <span className="detail"> {breedData.temperament} </span>
           <br></br>
           <br></br>
-          <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {" "}
+          <span className="detailTitle">
             Adaptability:{" "}
           </span>
-          {[...Array(breedData.adaptability)].map((e, i) => (
-            <span style={{ float: "right" }}>
-              <img src={Star} width={17} height={17} />
-            </span>
-          ))}{" "}
+          <span className="detail">
+            {owned ? [...Array(breedData.adaptability)].map((e, i) => (
+              <img src={Star} />
+          )) : "?????"}
+          </span>
           <br></br>
-          <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {" "}
+          <span className="detailTitle">
             Affection:{" "}
           </span>
-          {[...Array(breedData.affection_level)].map((e, i) => (
-            <span style={{ float: "right" }}>
-              <img src={Star} width={17} height={17} />
-            </span>
-          ))}{" "}
+          <span className="detail">
+            {owned ? [...Array(breedData.affection_level)].map((e, i) => (
+              <img src={Star} />
+            )) : "?????"}
+          </span>
           <br></br>
-          <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {" "}
+          <span className="detailTitle">
             Energy:{" "}
           </span>
-          {[...Array(breedData.energy_level)].map((e, i) => (
-            <span style={{ float: "right" }}>
-              <img src={Star} width={17} height={17} />
-            </span>
-          ))}
+          <span className="detail">
+            {owned ? [...Array(breedData.energy_level)].map((e, i) => (
+              <img src={Star} />
+              )) : "?????"}
+          </span>
           <br></br>
-          <span style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {" "}
+          <span className="detailTitle">
             Intelligence:{" "}
           </span>
-          {[...Array(breedData.intelligence)].map((e, i) => (
-            <span style={{ float: "right" }}>
-              <img src={Star} width={17} height={17} />
-            </span>
-          ))}{" "}
+          <span className="detail">
+            {owned ? [...Array(breedData.intelligence)].map((e, i) => (
+              <img src={Star} />
+          )) : "?????"}
+          </span>
           <br></br>
           <br></br>
           <span style={{ fontSize: "19px" }}> {breedData.description} </span>
