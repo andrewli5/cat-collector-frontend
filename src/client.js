@@ -35,12 +35,12 @@ export const signIn = async (credentials) => {
 };
 
 export const signUpAsUser = async (user) => {
-  const response = await REQUEST.post(`${USERS_API}/signup-user`, user);
+  const response = await REQUEST.post(`${USERS_API}/signup/user`, user);
   return response.data;
 };
 
 export const signUpAsAdmin = async (user) => {
-  const response = await REQUEST.post(`${USERS_API}/signup-admin`, user);
+  const response = await REQUEST.post(`${USERS_API}/signup/admin`, user);
   return response.data;
 };
 
@@ -61,6 +61,6 @@ export const updateUser = async (username, updatedFields) => {
 
 // CATS API FUNCTIONS
 export const getCatsByUsername = async (username) => {
-  const response = await REQUEST.get(`${CATS_API}/${username}`);
+  const response = await REQUEST.get(`${CATS_API}/ownerships/${username}`);
   return response.data;
 };

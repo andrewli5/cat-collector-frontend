@@ -71,7 +71,6 @@ export default function MyCats() {
             >
               <Link
                 textAlign="center"
-                overlay
                 underline="none"
                 color="inherit"
                 href={`/details/${catIconToBreedId(catIcon)}`}
