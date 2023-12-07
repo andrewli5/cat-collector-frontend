@@ -22,6 +22,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
 import { getCurrentUser, storeCurrentUser, updateUserCoins } from "../client";
 import Details from "../details/Details";
+import MyProfile from "../profile/MyProfile";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -147,6 +148,7 @@ export default function Home() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/details/:id" element={<Details />} />
+        <Route path="/myprofile" element={<MyProfile />} />
       </Routes>
     </Container>
   );

@@ -131,7 +131,7 @@ export default function TopBar() {
         <Box>
           <Grid container spacing={1}>
             <Grid item>
-              <Button href="/profile" color="white">
+              <Button href="/myprofile" color="white">
                 {"hi, " + getCurrentUser().firstName + "!"}
               </Button>
             </Grid>

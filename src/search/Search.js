@@ -48,15 +48,19 @@ export default function Search() {
     return breed.toLowerCase().includes(query.toLowerCase());
   };
 
-  async function getBreeds() {
-    const response = await fetch(CAT_API_URL_BREEDS, {
-      headers: {
-        "x-api-key": CAT_API_KEY,
-      },
-    });
-    const data = await response.json();
-    setBreeds(data);
-  }
+  useEffect(() => {
+    async function getBreeds() {
+      const response = await fetch(CAT_API_URL_BREEDS, {
+        headers: {
+          "x-api-key": CAT_API_KEY,
+        },
+      });
+      const data = await response.json();
+      setBreeds(data);
+    }
+
+    getBreeds();
+  }, []);
 
   useEffect(() => {
     document.title = query + " | " + APP_NAME;
@@ -78,10 +82,9 @@ export default function Search() {
       setMatches(TEST_MATCHES);
       setBreeds(TEST_MATCHES);
     } else {
-      getBreeds();
       getMatches();
     }
-  }, [query]);
+  }, [query, breeds]);
 
   useEffect(() => {
     async function getMatchImageUrls() {
