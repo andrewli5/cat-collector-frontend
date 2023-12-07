@@ -159,8 +159,8 @@ export default function Details() {
                   owned ? "detailsIcon hover" : "detailsIcon hover inactive"
                 }
                 src={Star}
-                width={30}
-                height={30}
+                width={21}
+                height={21}
                 alt={`star`}
               />
             </span>
@@ -170,8 +170,8 @@ export default function Details() {
                   favorite ? "detailsIcon hover" : "detailsIcon hover inactive"
                 }
                 src={Heart}
-                width={32}
-                height={32}
+                width={21}
+                height={21}
                 alt={`heart`}
                 onClick={toggleIcon}
               />
