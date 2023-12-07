@@ -52,6 +52,15 @@ export default function NavBar({ coins }) {
       >
         favorites
       </Button>
+      <Typography variant="h4" noWrap>
+        {"|"}
+      </Typography>
+      <Button
+        color={path.includes("myprofile") ? "quintenary" : "white"}
+        href="/myprofile"
+      >
+        my profile
+      </Button>
       {getCurrentUser() && getCurrentUser().role === "ADMIN" && (
         <>
           <Typography variant="h4" noWrap>

@@ -54,6 +54,11 @@ export const findAllUsers = async () => {
   return response.data;
 };
 
+export const updateUser = async (username, updatedFields) => {
+  const response = await REQUEST.put(`${USERS_API}/${username}`, updatedFields);
+  return response.data;
+};
+
 // CATS API FUNCTIONS
 export const getCatsByUsername = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/${username}`);
