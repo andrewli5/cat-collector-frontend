@@ -103,7 +103,7 @@ export default function TopBar() {
         <DialogTitle id="alert-dialog-title" variant="h3">
           {"Log out?"}
         </DialogTitle>
-        <Box textAlign={'center'}> 
+        <Box textAlign={"center"}>
           <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
         </Box>
         <div

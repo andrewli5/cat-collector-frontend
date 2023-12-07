@@ -36,7 +36,6 @@ export default function Details() {
   }
 
   useEffect(() => {
-    
     async function getBreedData() {
       const response = await fetch(CAT_API_URL_BREEDS, {
         headers: {
@@ -70,23 +69,20 @@ export default function Details() {
 
     getImageURLS();
     getBreedData();
-    
   }, []);
 
   useEffect(() => {
-    document.title = 
+    document.title =
       breedData.name === undefined
         ? "details | " + APP_NAME
-        :
-      breedData.name.toLowerCase() + " | " + APP_NAME
-    
+        : breedData.name.toLowerCase() + " | " + APP_NAME;
+
     const catIconName =
       breedData.name === undefined
         ? ""
         : breedData.name.toLowerCase().replace(" ", "_") + ".png";
     console.log("catIconName: " + catIconName);
     setCatIcon(catIconName);
-
   }, [breedData]);
 
   function nextImage() {
@@ -193,58 +189,52 @@ export default function Details() {
           </h1>
           <h3 style={{ margin: 0 }}> Rarity: </h3>
           <hr></hr>
-          <span className="detailTitle">
-            Origin:{" "}
-          </span>
+          <span className="detailTitle">Origin: </span>
           <span className="detail"> {breedData.origin}</span>
           <br></br>
-          <span className="detailTitle">
-            Weight:{" "}
-          </span>
+          <span className="detailTitle">Weight: </span>
           <span className="detail">
             {breedData.weight ? breedData.weight.imperial : ""} lbs{" "}
           </span>
           <br></br>
-          <span className="detailTitle">
-            Temperament:{" "}
-          </span>
+          <span className="detailTitle">Temperament: </span>
           <span className="detail"> {breedData.temperament} </span>
           <br></br>
           <br></br>
-          <span className="detailTitle">
-            Adaptability:{" "}
-          </span>
+          <span className="detailTitle">Adaptability: </span>
           <span className="detail">
-            {owned ? [...Array(breedData.adaptability)].map((e, i) => (
-              <img src={Star} />
-          )) : "?????"}
+            {owned
+              ? [...Array(breedData.adaptability)].map((e, i) => (
+                  <img src={Star} />
+                ))
+              : "?????"}
           </span>
           <br></br>
-          <span className="detailTitle">
-            Affection:{" "}
-          </span>
+          <span className="detailTitle">Affection: </span>
           <span className="detail">
-            {owned ? [...Array(breedData.affection_level)].map((e, i) => (
-              <img src={Star} />
-            )) : "?????"}
+            {owned
+              ? [...Array(breedData.affection_level)].map((e, i) => (
+                  <img src={Star} />
+                ))
+              : "?????"}
           </span>
           <br></br>
-          <span className="detailTitle">
-            Energy:{" "}
-          </span>
+          <span className="detailTitle">Energy: </span>
           <span className="detail">
-            {owned ? [...Array(breedData.energy_level)].map((e, i) => (
-              <img src={Star} />
-              )) : "?????"}
+            {owned
+              ? [...Array(breedData.energy_level)].map((e, i) => (
+                  <img src={Star} />
+                ))
+              : "?????"}
           </span>
           <br></br>
-          <span className="detailTitle">
-            Intelligence:{" "}
-          </span>
+          <span className="detailTitle">Intelligence: </span>
           <span className="detail">
-            {owned ? [...Array(breedData.intelligence)].map((e, i) => (
-              <img src={Star} />
-          )) : "?????"}
+            {owned
+              ? [...Array(breedData.intelligence)].map((e, i) => (
+                  <img src={Star} />
+                ))
+              : "?????"}
           </span>
           <br></br>
           <br></br>

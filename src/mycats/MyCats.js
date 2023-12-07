@@ -17,7 +17,7 @@ function importAll(r) {
 export default function MyCats() {
   const navigate = useNavigate();
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var cats = [];
@@ -35,7 +35,7 @@ export default function MyCats() {
   if (!getCurrentUser()) {
     return null;
   }
-  
+
   function catIconToBreedId(catIcon) {
     return CATICON_TO_BREEDID[catIcon];
   }
@@ -69,25 +69,26 @@ export default function MyCats() {
               sx={{ marginBottom: 3 }}
               className="hover"
             >
-              <Link 
+              <Link
                 textAlign="center"
                 overlay
-                underline="none" 
-                color="inherit" 
-                href={`/details/${catIconToBreedId(catIcon)}`}>
-                  <img
-                    style={{
-                      ...imageStyle,
-                      borderRadius: "5px",
-                    }}
-                    src={catIcons[catIcon]}
-                    width={60}
-                    height={60}
-                    alt={catIcon}
-                  />
-                  <Typography variant="h5" color={textColor} textAlign="center">
-                    {name}
-                  </Typography>
+                underline="none"
+                color="inherit"
+                href={`/details/${catIconToBreedId(catIcon)}`}
+              >
+                <img
+                  style={{
+                    ...imageStyle,
+                    borderRadius: "5px",
+                  }}
+                  src={catIcons[catIcon]}
+                  width={60}
+                  height={60}
+                  alt={catIcon}
+                />
+                <Typography variant="h5" color={textColor} textAlign="center">
+                  {name}
+                </Typography>
               </Link>
             </Grid>
           );
