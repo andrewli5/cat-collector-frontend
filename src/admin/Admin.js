@@ -2,11 +2,9 @@ import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import { getCurrentUser } from "../client";
-import { useNavigate } from "react-router-dom";
-import Forbidden from "../forbidden/Forbidden";
+import Forbidden from "./Forbidden";
 
 export default function Admin() {
-  const navigate = useNavigate();
   useEffect(() => {
     document.title = "admin tools | " + APP_NAME;
   }, []);
