@@ -10,6 +10,8 @@ import {
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import EmptySearch from "./EmptySearch";
+import { LoadingSearch } from "./LoadingSearch";
+import { set } from "mongoose";
 
 const TEST_CAT_1 = "Test cat 1";
 const TEST_CAT_2 = "Cattest 2";
@@ -36,10 +38,13 @@ const TEST_URLS = [
   },
 ];
 
+const LOADING_STR = "LOADING";
+
 export default function Search() {
   const [matches, setMatches] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
   const params = useParams();
   const query = params.query;
 
@@ -63,18 +68,18 @@ export default function Search() {
 
   useEffect(() => {
     document.title = query + " | " + APP_NAME;
-
+    setIsLoading(true);
     async function getMatches() {
-      const matches = [];
+      const newMatches = [];
       for (const breed of breeds) {
         if (isMatch(query, breed["name"])) {
-          matches.push({
+          newMatches.push({
             name: breed["name"],
             id: breed["id"],
           });
         }
+        setMatches(newMatches);
       }
-      setMatches(matches);
     }
 
     if (query.toLowerCase() === "test") {
@@ -111,17 +116,24 @@ export default function Search() {
                     url: data[0]["url"],
                     name: match["name"],
                     id: match["id"],
-                  },
+                  }
             );
-          }),
+          })
         );
+
+        // if breeds are done loading
+        if (breeds.length !== 0) {
+          setIsLoading(false);
+        }
       }
 
       setImageUrls(imageUrls);
       return imageUrls;
     }
 
-    getMatchImageUrls();
+    if (!matches.includes(LOADING_STR)) {
+      getMatchImageUrls();
+    }
   }, [matches]);
 
   return (
@@ -129,7 +141,9 @@ export default function Search() {
       <Typography variant="h3" textAlign="center" sx={{ marginBottom: 5 }}>
         results for: {query}
       </Typography>
-      {matches.length === 0 ? (
+      {isLoading ? (
+        <LoadingSearch />
+      ) : matches.length === 0 ? (
         <EmptySearch />
       ) : (
         <Grid container spacing={3} sx={{ marginTop: 3, marginLeft: 2 }}>
