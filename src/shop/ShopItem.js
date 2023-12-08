@@ -1,4 +1,4 @@
-import { Grid, Box, Typography, ButtonBase, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import "../css/styles.css";
 import Coin from "../assets/coin_icon.png";
 import * as React from "react";
@@ -8,36 +8,44 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { CheckBox } from "@mui/icons-material";
 
-export default function ShopItem({ items, filter = false }) {
+export default function ShopItem({ title, items }) {
+  const handlePurchase = () => {
+    // TODO: this
+  };
+
   return (
     <TableContainer>
-      <Table
-        style={{backgroundColor: "rgb(25, 18, 31)" }}
-      >
-        <TableHead style={{ overflowX: "auto"}}>
+      <Table stickyHeader style={{ backgroundColor: "rgb(25, 18, 31)" }}>
+        <TableHead>
           <TableRow>
-            <TableCell>
-              <Typography variant="h5">Icon</Typography>
+            <TableCell colSpan={6}>
+              <Typography
+                className="shopTitle"
+                variant="h4"
+                color="white"
+                textAlign="center"
+              >
+                {title}
+              </Typography>{" "}
             </TableCell>
-            <TableCell align="left">
-              <Typography variant="h5">Name</Typography>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={2}>
+              <Typography color="white" textAlign="center">
+                Name
+              </Typography>{" "}
             </TableCell>
-            <TableCell align="right">
-              {" "}
-              <Typography variant="h5">Description</Typography>
+            <TableCell colSpan={1}>
+              <Typography color="white" textAlign="right">
+                Description
+              </Typography>{" "}
             </TableCell>
-            <TableCell align="right">
-              <img
-                src={Coin}
-                height={17}
-                width={17}
-                style={{ marginLeft: "5px" }}
-              />
+            <TableCell colSpan={2}>
+              <Typography color="white" textAlign="left">
+              <img src={Coin} width={15} height={15} />
+              </Typography>{" "}
             </TableCell>
-            <TableCell align="right"> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -69,13 +77,25 @@ export default function ShopItem({ items, filter = false }) {
                 {" "}
                 <Typography variant="h6">{item.description} </Typography>
               </TableCell>
-              <TableCell px={0} align="right">
-                <Typography variant="h6">{item.price} </Typography>
+              <TableCell
+                style={{ paddingRight: "0px", paddingLeft: "0px" }}
+                align="right"
+              >
+                <Typography
+                  variant="h6"
+                  display="inline"
+                  nowrap
+                  style={{ paddingRight: "0px", display: "inline-block" }}
+                >
+                  {item.price}
+                </Typography>
               </TableCell>
               <TableCell xs={1} md={1} align="right">
                 {
-                  <Button>
-                    <Typography variant="h6">Buy </Typography>
+                  <Button variant="contained" onClick={handlePurchase}>
+                    <Typography variant="h6" color={"white"}>
+                      Buy{" "}
+                    </Typography>
                     <img
                       src={"/images/" + "money_bag.png"}
                       width={20}
@@ -90,41 +110,4 @@ export default function ShopItem({ items, filter = false }) {
       </Table>
     </TableContainer>
   );
-}
-
-{
-  /* <Grid
-      className="shopItem smallHover"
-      container
-      item
-      spacing={1}
-      mt={1}
-      mx={0}
-      px={0}
-      style={{ paddingLeft: 0, marginRight: 5, backgroundColor: "#19121f" }}
-    >
-      <Grid item xs={3} md={2} px={0} flex={1} minWidth={20}>
-        {
-          <img
-            className="shopItemIcon"
-            style={filter ? { filter: `hue-rotate(${filter}deg)` } : {}}
-            src={"/images/" + icon}
-            width="30"
-            height="30"
-          />
-        }
-      </Grid>
-      <Grid item xs={3} md={3} px={0} flex={1} flexWrap="wrap">
-        <Typography>{title}</Typography>
-      </Grid>
-      <Grid item xs={4} md={5} px={0} flex={1} flexWrap="wrap">
-        <Typography>{description}</Typography>
-      </Grid>
-      <Grid item xs={1} md={2} px={0} flex={1}>
-        <Typography>
-          {price}
-          <img style={{marginLeft: '5px'}}src={Coin} height={20} width={20} />
-        </Typography>
-      </Grid>
-    </Grid> */
 }

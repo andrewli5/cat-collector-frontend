@@ -31,21 +31,12 @@
   border: 2px solid #735290;
 }
 .shop {
-  border-top: 10px solid #735290;
   border: 2px solid #735290;
-  overflow-x: hidden;
   max-height: 50vh;
   overflow-y: auto;
   padding: 0px;
 }
-.shopArrow {
-  position: sticky;
-  top: 43vh;
-  left: 300px;
-  color: 'grey';
-}
 .shopTitle {
-  position: sticky;
   top: 0; 
   background-color: #735290;
   border: 2px solid black;
