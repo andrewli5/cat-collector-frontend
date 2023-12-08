@@ -32,7 +32,7 @@ export default function NavBar({ coins }) {
         color={path.includes("roll") ? "quintenary" : "white"}
         href="/roll"
       >
-        roll for cats
+        roll
       </Button>
       <Typography variant="h4" noWrap>
         {"|"}

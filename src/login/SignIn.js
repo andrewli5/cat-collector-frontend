@@ -18,14 +18,7 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
 
     try {
-      const user = await client.signIn({
-        username: data.get("username"),
-        password: data.get("password"),
-      });
-      const cats = await client.getCatsByUsername(user.username);
-      const userWithCats = { ...user, cats: cats };
-      client.storeCurrentUser(userWithCats);
-      navigate("/");
+      signIn(data);
     } catch (error) {
       // TODO: handle error with snackbar
       if (error.response) {
@@ -34,6 +27,17 @@ export default function SignIn() {
         console.log(error.message);
       }
     }
+  };
+
+  const signIn = async (data) => {
+    const user = await client.signIn({
+      username: data.get("username"),
+      password: data.get("password"),
+    });
+    const cats = await client.getCatsByUsername(user.username);
+    const userWithCats = { ...user, cats: cats };
+    client.storeCurrentUser(userWithCats);
+    navigate("/");
   };
 
   useEffect(() => {

@@ -81,7 +81,6 @@ export default function Details() {
       breedData.name === undefined
         ? ""
         : breedData.name.toLowerCase().replace(" ", "_") + ".png";
-    console.log("catIconName: " + catIconName);
     setCatIcon(catIconName);
   }, [breedData]);
 

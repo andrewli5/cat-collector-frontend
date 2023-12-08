@@ -1,7 +1,6 @@
-import { useParams, useNavigate, Route, Routes } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
 import Link from "@mui/material/Link";
-
 import {
   APP_NAME,
   CAT_API_KEY,
@@ -11,6 +10,8 @@ import {
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import EmptySearch from "./EmptySearch";
+import { LoadingSearch } from "./LoadingSearch";
+import { set } from "mongoose";
 
 const TEST_CAT_1 = "Test cat 1";
 const TEST_CAT_2 = "Cattest 2";
@@ -37,10 +38,13 @@ const TEST_URLS = [
   },
 ];
 
+const LOADING_STR = "LOADING";
+
 export default function Search() {
   const [matches, setMatches] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
   const params = useParams();
   const query = params.query;
 
@@ -60,18 +64,18 @@ export default function Search() {
 
   useEffect(() => {
     document.title = query + " | " + APP_NAME;
-
+    setIsLoading(true);
     async function getMatches() {
-      const matches = [];
+      const newMatches = [];
       for (const breed of breeds) {
         if (isMatch(query, breed["name"])) {
-          matches.push({
+          newMatches.push({
             name: breed["name"],
             id: breed["id"],
           });
         }
+        setMatches(newMatches);
       }
-      setMatches(matches);
     }
 
     if (query.toLowerCase() === "test") {
@@ -109,56 +113,34 @@ export default function Search() {
                     url: data[0]["url"],
                     name: match["name"],
                     id: match["id"],
-                  },
+                  }
             );
-          }),
+          })
         );
+
+        // if breeds are done loading
+        if (breeds.length !== 0) {
+          setIsLoading(false);
+        }
       }
 
       setImageUrls(imageUrls);
       return imageUrls;
     }
 
-    getMatchImageUrls();
-  }, [matches]);
-
-  // Return text where the query is highlighted
-  const HighlightedText = ({ text, highlight }) => {
-    if (!highlight.trim()) {
-      return <>{text}</>;
+    if (!matches.includes(LOADING_STR)) {
+      getMatchImageUrls();
     }
-
-    const regex = new RegExp(`(${highlight})`, "gi");
-    const parts = text.split(regex);
-
-    return (
-      <>
-        {parts.map((part, index) =>
-          regex.test(part) ? (
-            <span
-              key={index}
-              style={{
-                fontWeight: "bold",
-                backgroundColor: "yellow",
-                color: "black",
-              }}
-            >
-              {part}
-            </span>
-          ) : (
-            <span key={index}>{part}</span>
-          ),
-        )}
-      </>
-    );
-  };
+  }, [matches]);
 
   return (
     <>
       <Typography variant="h3" textAlign="center" sx={{ marginBottom: 5 }}>
         results for: {query}
       </Typography>
-      {matches.length === 0 ? (
+      {isLoading ? (
+        <LoadingSearch />
+      ) : matches.length === 0 ? (
         <EmptySearch />
       ) : (
         <Grid container spacing={3} sx={{ marginTop: 3, marginLeft: 2 }}>
@@ -191,7 +173,7 @@ export default function Search() {
                   alt={image["id"]}
                 />
                 <Typography variant="h5" textAlign="center" noWrap>
-                  <HighlightedText text={image["name"]} highlight={query} />
+                  {image["name"].toLowerCase()}
                 </Typography>
               </Link>
             </Grid>
