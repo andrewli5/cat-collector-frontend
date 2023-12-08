@@ -3,11 +3,12 @@ import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import ShopItem from "./ShopItem";
 import "../css/styles.css";
+import Coin from "../assets/coin_icon.png";
 
 export default function SmallShopItem({ icon, title, desc, price, filter=false }) {
 
   return (
-    <Grid container item spacing={2} mx={0} mr={1} mt={1} style={{paddingLeft: 0, backgroundColor: "#19121f"}}>
+    <Grid className={"shopItem smallHover"}container item spacing={2} mx={0} mr={1} mt={1} style={{paddingLeft: 0, backgroundColor: "#19121f"}}>
       <Grid item>
         {console.log(icon)}
         {
@@ -28,6 +29,7 @@ export default function SmallShopItem({ icon, title, desc, price, filter=false }
       </Grid>
       <Grid item xs={2}>
         {price}
+        <img style={{marginLeft: '5px'}}src={Coin} height={20} width={20} />
       </Grid>
     </Grid>
   );

@@ -1,88 +1,136 @@
-{ 
-    "skills": [
-        {
-            "icon": "gambling.png",
-            "title": "Luck of the Draw I",
-            "description": "Improved roll odds",
-            "price": "10000",
-            "filter": "270"
-        },
-        {
-            "icon": "gambling.png",
-            "title": "Luck of the Draw II",
-            "description": "Greatly improved roll odds",
-            "price": "20000"
-        },
-        {
-            "icon": "gambling.png",
-            "title": "Luck of the Draw III",
-            "description": "Drastically improved roll odds",
-            "price": "30000",
-            "filter": "70"
-        }
-    ],
-    "accessories": [
-        {
-            "icon": "necklace_icon.png",
-            "title": "Cat Collar",
-            "description": "Cat collar description",
-            "price": "10000",
-            "filter": "295"
-        },
-        {
-            "icon": "necklace_icon.png",
-            "title": "Amulet Coin",
-            "description": "Increases coins earned from duplicate cat rolls by X%.",
-            "price": "20000"
-        },
-        {
-            "icon": "necklace_icon.png",
-            "title": "Gambler's Pet Necklace",
-            "description": "Reduce cost of rolls by X%.",
-            "price": "30000",
-            "filter": "180"
-        },
-        {
-            "icon": "gem_icon.png",
-            "title": "Pretty Gem",
-            "description": "A pretty gem...",
-            "price": "10000"
-        },
-        {
-            "icon":"gem_icon.png",
-            "title": "Catseye",
-            "description": "A gem that's totally not just the original gem icon but colored orange!",
-            "price": "20000",
-            "filter": "180"
-        }
-    ],
-    "items": [
-        {
-            "icon": "fish_icon.png",
-            "title": "Select Wet Cat Food",
-            "description": "description",
-            "price": "500",
-            "filter": "270"
-        },
-        {
-            "icon": "fish_icon.png",
-            "title": "Choice Wet Cat Food",
-            "description": "description",
-            "price": "5000",
-            "filter": "180"
-        },
-        {
-            "icon": "fish_icon.png",
-            "title": "Premium Wet Cat Food",
-            "description": "description",
-            "price": "50000"
-        },
-        {
-            "icon": "egg_icon.png",
-            "title": "Lucky Egg",
-            "description": "an egg!!!!",
-            "price": "500",
-            "filter": "270"
-        }
-    ]
+{
+  "skills": [
+    {
+      "icon": "gambling.png",
+      "title": "Luck of the Draw I",
+      "description": "Improved roll odds",
+      "price": "10000",
+      "filter": "270"
+    },
+    {
+      "icon": "gambling.png",
+      "title": "Luck of the Draw II",
+      "description": "Greatly improved roll odds",
+      "price": "20000"
+    },
+    {
+      "icon": "gambling.png",
+      "title": "Luck of the Draw III",
+      "description": "Drastically improved roll odds",
+      "price": "30000",
+      "filter": "70"
+    }
+  ],
+  "accessories": [
+    {
+      "icon": "necklace_icon.png",
+      "title": "Cat Collar",
+      "description": "Cat collar description",
+      "price": "10000",
+      "filter": "295"
+    },
+    {
+      "icon": "necklace_icon.png",
+      "title": "Amulet Coin",
+      "description": "Increases coins earned from duplicate cat rolls by X%.",
+      "price": "20000"
+    },
+    {
+      "icon": "necklace_icon.png",
+      "title": "Gambler's Pet Necklace",
+      "description": "Reduce cost of rolls by X%.",
+      "price": "30000",
+      "filter": "180"
+    },
+    {
+      "icon": "gem_icon.png",
+      "title": "Pretty Gem",
+      "description": "A pretty gem...",
+      "price": "10000"
+    },
+    {
+      "icon": "gem_icon.png",
+      "title": "Catseye Gem",
+      "description": "A pretty gem...",
+      "price": "10000",
+      "filter": "180"
+    },
+    {
+      "icon": "warm_hat.png",
+      "title": "Warm Hat",
+      "description": "A warm hat.",
+      "price": "20000"
+    },
+    {
+      "icon": "frog_hat.png",
+      "title": "Frog Hat",
+      "description": "A frog hat.",
+      "price": "20000"
+    },
+    {
+      "icon": "witch_hat.png",
+      "title": "Witch Hat",
+      "description": "A witch hat.",
+      "price": "20000"
+    },
+    {
+      "icon": "santa_hat.png",
+      "title": "Santa Hat",
+      "description": "A santa hat.",
+      "price": "20000"
+    },
+    {
+      "icon": "yarn.png",
+      "title": "Ball of Yarn",
+      "description": "yummy",
+      "price": "500"
+    },
+    {
+      "icon": "egg_icon.png",
+      "title": "Lucky Egg",
+      "description": "an egg!!!!",
+      "price": "500",
+      "filter": "270"
+    }
+  ],
+  "items": [
+    {
+      "icon": "fish_icon.png",
+      "title": "Select Wet Cat Food",
+      "description": "description",
+      "price": "500",
+      "filter": "270"
+    },
+    {
+      "icon": "fish_icon.png",
+      "title": "Choice Wet Cat Food",
+      "description": "description",
+      "price": "5000",
+      "filter": "180"
+    },
+    {
+      "icon": "fish_icon.png",
+      "title": "Premium Wet Cat Food",
+      "description": "description",
+      "price": "50000"
+    },
+    {
+      "icon": "sushi.png",
+      "title": "Sushi",
+      "description": "yummy",
+      "price": "500"
+    },
+    {
+      "icon": "cherries.png",
+      "title": "Cherries",
+      "description": "yummy",
+      "price": "500"
+    },
+    {
+      "icon": "food_bowl.png",
+      "title": "Dry Food",
+      "description": "yummy",
+      "price": "500"
+    }
+  ]
 }
