@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import EmptySearch from "./EmptySearch";
 import { LoadingSearch } from "./LoadingSearch";
-import { set } from "mongoose";
 
 const TEST_CAT_1 = "Test cat 1";
 const TEST_CAT_2 = "Cattest 2";
