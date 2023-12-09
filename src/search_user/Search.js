@@ -1,21 +1,34 @@
 import React, { useState } from 'react';
 import { Typography } from "@mui/material";
-import { useHistory } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
 
-const Search = () => {
-    const [username, setUsername] = useState('');
-    const history = useHistory();
+const SearchUser = () => {
+    const [username, setUsername] = useState('search users...'); // Set the initial value here
+    const navigate = useNavigate();
 
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            history.push(`/profile/${username}`);
+    const handleKeyPress = async (event) => {
+        if (event.key === 'Enter') {}
+            const userExists = await checkUserExists(username);
+            if (userExists) {
+                navigate(`/profile/${username}`);
+            } else {
+                console.log('User does not exist');
+                // Handle user not found scenario
+            }
         }
     };
 
+    const checkUserExists = async (username) => {
+        // Make an API call or perform a database query to check if the user exists
+        // Return true if the user exists, false otherwise
+    };
+
+
     return (
-        <div>
-            <Typography variant="body1">search users...</Typography>
-            <textarea
+        <div style={{ height: '30px' }}>
+            <TextField 
+                size='small'
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
                 onKeyPress={handleKeyPress}
@@ -23,5 +36,6 @@ const Search = () => {
         </div>
     );
 };
-
 export default SearchUser;
+
+
