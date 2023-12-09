@@ -23,6 +23,7 @@ import { getCurrentUser, storeCurrentUser, updateUserCoins } from "../client";
 import Details from "../details/Details";
 import MyProfile from "../profile/MyProfile";
 import OtherProfile from "../profile/OtherProfile";
+import UserDNE from "../profile/UserDNE";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -150,6 +151,7 @@ export default function Home() {
         <Route path="/details/:id" element={<Details />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/profile/:username" element={<OtherProfile />} />
+        <Route path="/profile/dne" element={<UserDNE />} />
       </Routes>
     </Container>
   );

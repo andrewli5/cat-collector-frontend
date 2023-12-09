@@ -15,7 +15,7 @@ export default function OtherProfile() {
     getUserByUsername(username)
       .then((user) => {
         if (!user) {
-          navigate("/404"); 
+          navigate("/profile/dne");
           return;
         }
         setFirstName(user.firstName);
@@ -32,18 +32,12 @@ export default function OtherProfile() {
       <Typography variant="h5" color="grey">
         {"username " + " (" + username + ")"}
       </Typography>
-      <Grid container columnSpacing={3} sx={{ marginTop: 2 }}>
-        <Grid item xs={6}>
-          <Box textAlign="right">
-            <TextField size="small" label="first name" value={firstName} />
-          </Box>
-        </Grid>
-        <Grid item xs={6}>
-          <Box textAlign="left">
-            <TextField label="last name" size="small" value={lastName} />
-          </Box>
-        </Grid>
-      </Grid>
+      <Typography variant="h5" color="grey">
+        {"first name " + " (" + firstName + ")"}
+      </Typography>
+      <Typography variant="h5" color="grey">
+        {"last name " + " (" + lastName + ")"}
+      </Typography>
     </Box>
   );
 }
