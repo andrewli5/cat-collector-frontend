@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Button,
-  Container,
-  Snackbar,
-  Typography,
-} from "@mui/material";
+import { Alert, Button, Container, Snackbar, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
@@ -15,13 +9,14 @@ import EmptySearch from "../search/EmptySearch";
 import NavBar from "./NavBar";
 import Roll from "../roll/Roll";
 import Shop from "../shop/Shop";
-import Favorites from "../favorites/Favorites";
 import Admin from "../admin/Admin";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
 import { getCurrentUser, storeCurrentUser, updateUserCoins } from "../client";
 import Details from "../details/Details";
 import MyProfile from "../profile/MyProfile";
+import { importAll } from "../utils/importAll";
+import Favorites from "../favorites/Favorites";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -59,6 +54,10 @@ export default function Home() {
       setSuccess(true);
     }
   };
+
+  const catIcons = importAll(
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+  );
 
   return (
     <Container component="main" maxWidth="lg">
