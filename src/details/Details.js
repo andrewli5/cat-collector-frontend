@@ -7,7 +7,7 @@ import {
   CAT_API_URL_IMAGE,
   CAT_API_URL_IMAGES,
 } from "../constants";
-import { Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { importAll } from "../utils/importAll";
 import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
@@ -27,7 +27,7 @@ export default function Details() {
   const params = useParams();
   const id = params.id;
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var cats = [];
@@ -118,18 +118,34 @@ export default function Details() {
           sm={5}
           md={6}
         >
-          <img
-            src={imageUrls[imageIdx]}
-            width={IMAGE_SIZE}
-            height={IMAGE_SIZE}
-            style={{
-              objectFit: "cover",
-              objectPosition: "center",
-              borderRadius: "10px",
-              border: "2px solid white",
-            }}
-            alt={`display`}
-          />
+          {imageUrls.length === 0 ? (
+            <Box
+              sx={{
+                width: IMAGE_SIZE,
+                height: IMAGE_SIZE,
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <CircularProgress color="white" />
+            </Box>
+          ) : (
+            <img
+              src={imageUrls[imageIdx]}
+              width={IMAGE_SIZE}
+              height={IMAGE_SIZE}
+              style={{
+                objectFit: "cover",
+                objectPosition: "center",
+                borderRadius: "10px",
+                border: "2px solid white",
+              }}
+              alt={`display`}
+            />
+          )}
           <Grid
             width={IMAGE_SIZE}
             justifyContent={"center"}
