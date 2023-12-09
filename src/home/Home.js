@@ -55,10 +55,6 @@ export default function Home() {
     }
   };
 
-  const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
-  );
-
   return (
     <Container component="main" maxWidth="lg">
       <TopBar />
