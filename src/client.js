@@ -64,3 +64,8 @@ export const getCatsByUsername = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/ownerships/${username}`);
   return response.data;
 };
+
+export const getFavoritedCatsByUsername = async (username) => {
+  const response = await REQUEST.get(`${CATS_API}/favorites/${username}`);
+  return response.data;
+};

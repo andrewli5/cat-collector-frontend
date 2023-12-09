@@ -13,7 +13,7 @@ import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
 import "../css/styles.css";
 import { Button } from "@mui/material";
-import { getCurrentUser } from "../client";
+import { storeCurrentUser, getCurrentUser } from "../client";
 
 const IMAGE_SIZE = 400;
 
@@ -33,6 +33,11 @@ export default function Details() {
   var cats = [];
   if (getCurrentUser()) {
     cats = getCurrentUser().cats;
+  }
+
+  var favorites = [];
+  if (getCurrentUser()) {
+    favorites = getCurrentUser().favorites;
   }
 
   useEffect(() => {
@@ -67,6 +72,10 @@ export default function Details() {
       setOwned(true);
     }
 
+    if (favorites.includes(id)) {
+      setFavorite(true);
+    }
+
     getImageURLS();
     getBreedData();
   }, []);
@@ -97,9 +106,21 @@ export default function Details() {
     }
   }
 
-  function toggleIcon() {
-    setFavorite(!favorite);
-  }
+  const handleFavorite = () => {
+    if (!getCurrentUser()) {
+      setWarning(true);
+      return;
+    } else {
+      const favorites = getCurrentUser().favorites;
+      if (favorite) {
+        setFavorite(false);
+        storeCurrentUser({...getCurrentUser(), favorites: favorites.filter((e) => e !== id)});
+      } else {
+        setFavorite(true);
+        storeCurrentUser({...getCurrentUser(), favorites: [...favorites, id]});
+      }
+    }
+  };
 
   return (
     <div>
@@ -172,7 +193,7 @@ export default function Details() {
                 width={21}
                 height={21}
                 alt={`heart`}
-                onClick={toggleIcon}
+                onClick={handleFavorite}
               />
             </span>
             <span style={{ float: "right" }}>
