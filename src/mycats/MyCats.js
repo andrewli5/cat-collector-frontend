@@ -16,7 +16,7 @@ export default function MyCats({ favorites = false }) {
   if (getCurrentUser()) {
     cats = getCurrentUser().cats;
   }
-
+  
   useEffect(() => {
     document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
     if (!getCurrentUser()) {
@@ -37,7 +37,8 @@ export default function MyCats({ favorites = false }) {
     if (favorites && getCurrentUser()) {
       icons = Object.keys(catIcons).filter((catIcon) => {
         const currentBreed = catIconToBreedId(catIcon);
-        return getCurrentUser().favorites.includes(currentBreed);
+        const userFavorites = getCurrentUser().favorites;
+        return userFavorites.includes(currentBreed);
       });
     } else {
       icons = Object.keys(catIcons);

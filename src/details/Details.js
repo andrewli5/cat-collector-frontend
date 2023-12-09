@@ -14,6 +14,7 @@ import Star from "../assets/star_icon.png";
 import "../css/styles.css";
 import { Button } from "@mui/material";
 import { storeCurrentUser, getCurrentUser } from "../client";
+import * as client from "../client";
 
 const IMAGE_SIZE = 400;
 
@@ -27,7 +28,7 @@ export default function Details() {
   const params = useParams();
   const id = params.id;
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var cats = [];
@@ -106,18 +107,24 @@ export default function Details() {
     }
   }
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
     if (!getCurrentUser()) {
       setWarning(true);
       return;
     } else {
-      const favorites = getCurrentUser().favorites;
       if (favorite) {
         setFavorite(false);
-        storeCurrentUser({...getCurrentUser(), favorites: favorites.filter((e) => e !== id)});
+        await client.removeUserFavorites(getCurrentUser().username, id);
+        const newFavorites = getCurrentUser().favorites.filter((e) => e !== id);
+        const user = { ...getCurrentUser(), favorites: newFavorites };
+        storeCurrentUser(user);
       } else {
         setFavorite(true);
-        storeCurrentUser({...getCurrentUser(), favorites: [...favorites, id]});
+        await client.addUserFavorites(getCurrentUser().username, id);
+        const newFavorites = getCurrentUser().favorites;
+        newFavorites.push(id);
+        const user = { ...getCurrentUser(), favorites: newFavorites };
+        storeCurrentUser(user);
       }
     }
   };
