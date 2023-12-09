@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../client";
 
 const SearchUser = () => {
-    const [username, setUsername] = useState("search users...");
+    const [username, setUsername] = useState("find user...");
     const navigate = useNavigate();
     const handleKeyPress = async (event) => {
         
@@ -20,14 +20,19 @@ const SearchUser = () => {
     };
 
     const handleFocus = () => {
-        if ((username === "search users...") || (username === "user does not exist :(")) {
+        if ((username === "find user...") || (username === "user does not exist :(")) {
             setUsername("");
         }
     };
 
+    const textFieldWidth = (username.length * 10)  
+
     return (
-        <div style={{ height: "30px" }}>
+        <div>
             <TextField
+                sx={{
+                    border: "0",
+                }}
                 rows={1}
                 size="small"
                 value={username}
@@ -35,11 +40,14 @@ const SearchUser = () => {
                 onKeyPress={handleKeyPress}
                 onFocus={handleFocus}
                 type={"standard"}
+                margin="dense"
                 InputProps={{
                     style: {
-                        fontSize: "22px",
-                        border: "0px",
-                        fontColor: "gray",
+                        fontSize: "21px",
+                        color: "secondary",
+                        width: `${textFieldWidth}px`,
+                        minWidth: "120px",
+                        maxWidth: "300px",
                     },
                 }}
             />
