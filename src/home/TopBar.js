@@ -18,6 +18,7 @@ import * as client from "../client";
 import Link from "@mui/material/Link";
 import { useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
+import Logo from "../assets/main_icon.png";
 
 export default function TopBar() {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
@@ -60,6 +61,7 @@ export default function TopBar() {
 
   return (
     <Toolbar>
+      <img src={Logo} alt="logo" style={{width: 40, height: 40, marginRight: '10px' }} />
       <Typography variant="h3" noWrap>
         <Link style={{ color: "white", textDecoration: "none" }} href="/">
           {APP_NAME + "."}
