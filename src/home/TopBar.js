@@ -18,6 +18,7 @@ import * as client from "../client";
 import Link from "@mui/material/Link";
 import { useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
+import SearchUser from "../search_user/Search";
 
 export default function TopBar() {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
@@ -95,6 +96,7 @@ export default function TopBar() {
           />
         </Box>
       </Box>
+      <SearchUser />
       <Dialog
         onClose={() => setIsLogoutDialogOpen(false)}
         open={isLogoutDialogOpen}
