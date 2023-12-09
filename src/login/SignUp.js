@@ -23,7 +23,7 @@ export default function SignUp() {
       username: data.get("username"),
       password: data.get("password"),
       firstName: data.get("firstName"),
-      lastName: data.get("password"),
+      lastName: data.get("lastName"),
     };
 
     try {
