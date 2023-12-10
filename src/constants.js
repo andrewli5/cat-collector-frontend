@@ -92,6 +92,15 @@ export const RARITY_TO_COLOR = {
   E: "rgba(128, 0, 128, 1)",
   L: "rgba(255, 255, 0, 1)",
 };
+
+export const RARITY_TO_STRING = {
+  C: "Common",
+  U: "Uncommon",
+  R: "Rare",
+  E: "Epic",
+  L: "Legendary",
+};
+
 export const UPGRADES = {
   LUCK1: "Luck of the Draw I",
   LUCK2: "Luck of the Draw II",

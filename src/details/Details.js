@@ -6,8 +6,17 @@ import {
   CAT_API_URL_BREEDS,
   CAT_API_URL_IMAGE,
   CAT_API_URL_IMAGES,
+  RARITY_TO_COLOR,
+  RARITY_TO_STRING,
 } from "../constants";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Chip,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { importAll } from "../utils/importAll";
 import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
@@ -15,6 +24,8 @@ import "../css/styles.css";
 import { Button } from "@mui/material";
 import { storeCurrentUser, getCurrentUser } from "../client";
 import * as client from "../client";
+import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
+import { ALL_CAT_RARITIES } from "../client";
 
 const IMAGE_SIZE = 400;
 
@@ -27,8 +38,10 @@ export default function Details() {
   const [favorite, setFavorite] = useState(false);
   const params = useParams();
   const id = params.id;
+  const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === id)["rarity"];
+
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var cats = [];
@@ -136,7 +149,7 @@ export default function Details() {
         spacing={2}
         maxHeight="lg"
         maxWidth="lg"
-        sx={{ marginTop: 2 }}
+        sx={{ marginTop: "2px", marginBottom: "15px" }}
       >
         <Grid
           alignItems="center"
@@ -169,7 +182,7 @@ export default function Details() {
                 objectFit: "cover",
                 objectPosition: "center",
                 borderRadius: "10px",
-                border: "2px solid white",
+                border: `2px solid ${RARITY_TO_COLOR[rarity]}`,
               }}
               alt={`display`}
             />
@@ -193,9 +206,18 @@ export default function Details() {
           </Grid>
         </Grid>
         <Grid item xs={10} sm={8} md={6}>
-          <h1 style={{ margin: "0px", marginBottom: "20px" }}>
-            {" "}
+          <Typography variant="h3" sx={{ margin: "0px", marginBottom: "20px" }}>
             {breedData.name}
+            <Chip
+              icon={<StarRateRoundedIcon color={RARITY_TO_COLOR[rarity]}/>}
+              label={RARITY_TO_STRING[rarity]}
+              sx={{
+                color: RARITY_TO_COLOR[rarity],
+                border: `1px solid ${RARITY_TO_COLOR[rarity]}`,
+                marginLeft: '5px',
+              }}
+              variant="outlined"
+            />
             <span title="Owned">
               <img
                 className={
@@ -227,61 +249,74 @@ export default function Details() {
                 width={60}
                 height={60}
                 alt={`icon`}
-              />{" "}
+              />
             </span>
-          </h1>
-          <h3 style={{ margin: 0 }}> Rarity: </h3>
+          </Typography>
           <hr></hr>
-          <span className="detailTitle">Origin: </span>
-          <span className="detail"> {breedData.origin}</span>
+          <Typography variant="h5">
+            Origin:
+            <Box variant="div" className="detail">
+              {breedData.origin}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Weight:
+            <Box variant="div" className="detail">
+              {breedData.weight ? breedData.weight.imperial : ""} lbs{" "}
+            </Box>
+          </Typography>
           <br></br>
-          <span className="detailTitle">Weight: </span>
-          <span className="detail">
-            {breedData.weight ? breedData.weight.imperial : ""} lbs{" "}
-          </span>
-          <br></br>
-          <span className="detailTitle">Temperament: </span>
-          <span className="detail"> {breedData.temperament} </span>
-          <br></br>
-          <br></br>
-          <span className="detailTitle">Adaptability: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.adaptability)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <span className="detailTitle">Affection: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.affection_level)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <span className="detailTitle">Energy: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.energy_level)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <span className="detailTitle">Intelligence: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.intelligence)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <br></br>
-          <span style={{ fontSize: "19px" }}> {breedData.description} </span>
+          <Typography variant="h5">
+            Temperament:
+            <Box variant="div" className="detail">
+              {breedData.temperament}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Adaptability:
+            <Box className="detail" variant="div">
+              {owned
+                ? [...Array(breedData.adaptability)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Affection:
+            <Box variant="div" className="detail">
+              {owned
+                ? [...Array(breedData.affection_level)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Energy:{" "}
+            <Box variant="div" className="detail">
+              {" "}
+              {owned
+                ? [...Array(breedData.energy_level)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Intelligence:{" "}
+            <Box variant="div" className="detail">
+              {" "}
+              {owned
+                ? [...Array(breedData.intelligence)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography variant="h6" sx={{ marginTop: "20px" }}>
+            {breedData.description}
+          </Typography>
         </Grid>
       </Grid>
     </div>
