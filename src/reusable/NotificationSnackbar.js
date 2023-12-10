@@ -10,7 +10,7 @@ export default function NotificationSnackbar({
   return (
     <Snackbar
       open={open}
-      autoHideDuration={autoHideDuration || 5000}
+      autoHideDuration={autoHideDuration}
       onClose={() => setOpen(false)}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
     >
