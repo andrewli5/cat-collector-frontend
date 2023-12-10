@@ -32,11 +32,14 @@ export default function SignUp() {
       lastName: data.get("lastName"),
     };
 
+    console.log("original: " + userObj.username + ".");
+    console.log("trimmed: " + userObj.username.trim() + ".");
+
     if (
-      userObj.username.trim() === "" ||
-      userObj.password.trim() === "" ||
-      userObj.firstName.trim() === "" ||
-      userObj.lastName.trim() === ""
+      userObj.username.trim().length === 0 ||
+      userObj.password.trim().length === 0 ||
+      userObj.firstName.trim().length === 0 ||
+      userObj.lastName.trim().length === 0
     ) {
       setTimeout(() => {
         setError(true);
