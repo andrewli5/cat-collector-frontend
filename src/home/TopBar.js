@@ -16,7 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import * as client from "../client";
 import Link from "@mui/material/Link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
 import Logo from "../assets/main_icon.png";
 

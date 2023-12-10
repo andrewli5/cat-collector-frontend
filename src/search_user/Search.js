@@ -6,13 +6,13 @@ import { getUserByUsername } from "../client";
 
 const SearchUser = () => {
   const [username, setUsername] = useState("");
-  const [dne, setDne] = useState(false)
+  const [dne, setDne] = useState(false);
   const [found, setFound] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    if (e.key !== "Enter") { 
-      return 
+    if (e.key !== "Enter") {
+      return;
     }
     const userExists = await getUserByUsername(username);
     if (!userExists) {
@@ -46,7 +46,7 @@ const SearchUser = () => {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert severity="success" sx={{ width: "100%" }}>
-         {"user found!"}
+          {"user found!"}
         </Alert>
       </Snackbar>
       <TextField

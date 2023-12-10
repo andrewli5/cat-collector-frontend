@@ -37,7 +37,7 @@ export const signIn = async (credentials) => {
 export const getUserDataByUsername = async (username) => {
   const response = await REQUEST.get(`${USERS_API}/${username}/data`);
   return response.data;
-}
+};
 
 export const signUpAsUser = async (user) => {
   const response = await REQUEST.post(`${USERS_API}/signup/user`, user);

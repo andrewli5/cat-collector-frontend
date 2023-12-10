@@ -84,7 +84,7 @@ export default function ShopItem({ title, items }) {
                 <Typography
                   variant="h6"
                   display="inline"
-                  nowrap
+                  noWrap
                   style={{ paddingRight: "0px", display: "inline-block" }}
                 >
                   {item.price}

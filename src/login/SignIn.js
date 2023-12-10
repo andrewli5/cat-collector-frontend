@@ -35,7 +35,7 @@ export default function SignIn() {
       password: data.get("password"),
     });
     const userData = await client.getUserDataByUsername(user.username);
-    client.storeCurrentUser({...user, userData});
+    client.storeCurrentUser({ ...userData });
     navigate("/");
   };
 
