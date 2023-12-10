@@ -43,7 +43,6 @@ export default function MyCats({ favorites = false }) {
     } else {
       icons = Object.keys(catIcons);
     }
-    console.log("icons to display: ", icons);
     return icons;
   }
 

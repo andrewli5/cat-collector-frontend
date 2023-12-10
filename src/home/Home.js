@@ -15,10 +15,8 @@ import coinIcon from "../assets/coin_icon.png";
 import { getCurrentUser, storeCurrentUser, updateUserCoins } from "../client";
 import Details from "../details/Details";
 import MyProfile from "../profile/MyProfile";
-import { importAll } from "../utils/importAll";
 import Favorites from "../favorites/Favorites";
 import OtherProfile from "../profile/OtherProfile";
-import UserDNE from "../profile/UserDNE";
 
 export default function Home() {
   const path = useLocation().pathname;
