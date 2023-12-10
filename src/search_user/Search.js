@@ -49,7 +49,6 @@ const SearchUser = () => {
          {"user found!"}
         </Alert>
       </Snackbar>
-
       <TextField
         sx={{
           border: "0",

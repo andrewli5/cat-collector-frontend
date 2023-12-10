@@ -34,10 +34,8 @@ export default function SignIn() {
       username: data.get("username"),
       password: data.get("password"),
     });
-    const cats = await client.getCatsByUsername(user.username);
-    const favorites = await client.getFavoritedCatsByUsername(user.username);
-    const userWithCats = { ...user, cats: cats, favorites: favorites };
-    client.storeCurrentUser(userWithCats);
+    const userData = await client.getUserDataByUsername(user.username);
+    client.storeCurrentUser({...user, userData});
     navigate("/");
   };
 
