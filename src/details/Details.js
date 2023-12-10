@@ -6,6 +6,7 @@ import {
   CAT_API_URL_BREEDS,
   CAT_API_URL_IMAGE,
   CAT_API_URL_IMAGES,
+  RARITY_TO_COLOR,
 } from "../constants";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { importAll } from "../utils/importAll";
@@ -15,6 +16,8 @@ import "../css/styles.css";
 import { Button } from "@mui/material";
 import { storeCurrentUser, getCurrentUser } from "../client";
 import * as client from "../client";
+import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
+import { ALL_CAT_RARITIES } from "../client";
 
 const IMAGE_SIZE = 400;
 
@@ -27,8 +30,10 @@ export default function Details() {
   const [favorite, setFavorite] = useState(false);
   const params = useParams();
   const id = params.id;
+  const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === id)["rarity"];
+
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var cats = [];
@@ -193,7 +198,7 @@ export default function Details() {
           </Grid>
         </Grid>
         <Grid item xs={10} sm={8} md={6}>
-          <h1 style={{ margin: "0px", marginBottom: "20px" }}>
+          <Typography variant="h3" sx={{ margin: "0px", marginBottom: "20px" }}>
             {" "}
             {breedData.name}
             <span title="Owned">
@@ -227,61 +232,86 @@ export default function Details() {
                 width={60}
                 height={60}
                 alt={`icon`}
-              />{" "}
+              />
             </span>
-          </h1>
-          <h3 style={{ margin: 0 }}> Rarity: </h3>
+          </Typography>
+          <Typography variant="h5">
+            Rarity:
+            <Box variant="div" className="detail">
+              {owned ? (
+                <Typography color={RARITY_TO_COLOR[rarity]}>
+                  <StarRateRoundedIcon /> {"(" + rarity + ")"}
+                </Typography>
+              ) : (
+                "?????"
+              )}
+            </Box>
+          </Typography>
           <hr></hr>
-          <span className="detailTitle">Origin: </span>
-          <span className="detail"> {breedData.origin}</span>
+          <Typography variant="h5">
+            Origin:
+            <Box variant="div" className="detail">
+              {breedData.origin}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Weight:
+            <Box variant="div" className="detail">
+              {breedData.weight ? breedData.weight.imperial : ""} lbs{" "}
+            </Box>
+          </Typography>
           <br></br>
-          <span className="detailTitle">Weight: </span>
-          <span className="detail">
-            {breedData.weight ? breedData.weight.imperial : ""} lbs{" "}
-          </span>
-          <br></br>
-          <span className="detailTitle">Temperament: </span>
-          <span className="detail"> {breedData.temperament} </span>
-          <br></br>
-          <br></br>
-          <span className="detailTitle">Adaptability: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.adaptability)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <span className="detailTitle">Affection: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.affection_level)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <span className="detailTitle">Energy: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.energy_level)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <span className="detailTitle">Intelligence: </span>
-          <span className="detail">
-            {owned
-              ? [...Array(breedData.intelligence)].map((e, i) => (
-                  <img src={Star} />
-                ))
-              : "?????"}
-          </span>
-          <br></br>
-          <br></br>
-          <span style={{ fontSize: "19px" }}> {breedData.description} </span>
+          <Typography variant="h5">
+            Temperament:
+            <Box variant="div" className="detail">
+              {breedData.temperament}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Adaptability:
+            <Box className="detail" variant="div">
+              {owned
+                ? [...Array(breedData.adaptability)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Affection:
+            <Box variant="div" className="detail">
+              {owned
+                ? [...Array(breedData.affection_level)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Energy:{" "}
+            <Box variant="div" className="detail">
+              {" "}
+              {owned
+                ? [...Array(breedData.energy_level)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography variant="h5">
+            Intelligence:{" "}
+            <Box variant="div" className="detail">
+              {" "}
+              {owned
+                ? [...Array(breedData.intelligence)].map((e, i) => (
+                    <img src={Star} />
+                  ))
+                : "?????"}
+            </Box>
+          </Typography>
+          <Typography style={{ fontSize: "19px" }}>
+            {breedData.description}
+          </Typography>
         </Grid>
       </Grid>
     </div>
