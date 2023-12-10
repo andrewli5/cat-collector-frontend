@@ -2,84 +2,59 @@ import { Toolbar, Button, Typography } from "@mui/material";
 import { getCurrentUser } from "../client";
 import coinIcon from "../assets/coin_icon.png";
 import { useLocation } from "react-router-dom";
-import SearchUser from "../search_user/Search";
 
+const NAV_ITEMS = [
+  { name: "my cats", path: "/mycats" },
+  { name: "roll", path: "/roll" },
+  { name: "shop", path: "/shop" },
+  { name: "favorites", path: "/favorites" },
+  { name: "my profile", path: "/myprofile" },
+  { name: "admin tools", path: "/admin" },
+];
 export default function NavBar({ coins }) {
-  const path = useLocation().pathname;
+  const pathName = useLocation().pathname;
 
   return (
     <Toolbar>
       <Button
-        color={path === "/" ? "quintenary" : "white"}
+        color={pathName === "/" ? "quintenary" : "white"}
         href="/"
         variant="text"
       >
-        home
+        <Typography noWrap variant="h5">
+          home
+        </Typography>
       </Button>
-      <Typography variant="h4" noWrap>
-        {"|"}
-      </Typography>
-      <Button
-        color={path.includes("mycats") ? "quintenary" : "white"}
-        href="/mycats"
-        variant="text"
-      >
-        my cats
-      </Button>
-      <Typography variant="h4" noWrap>
-        {"|"}
-      </Typography>
-      <Button
-        color={path.includes("roll") ? "quintenary" : "white"}
-        href="/roll"
-      >
-        roll
-      </Button>
-      <Typography variant="h4" noWrap>
-        {"|"}
-      </Typography>
-      <Button
-        color={path.includes("shop") ? "quintenary" : "white"}
-        href="/shop"
-      >
-        shop
-      </Button>
-      <Typography variant="h4" noWrap>
-        {"|"}
-      </Typography>
-      <Button
-        color={path.includes("favorites") ? "quintenary" : "white"}
-        href="/favorites"
-      >
-        favorites
-      </Button>
-      <Typography variant="h4" noWrap>
-        {"|"}
-      </Typography>
-      <Button
-        color={path.includes("myprofile") ? "quintenary" : "white"}
-        href="/myprofile"
-      >
-        my profile
-      </Button>
-      <Typography variant="h4" noWrap>
-        {"|"}
-      </Typography>
-      <SearchUser />
+      {NAV_ITEMS.map(({ name, path }) => {
+        if (
+          name === "admin tools" &&
+          getCurrentUser() &&
+          getCurrentUser().role !== "ADMIN"
+        ) {
+          return null;
+        }
+        return (
+          <>
+            <Typography variant="h4" noWrap>
+              {"|"}
+            </Typography>
+            <Button
+              color={
+                pathName.includes(path.substring(1, path.length))
+                  ? "quintenary"
+                  : "white"
+              }
+              href={path}
+              variant="text"
+            >
+              <Typography variant="h5" noWrap>
+                {name}
+              </Typography>
+            </Button>
+          </>
+        );
+      })}
 
-      {getCurrentUser() && getCurrentUser().role === "ADMIN" && (
-        <>
-          <Typography variant="h4" noWrap>
-            {"|"}
-          </Typography>
-          <Button
-            color={path.includes("admin") ? "quintenary" : "red"}
-            href="/admin"
-          >
-            admin tools
-          </Button>
-        </>
-      )}
       <div
         style={{
           marginLeft: "auto",
