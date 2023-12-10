@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Typography } from "@mui/material";
+import { Alert, Pagination, Snackbar, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 import {
   APP_NAME,
@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import EmptySearch from "./EmptySearch";
 import { LoadingSearch } from "./LoadingSearch";
+import * as React from "react";
 
 const TEST_CAT_1 = "Test cat 1";
 const TEST_CAT_2 = "Cattest 2";
@@ -38,36 +39,56 @@ const TEST_URLS = [
 ];
 
 const LOADING_STR = "LOADING";
+const RESULTS_PER_PAGE = 8;
 
 export default function Search() {
   const [matches, setMatches] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [warning, setWarning] = useState(false);
+
   const params = useParams();
   const query = params.query;
+
+  const handleChange = (event, value) => {
+    setIsLoading(true);
+    setPage(value);
+  };
 
   const isMatch = (query, breed) => {
     return breed.toLowerCase().includes(query.toLowerCase());
   };
 
   useEffect(() => {
-    async function getBreeds() {
-      const response = await fetch(CAT_API_URL_BREEDS, {
-        headers: {
-          "x-api-key": CAT_API_KEY,
-        },
-      });
-      const data = await response.json();
-      setBreeds(data);
+    setIsLoading(true);
+    async function getBreeds(retries = 2) {
+      try {
+        const response = await fetch(CAT_API_URL_BREEDS, {
+          headers: {
+            "x-api-key": CAT_API_KEY,
+          },
+        });
+        const data = await response.json();
+        setBreeds(data);
+      } catch (error) {
+        if (retries > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          getBreeds((retries -= 1));
+        } else {
+          setWarning(true);
+          setIsLoading(false);
+        }
+      }
     }
 
     getBreeds();
   }, []);
 
   useEffect(() => {
-    document.title = query + " | " + APP_NAME;
     setIsLoading(true);
+    document.title = query + " | " + APP_NAME;
     async function getMatches() {
       const newMatches = [];
       for (const breed of breeds) {
@@ -77,110 +98,161 @@ export default function Search() {
             id: breed["id"],
           });
         }
-        setMatches(newMatches);
       }
+      setMatches(newMatches);
     }
 
     if (query.toLowerCase() === "test") {
       setMatches(TEST_MATCHES);
       setBreeds(TEST_MATCHES);
-    } else {
+    } else if (breeds.length !== 0) {
       getMatches();
     }
   }, [query, breeds]);
 
   useEffect(() => {
-    async function getMatchImageUrls() {
+    async function getMatchImageUrls(retries = 2) {
       var imageUrls = [];
-
       if (query.toLowerCase() === "test") {
         imageUrls = TEST_URLS;
       } else {
-        await Promise.all(
-          matches.map(async (match) => {
-            const response = await fetch(CAT_API_URL_IMAGE + match["id"], {
-              headers: {
-                "x-api-key": CAT_API_KEY,
-              },
-            });
-            const data = await response.json();
-            imageUrls.push(
-              data.length === 0 || data[0]["url"] === undefined
-                ? {
-                    url: "",
-                    name: match["name"],
-                    id: match["id"],
-                  }
-                : {
-                    url: data[0]["url"],
-                    name: match["name"],
-                    id: match["id"],
+        try {
+          await Promise.all(
+            matches
+              .slice(
+                RESULTS_PER_PAGE * page - RESULTS_PER_PAGE,
+                RESULTS_PER_PAGE * page
+              )
+              .map(async (match) => {
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                const response = await fetch(CAT_API_URL_IMAGE + match["id"], {
+                  headers: {
+                    "x-api-key": CAT_API_KEY,
                   },
-            );
-          }),
-        );
-
-        // if breeds are done loading
-        if (breeds.length !== 0) {
-          setIsLoading(false);
+                });
+                const data = await response.json();
+                imageUrls.push(
+                  data.length === 0 || data[0]["url"] === undefined
+                    ? {
+                        url: "",
+                        name: match["name"],
+                        id: match["id"],
+                      }
+                    : {
+                        url: data[0]["url"],
+                        name: match["name"],
+                        id: match["id"],
+                      }
+                );
+              })
+          );
+        } catch (error) {
+          if (retries > 0) {
+            setIsLoading(true);
+            await new Promise((resolve) => setTimeout(resolve, 3000));
+            getMatchImageUrls((retries -= 1));
+          } else {
+            setWarning(true);
+            setIsLoading(false);
+          }
         }
       }
-
       setImageUrls(imageUrls);
+      setIsLoading(false);
       return imageUrls;
     }
 
-    if (!matches.includes(LOADING_STR)) {
+    if (!matches.includes(LOADING_STR) && breeds.length !== 0) {
       getMatchImageUrls();
     }
-  }, [matches]);
+  }, [matches, page]);
 
   return (
     <>
-      <Typography variant="h3" textAlign="center" sx={{ marginBottom: 5 }}>
+      <Typography variant="h4" textAlign="center">
         results for: {query}
       </Typography>
       {isLoading ? (
-        <LoadingSearch />
-      ) : matches.length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "50vh",
+          }}
+        >
+          <LoadingSearch />
+        </div>
+      ) : matches.length === 0 && !isLoading && !warning ? (
         <EmptySearch />
-      ) : (
-        <Grid container spacing={3} sx={{ marginTop: 3, marginLeft: 2 }}>
-          {imageUrls.map((image, index) => (
-            <Grid
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              item
-              xs={6}
-              sm={4}
-              md={2.5}
-              key={index}
-              sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
-            >
-              <Link
-                style={{ color: "white", textDecoration: "none" }}
-                href={`/details/${image["id"]}`}
+      ) : !warning ? (
+        <>
+          {" "}
+          <Grid container spacing={2} sx={{ marginTop: 1, marginLeft: 2 }}>
+            {imageUrls.map((image, index) => (
+              <Grid
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                item
+                xs={6}
+                sm={4}
+                md={2.5}
+                key={index}
+                sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
               >
-                <img
-                  src={image["url"]}
-                  width={"200px"}
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center",
-                    height: "200px",
-                    borderRadius: "10px",
-                    border: "2px solid white",
-                  }}
-                  alt={image["id"]}
-                />
-                <Typography variant="h5" textAlign="center" noWrap>
-                  {image["name"].toLowerCase()}
-                </Typography>
-              </Link>
-            </Grid>
-          ))}
-        </Grid>
+                <Link
+                  style={{ color: "white", textDecoration: "none" }}
+                  href={`/details/${image["id"]}`}
+                >
+                  <img
+                    src={image["url"]}
+                    width={"200px"}
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      height: "200px",
+                      borderRadius: "10px",
+                      border: "2px solid white",
+                    }}
+                    alt={image["id"]}
+                  />
+                  <Typography variant="h5" textAlign="center" noWrap>
+                    {image["name"].toLowerCase()}
+                  </Typography>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+          {
+            <Pagination
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: 3,
+              }}
+              size="large"
+              count={Math.ceil(matches.length / RESULTS_PER_PAGE)}
+              page={page}
+              onChange={handleChange}
+            ></Pagination>
+          }
+        </>
+      ) : (
+        <Snackbar
+          open={warning}
+          autoHideDuration={5000}
+          onClose={() => setWarning(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={() => setWarning(false)}
+            severity="warning"
+            sx={{ width: "100%" }}
+          >
+            An error occurred during the search. Please try again later.
+          </Alert>
+        </Snackbar>
       )}
     </>
   );
