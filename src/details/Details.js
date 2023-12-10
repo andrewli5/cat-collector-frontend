@@ -38,10 +38,12 @@ export default function Details() {
   const [favorite, setFavorite] = useState(false);
   const params = useParams();
   const breedId = params.id;
-  const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === breedId)["rarity"];
+  const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === breedId)[
+    "rarity"
+  ];
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var cats = [];
@@ -128,7 +130,9 @@ export default function Details() {
       if (favorite) {
         setFavorite(false);
         await client.removeUserFavorites(getCurrentUser()._id, breedId);
-        const newFavorites = getCurrentUser().favorites.filter((e) => e !== breedId);
+        const newFavorites = getCurrentUser().favorites.filter(
+          (e) => e !== breedId,
+        );
         const user = { ...getCurrentUser(), favorites: newFavorites };
         storeCurrentUser(user);
       } else {
@@ -209,12 +213,12 @@ export default function Details() {
           <Typography variant="h3" sx={{ margin: "0px", marginBottom: "20px" }}>
             {breedData.name}
             <Chip
-              icon={<StarRateRoundedIcon color={RARITY_TO_COLOR[rarity]}/>}
+              icon={<StarRateRoundedIcon color={RARITY_TO_COLOR[rarity]} />}
               label={RARITY_TO_STRING[rarity]}
               sx={{
                 color: RARITY_TO_COLOR[rarity],
                 border: `1px solid ${RARITY_TO_COLOR[rarity]}`,
-                marginLeft: '5px',
+                marginLeft: "5px",
               }}
               variant="outlined"
             />

@@ -12,7 +12,11 @@ import Shop from "../shop/Shop";
 import Admin from "../admin/Admin";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
-import { getCurrentUser, storeCurrentUser, updateUserCoinsByUserId } from "../client";
+import {
+  getCurrentUser,
+  storeCurrentUser,
+  updateUserCoinsByUserId,
+} from "../client";
 import Details from "../details/Details";
 import MyProfile from "../profile/MyProfile";
 import Favorites from "../favorites/Favorites";
