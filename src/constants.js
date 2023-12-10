@@ -92,18 +92,26 @@ export const RARITY_TO_COLOR = {
   E: "rgba(128, 0, 128, 1)",
   L: "rgba(255, 255, 0, 1)",
 };
-export const UPGRADES = {
-  LUCK1: 'Luck of the Draw I',
-  LUCK2: 'Luck of the Draw II',
-  LUCK3: 'Luck of the Draw III',
-  CRIT1: 'Purrfect Rolls I',
-  CRIT2: 'Purrfect Rolls II',
-  CRIT3: 'Purrfect Rolls III',
-  COIN1: 'Coin Collector I',
-  COIN2: 'Coin Collector II',
-  COIN3: 'Coin Collector III',
-  COST1: 'Cost Reduction I',
-  COST2: 'Cost Reduction II',
-  COST3: 'Cost Reduction III',
+
+export const RARITY_TO_STRING = {
+  C: "Common",
+  U: "Uncommon",
+  R: "Rare",
+  E: "Epic",
+  L: "Legendary",
 };
 
+export const UPGRADES = {
+  LUCK1: "Luck of the Draw I",
+  LUCK2: "Luck of the Draw II",
+  LUCK3: "Luck of the Draw III",
+  CRIT1: "Purrfect Rolls I",
+  CRIT2: "Purrfect Rolls II",
+  CRIT3: "Purrfect Rolls III",
+  COIN1: "Coin Collector I",
+  COIN2: "Coin Collector II",
+  COIN3: "Coin Collector III",
+  COST1: "Cost Reduction I",
+  COST2: "Cost Reduction II",
+  COST3: "Cost Reduction III",
+};

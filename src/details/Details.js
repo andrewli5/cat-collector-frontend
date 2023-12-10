@@ -7,8 +7,16 @@ import {
   CAT_API_URL_IMAGE,
   CAT_API_URL_IMAGES,
   RARITY_TO_COLOR,
+  RARITY_TO_STRING,
 } from "../constants";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Chip,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { importAll } from "../utils/importAll";
 import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
@@ -141,7 +149,7 @@ export default function Details() {
         spacing={2}
         maxHeight="lg"
         maxWidth="lg"
-        sx={{ marginTop: 2 }}
+        sx={{ marginTop: "2px", marginBottom: "15px" }}
       >
         <Grid
           alignItems="center"
@@ -174,7 +182,7 @@ export default function Details() {
                 objectFit: "cover",
                 objectPosition: "center",
                 borderRadius: "10px",
-                border: "2px solid white",
+                border: `2px solid ${RARITY_TO_COLOR[rarity]}`,
               }}
               alt={`display`}
             />
@@ -199,8 +207,17 @@ export default function Details() {
         </Grid>
         <Grid item xs={10} sm={8} md={6}>
           <Typography variant="h3" sx={{ margin: "0px", marginBottom: "20px" }}>
-            {" "}
             {breedData.name}
+            <Chip
+              icon={<StarRateRoundedIcon color={RARITY_TO_COLOR[rarity]}/>}
+              label={RARITY_TO_STRING[rarity]}
+              sx={{
+                color: RARITY_TO_COLOR[rarity],
+                border: `1px solid ${RARITY_TO_COLOR[rarity]}`,
+                marginLeft: '5px',
+              }}
+              variant="outlined"
+            />
             <span title="Owned">
               <img
                 className={
@@ -234,18 +251,6 @@ export default function Details() {
                 alt={`icon`}
               />
             </span>
-          </Typography>
-          <Typography variant="h5">
-            Rarity:
-            <Box variant="div" className="detail">
-              {owned ? (
-                <Typography color={RARITY_TO_COLOR[rarity]}>
-                  <StarRateRoundedIcon /> {"(" + rarity + ")"}
-                </Typography>
-              ) : (
-                "?????"
-              )}
-            </Box>
           </Typography>
           <hr></hr>
           <Typography variant="h5">
@@ -309,7 +314,7 @@ export default function Details() {
                 : "?????"}
             </Box>
           </Typography>
-          <Typography style={{ fontSize: "19px" }}>
+          <Typography variant="h6" sx={{ marginTop: "20px" }}>
             {breedData.description}
           </Typography>
         </Grid>
