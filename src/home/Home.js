@@ -18,6 +18,7 @@ import MyProfile from "../profile/MyProfile";
 import Favorites from "../favorites/Favorites";
 import OtherProfile from "../profile/OtherProfile";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import SearchUsers from "../searchUsers/SearchUsers";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -130,7 +131,7 @@ export default function Home() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/details/:id" element={<Details />} />
         <Route path="/myprofile" element={<MyProfile />} />
-        <Route path="/profile/:username" element={<OtherProfile />} />
+        <Route path="/find-users/*" element={<SearchUsers />} />
       </Routes>
     </Container>
   );

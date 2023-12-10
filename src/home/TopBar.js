@@ -4,9 +4,7 @@ import Typography from "@mui/material/Typography";
 import {
   Button,
   Grid,
-  TextField,
   InputAdornment,
-  styled,
   Dialog,
   DialogTitle,
 } from "@mui/material";
@@ -19,24 +17,11 @@ import Link from "@mui/material/Link";
 import { useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
 import Logo from "../assets/main_icon.png";
+import ExpandingTextField from "../reusable/ExpandingTextField";
 
 export default function TopBar() {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
-
-  const SearchField = styled(
-    TextField,
-    {},
-  )(() => ({
-    "& .MuiOutlinedInput-root": {
-      width: "40%",
-      transition: "width ease-in-out 0.3s",
-      minWidth: "200px",
-      "&.Mui-focused": {
-        width: "90%",
-      },
-    },
-  }));
 
   const handleSearch = (event) => {
     const query = event.currentTarget.search.value;
@@ -86,7 +71,7 @@ export default function TopBar() {
           noValidate
           sx={{ width: "100%" }}
         >
-          <SearchField
+          <ExpandingTextField
             size="small"
             id="search"
             label="search cats..."
