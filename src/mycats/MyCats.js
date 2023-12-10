@@ -1,32 +1,23 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Typography, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
-import { APP_NAME, CATICON_TO_BREEDID, RARITY_TO_COLOR } from "../constants";
+import { APP_NAME, CATICON_TO_BREEDID, RARITY_TO_COLOR, RARITY_TO_VALUE } from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate } from "react-router-dom";
 import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 
-export default function MyCats({ favorites = false, filter = false }) {
-  const navigate = useNavigate();
+export default function MyCats({ favorites = false }) {
+  const [catIcons, setCatIcons] = useState([]);
 
-  const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
-  );
+  const navigate = useNavigate();
 
   var cats = [];
   if (getCurrentUser()) {
     cats = getCurrentUser().cats;
   }
-
-  useEffect(() => {
-    document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
-    if (!getCurrentUser()) {
-      navigate("/signin");
-    }
-  }, []);
 
   if (!getCurrentUser()) {
     return null;
@@ -50,46 +41,103 @@ export default function MyCats({ favorites = false, filter = false }) {
     return icons;
   }
 
-  function comp(b1, b2, filter) {
-    // sort by name, rarity, or ownership
-    const b1Name = b1.replace(".png", "").replace("_", " ");
-    const b2Name = b2.replace(".png", "").replace("_", " ");
-    const b1Rarity = ALL_CAT_RARITIES["data"].find(
-      (b) => b.breed === CATICON_TO_BREEDID[b1]
-    )["rarity"];
-    const b2Rarity = ALL_CAT_RARITIES["data"].find(
-      (b) => b.breed === CATICON_TO_BREEDID[b2]
-    )["rarity"];
-    const b1Owned = cats.includes(CATICON_TO_BREEDID[b1]);
-    const b2Owned = cats.includes(CATICON_TO_BREEDID[b2]);
+  const resetFunction = () => {
+    const icons = importAll(
+      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    );
+    setCatIcons(icons);
+  };
 
-    if (filter === "name") {
-      if (b1Name < b2Name) {
-        return -1;
-      }
-      if (b1Name > b2Name) {
-        return 1;
-      }
-      return 0;
-    } else if (filter === "rarity") {
-      if (b1Rarity < b2Rarity) {
-        return -1;
-      }
-      if (b1Rarity > b2Rarity) {
-        return 1;
-      }
-      return 0;
-    } else if (filter === "owned") {
-      if (b1Owned < b2Owned) {
-        return -1;
-      }
-      if (b1Owned > b2Owned) {
-        return 1;
-      }
-      return 0;
+  const reverseFunction = () => {
+    const reversedIcons = {};
+    Object.keys(catIcons).reverse().forEach((icon) => {
+      reversedIcons[icon] = catIcons[icon];
+    });
+    setCatIcons(reversedIcons);
+  }
+
+  const sortFunction = (term) => {
+   // sort CatIcons by name, rarity, or ownership
+    if (term === "name") {
+      const sortedIcons = Object.keys(catIcons).sort();
+      const sortedIconsObj = {};
+      sortedIcons.forEach((icon) => {
+        sortedIconsObj[icon] = catIcons[icon];
+      });
+      setCatIcons(sortedIconsObj);
+    } else if (term === "rarity") {
+      const sortedIcons = Object.keys(catIcons).sort((b1, b2) => {
+        const b1Rarity = ALL_CAT_RARITIES["data"].find(
+          (b) => b.breed === CATICON_TO_BREEDID[b1]
+        )["rarity"];
+        const b2Rarity = ALL_CAT_RARITIES["data"].find(
+          (b) => b.breed === CATICON_TO_BREEDID[b2]
+        )["rarity"];
+        return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
+      });
+      const sortedIconsObj = {};
+      sortedIcons.forEach((icon) => {
+        sortedIconsObj[icon] = catIcons[icon];
+      });
+      setCatIcons(sortedIconsObj);
+    } else if (term === "owned") {
+      const sortedIcons = Object.keys(catIcons).sort((a, b) => {
+        const aOwned = cats.includes(CATICON_TO_BREEDID[a]);
+        const bOwned = cats.includes(CATICON_TO_BREEDID[b]);
+        return aOwned - bOwned;
+      });
+      const sortedIconsObj = {};
+      sortedIcons.forEach((icon) => {
+        sortedIconsObj[icon] = catIcons[icon];
+      });
+      setCatIcons(sortedIconsObj);
+    }
+  };
+
+  const filterFunction = (term) => {
+    // filter catIcons by name, rarity, or ownership
+    if (term === "name") {
+      const filteredIcons = Object.keys(catIcons).filter((icon) => {
+        const name = icon.replace(".png", "").replace("_", " ");
+        return name.toLowerCase().includes(term.toLowerCase());
+      });
+      const filteredIconsObj = {};
+      filteredIcons.forEach((icon) => {
+        filteredIconsObj[icon] = catIcons[icon];
+      });
+      setCatIcons(filteredIconsObj);
+    } else if (term === "rarity") {
+      const filteredIcons = Object.keys(catIcons).filter((icon) => {
+        const rarity = ALL_CAT_RARITIES["data"].find(
+          (b) => b.breed === CATICON_TO_BREEDID[icon]
+        )["rarity"];
+        return rarity.toLowerCase().includes(term.toLowerCase());
+      });
+      const filteredIconsObj = {};
+      filteredIcons.forEach((icon) => {
+        filteredIconsObj[icon] = catIcons[icon];
+      });
+      setCatIcons(filteredIconsObj);
+    } else if (term === "owned") {
+      const filteredIcons = Object.keys(catIcons).filter((icon) => {
+        return cats.includes(CATICON_TO_BREEDID[icon]);
+      });
+      const filteredIconsObj = {};
+      filteredIcons.forEach((icon) => {
+        filteredIconsObj[icon] = catIcons[icon];
+      });
+      setCatIcons(filteredIconsObj);
+    }
+  }
+
+  useEffect(() => {
+    document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
+    if (!getCurrentUser()) {
+      navigate("/signin");
     }
 
-  }
+    resetFunction();
+  }, []);
 
   return (
     <>
@@ -103,59 +151,57 @@ export default function MyCats({ favorites = false, filter = false }) {
             ")"}
       </Typography>
       <Typography variant="h4" color="white" textAlign="center">
-        <MyCatsSort />
+        <MyCatsSort sortFunction={sortFunction} reverseFunction={reverseFunction} resetFunction={resetFunction} />
       </Typography>
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
-        {getIconsToDisplay()
-          .sort((b1, b2) => filter ? comp(b1, b2, filter) : 0)
-          .map((catIcon, index) => {
-            const rarity = ALL_CAT_RARITIES["data"].find(
-              (b) => b.breed === CATICON_TO_BREEDID[catIcon]
-            )["rarity"];
-            const name = catIcon.replace(".png", "").replace("_", " ");
-            var textColor = "grey";
-            var imageStyle = {
-              WebkitFilter: "grayscale(100%)",
-              border: "1px solid gray",
-            };
-            if (cats.includes(CATICON_TO_BREEDID[catIcon])) {
-              imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
-              textColor = "white";
-            }
-            return (
-              <Grid
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                item
-                xs={2}
-                key={index}
-                sx={{ marginBottom: 3 }}
-                className="hover"
+        {getIconsToDisplay().map((catIcon, index) => {
+          const rarity = ALL_CAT_RARITIES["data"].find(
+            (b) => b.breed === CATICON_TO_BREEDID[catIcon]
+          )["rarity"];
+          const name = catIcon.replace(".png", "").replace("_", " ");
+          var textColor = "grey";
+          var imageStyle = {
+            WebkitFilter: "grayscale(100%)",
+            border: "1px solid gray",
+          };
+          if (cats.includes(CATICON_TO_BREEDID[catIcon])) {
+            imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
+            textColor = "white";
+          }
+          return (
+            <Grid
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              item
+              xs={2}
+              key={index}
+              sx={{ marginBottom: 3 }}
+              className="hover"
+            >
+              <Link
+                textAlign="center"
+                underline="none"
+                color="inherit"
+                href={`/details/${catIconToBreedId(catIcon)}`}
               >
-                <Link
-                  textAlign="center"
-                  underline="none"
-                  color="inherit"
-                  href={`/details/${catIconToBreedId(catIcon)}`}
-                >
-                  <img
-                    style={{
-                      ...imageStyle,
-                      borderRadius: "5px",
-                    }}
-                    src={catIcons[catIcon]}
-                    width={60}
-                    height={60}
-                    alt={catIcon}
-                  />
-                  <Typography variant="h5" color={textColor} textAlign="center">
-                    {name}
-                  </Typography>
-                </Link>
-              </Grid>
-            );
-          })}
+                <img
+                  style={{
+                    ...imageStyle,
+                    borderRadius: "5px",
+                  }}
+                  src={catIcons[catIcon]}
+                  width={60}
+                  height={60}
+                  alt={catIcon}
+                />
+                <Typography variant="h5" color={textColor} textAlign="center">
+                  {name}
+                </Typography>
+              </Link>
+            </Grid>
+          );
+        })}
       </Grid>
     </>
   );

@@ -1,21 +1,28 @@
 import { useState } from "react";
-import { Typography, Link, Box, Button, Menu, MenuItem } from "@mui/material";
+import { Typography, Link, Box, Button, Menu, MenuItem, TextField } from "@mui/material";
 import "../css/styles.css";
 import SortIcon from "@mui/icons-material/Sort";
 import { styled, alpha } from "@mui/material/styles";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
+import FilterListIcon from '@mui/icons-material/FilterList';
 
-export function MyCatsSort() {
+export function MyCatsSort({ sortFunction, filterFunction, reverseFunction, resetFunction }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
+  const [sortText, setSortText] = useState("");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleFilter = (filter) => {
-    console.log(filter);
+  const handleSort = (sort) => {
+    sortFunction(sort);
+    setSortText(sort);
     setAnchorEl(null);
+  };
+
+  const handleReverse = () => {
+    reverseFunction();
   };
 
   const handleClose = () => {
@@ -64,8 +71,8 @@ export function MyCatsSort() {
     <Box alignItems={"center"} display={"flex"} justifyContent={"right"}>
       <Button
         height={50}
-        id="filter-button"
-        aria-controls={menuOpen ? "filter-menu" : undefined}
+        id="sort-button"
+        aria-controls={menuOpen ? "sort-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={menuOpen ? "true" : undefined}
         variant="contained"
@@ -83,38 +90,35 @@ export function MyCatsSort() {
           />
         }
       >
-        Sort
+        {sortText !== "" ? sortText : "Sort"}
       </Button>
       <StyledMenu
         MenuListProps={{
-          "aria-labelledby": "filter-button",
+          "aria-labelledby": "sort-button",
         }}
         anchorEl={anchorEl}
-        id="filter-menu"
-        aria-labelledby="filter-button"
+        id="sort-menu"
+        aria-labelledby="sort-button"
         open={menuOpen}
         onClose={handleClose}
       >
-        <MenuItem
-          variant="contained"
-          onClick={() => handleFilter("name")}
-        >
+        <MenuItem variant="contained" onClick={() => handleSort("name")}>
           {"Name"}
         </MenuItem>
-        <MenuItem
-          variant="contained"
-          onClick={() => handleFilter("rarity")}
-        >
+        <MenuItem variant="contained" onClick={() => handleSort("rarity")}>
           {"Rarity"}
         </MenuItem>
-        <MenuItem
-          variant="contained"
-          onClick={() => handleFilter("owned")}
-        >
+        <MenuItem variant="contained" onClick={() => handleSort("owned")}>
           {"Owned"}
         </MenuItem>
       </StyledMenu>
-      <Button sx={{ marginLeft: "8px" }} variant="contained" color="primary">
+      <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+      <Button
+        onClick={handleReverse}
+        sx={{ marginLeft: "8px" }}
+        variant="contained"
+        color="primary"
+      >
         <SyncAltIcon sx={{ color: "white", transform: "rotate(90deg)" }} />
       </Button>
     </Box>

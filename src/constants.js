@@ -101,6 +101,14 @@ export const RARITY_TO_STRING = {
   L: "Legendary",
 };
 
+export const RARITY_TO_VALUE = {
+  C: 1,
+  U: 2,
+  R: 3,
+  E: 4,
+  L: 5,
+};
+
 export const UPGRADES = {
   LUCK1: "Luck of the Draw I",
   LUCK2: "Luck of the Draw II",
