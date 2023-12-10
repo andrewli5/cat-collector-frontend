@@ -1,63 +1,67 @@
 import React, { useState } from "react";
-import { Typography } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../client";
 
 const SearchUser = () => {
-  const [username, setUsername] = useState("find user...");
+  const [username, setUsername] = useState("");
+  const [dne, setDne] = useState(false)
+  const [found, setFound] = useState(false);
   const navigate = useNavigate();
-  let disable_click = false;
-  const handleKeyPress = async (event) => {
-    if (event.key === "Enter") {
-      disable_click = true;
-      const userExists = await getUserByUsername(username);
-      if (userExists === null) {
-        setUsername("user does not exist :(");
-      } else {
-        navigate(`/profile/${username}`);
-        setUsername("user found!");
-      }
-    }
-  };
 
-  const handleFocus = () => {
-    if (
-      username === "find user..." ||
-      username === "user does not exist :(" ||
-      username === "user found!"
-    ) {
+  const handleSubmit = async (e) => {
+    if (e.key !== "Enter") { 
+      return 
+    }
+    const userExists = await getUserByUsername(username);
+    if (!userExists) {
+      setDne(true);
+    } else {
+      setFound(true);
+      navigate(`/profile/${username}`);
       setUsername("");
+      setTimeout(() => {
+        document.activeElement.blur();
+      }, 0);
     }
   };
 
-  const textFieldWidth = username.length * 10;
   return (
-    <div>
+    <Box sx={{ width: 300 }}>
+      <Snackbar
+        open={dne}
+        autoHideDuration={3000}
+        onClose={() => setDne(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="error" sx={{ width: "100%" }}>
+          {"user does not exist :("}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={found}
+        autoHideDuration={3000}
+        onClose={() => setFound(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+         {"user found!"}
+        </Alert>
+      </Snackbar>
+
       <TextField
         sx={{
           border: "0",
         }}
-        rows={1}
         size="small"
+        label="find user..."
         value={username}
-        onChange={(event) => setUsername(event.target.value)}
-        onKeyPress={handleKeyPress}
-        onFocus={handleFocus}
-        type={"standard"}
+        onChange={(e) => setUsername(e.target.value)}
+        onKeyDown={handleSubmit}
         margin="dense"
-        InputProps={{
-          style: {
-            fontSize: "21px",
-            color: "secondary",
-            width: `${textFieldWidth}px`,
-            minWidth: "120px",
-            maxWidth: "300px",
-          },
-          disabled: disable_click,
-        }}
       />
-    </div>
+    </Box>
   );
 };
 export default SearchUser;

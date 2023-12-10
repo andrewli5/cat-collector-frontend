@@ -81,6 +81,7 @@ export default function TopBar() {
       >
         <Box
           component="form"
+          action="search"
           onSubmit={handleSearch}
           noValidate
           sx={{ width: "100%" }}
