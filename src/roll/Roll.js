@@ -22,7 +22,7 @@ export default function Roll({ setCoins }) {
   const [displayResults, setDisplayResults] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   const handleRoll = async () => {
@@ -69,20 +69,28 @@ export default function Roll({ setCoins }) {
           {rollResults["duplicate"] ? "You rolled:" : "New cat unlocked!"}
         </Typography>
         <Typography variant="h4" color={RARITY_TO_COLOR[rollResults["rarity"]]}>
-          {BREEDID_TO_CATICON[rollResults["breed"]]
-            .replace(".png", "")
-            .replace("_", " ")}
-          !{" "}
-          <StarRateRoundedIcon
-            fontSize="large"
-            sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
-          />
+          <Box alignItems={"center"} display={"flex"}>
+            {BREEDID_TO_CATICON[rollResults["breed"]]
+              .replace(".png", "")
+              .replace("_", " ")}
+            !{" "}
+            <StarRateRoundedIcon
+              fontSize="large"
+              sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
+            />
+          </Box>
         </Typography>
         {rollResults["duplicate"] ? (
-          <>
-            Received: <img src={Coin} width={20} height={20} />x
-            {rollResults["addedCoins"]}{" "}
-          </>
+          <Box alignItems={"center"} display={"flex"}>
+            Received:{" "}
+            <img
+              style={{ marginLeft: "5px" }}
+              src={Coin}
+              width={20}
+              height={20}
+            />
+            x{rollResults["addedCoins"]}{" "}
+          </Box>
         ) : (
           <></>
         )}
@@ -92,7 +100,26 @@ export default function Roll({ setCoins }) {
 
   return (
     <>
-      {" "}
+      <Box
+        component="div"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h3">Roll for cats!</Typography>
+      </Box>
+      <Box
+        component="div"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h5">
+          Discover new cats & receive coins for rolling owned cats
+        </Typography>
+      </Box>
       {!_.isEmpty(rollResults) ? (
         <NotificationSnackbar
           open={displayResults}

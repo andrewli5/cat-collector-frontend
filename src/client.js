@@ -104,4 +104,4 @@ export const removeUserFavorites = async (username, favorite) => {
 export const rollCatForUser = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/roll/${username}`);
   return response.data;
-}
+};
