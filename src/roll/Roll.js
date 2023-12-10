@@ -14,7 +14,7 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Coin from "../assets/coin_icon.png";
 
 const ROLL_COST = 500;
-const IMAGE_SIZE = '40vh';
+const IMAGE_SIZE = "40vh";
 export default function Roll({ setCoins }) {
   const [isRolling, setIsRolling] = useState(false);
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
@@ -22,7 +22,7 @@ export default function Roll({ setCoins }) {
   const [displayResults, setDisplayResults] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   const handleRoll = async () => {
@@ -149,24 +149,24 @@ export default function Roll({ setCoins }) {
           marginTop: "20px",
         }}
       >
-          <Box
-            component="img"
-            alt="cat-display"
-            src={displayedIcon}
-            sx={{
-              height: IMAGE_SIZE,
-              width: IMAGE_SIZE,
-              margin: "40px",
-              boxShadow: `0px 0px 90px ${
-                isRolling || rollResults["breed"] === undefined
-                  ? "rgba(128, 128, 128, 1)"
-                  : RARITY_TO_COLOR[rollResults["rarity"]]
-              }`,
-              borderRadius: "140px",
-              transition: "all 0.3s ease",
-            }}
-          />
-        </Box>
+        <Box
+          component="img"
+          alt="cat-display"
+          src={displayedIcon}
+          sx={{
+            height: IMAGE_SIZE,
+            width: IMAGE_SIZE,
+            margin: "40px",
+            boxShadow: `0px 0px 90px ${
+              isRolling || rollResults["breed"] === undefined
+                ? "rgba(128, 128, 128, 1)"
+                : RARITY_TO_COLOR[rollResults["rarity"]]
+            }`,
+            borderRadius: "140px",
+            transition: "all 0.3s ease",
+          }}
+        />
+      </Box>
       <Button
         disabled={isRolling ? true : false}
         variant="contained"

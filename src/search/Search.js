@@ -121,7 +121,7 @@ export default function Search() {
             matches
               .slice(
                 RESULTS_PER_PAGE * page - RESULTS_PER_PAGE,
-                RESULTS_PER_PAGE * page
+                RESULTS_PER_PAGE * page,
               )
               .map(async (match) => {
                 await new Promise((resolve) => setTimeout(resolve, 500));
@@ -142,9 +142,9 @@ export default function Search() {
                         url: data[0]["url"],
                         name: match["name"],
                         id: match["id"],
-                      }
+                      },
                 );
-              })
+              }),
           );
         } catch (error) {
           if (retries > 0) {

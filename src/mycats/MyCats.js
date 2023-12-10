@@ -137,7 +137,7 @@ export default function MyCats({ favorites = false }) {
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
         {getIconsToDisplay().map((catIcon, index) => {
           const rarity = ALL_CAT_RARITIES["data"].find(
-            (b) => b.breed === CATICON_TO_BREEDID[catIcon]
+            (b) => b.breed === CATICON_TO_BREEDID[catIcon],
           )["rarity"];
           const name = catIcon.replace(".png", "").replace("_", " ");
           var textColor = "grey";

@@ -60,13 +60,16 @@ export const signOut = async () => {
   return response.data;
 };
 
-export const findAllUsers = async () => {
+export const getAllUsers = async () => {
   const response = await REQUEST.get(`${USERS_API}`);
   return response.data;
 };
 
 export const updateUserByUserId = async (userId, updatedFields) => {
   const response = await REQUEST.put(`${USERS_API}/${userId}`, updatedFields);
+  if (userId === getCurrentUser()._id) {
+    storeCurrentUser({ ...getCurrentUser(), ...updatedFields });
+  }
   return response.data;
 };
 
