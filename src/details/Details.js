@@ -28,7 +28,7 @@ export default function Details() {
   const params = useParams();
   const id = params.id;
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var cats = [];

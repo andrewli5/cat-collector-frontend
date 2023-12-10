@@ -71,7 +71,6 @@ export const getUserByUsername = async (username) => {
   }
 };
 
-
 // CATS API FUNCTIONS
 export const getCatsByUsername = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/ownerships/${username}`);
@@ -91,6 +90,8 @@ export const addUserFavorites = async (username, favorite) => {
 };
 
 export const removeUserFavorites = async (username, favorite) => {
-  const response = await REQUEST.delete(`${CATS_API}/favorites/${username}/${favorite}`);
+  const response = await REQUEST.delete(
+    `${CATS_API}/favorites/${username}/${favorite}`,
+  );
   return response.data;
 };

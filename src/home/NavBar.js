@@ -68,9 +68,9 @@ export default function NavBar({ coins }) {
         {"|"}
       </Typography>
       <Button>
-          <SearchUser />
+        <SearchUser />
       </Button>
-      
+
       {getCurrentUser() && getCurrentUser().role === "ADMIN" && (
         <>
           <Typography variant="h4" noWrap>
