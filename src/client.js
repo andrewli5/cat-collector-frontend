@@ -59,6 +59,19 @@ export const updateUser = async (username, updatedFields) => {
   return response.data;
 };
 
+export const getUserByUsername = async (username) => {
+  try {
+    const response = await REQUEST.get(`${USERS_API}/${username}`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+};
+
+
 // CATS API FUNCTIONS
 export const getCatsByUsername = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/ownerships/${username}`);
