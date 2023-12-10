@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Pagination, Typography } from "@mui/material";
+import { Alert, Pagination, Snackbar, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 import {
   APP_NAME,
@@ -63,7 +63,7 @@ export default function Search() {
 
   useEffect(() => {
     setIsLoading(true);
-    async function getBreeds(retries = 3) {
+    async function getBreeds(retries = 2) {
       try {
         const response = await fetch(CAT_API_URL_BREEDS, {
           headers: {
@@ -76,8 +76,10 @@ export default function Search() {
         if (retries > 0) {
           await new Promise((resolve) => setTimeout(resolve, 2000));
           getBreeds((retries -= 1));
+        } else {
+          setWarning(true);
+          setIsLoading(false);
         }
-        setWarning(true);
       }
     }
 
@@ -109,7 +111,7 @@ export default function Search() {
   }, [query, breeds]);
 
   useEffect(() => {
-    async function getMatchImageUrls(retries = 3) {
+    async function getMatchImageUrls(retries = 2) {
       var imageUrls = [];
       if (query.toLowerCase() === "test") {
         imageUrls = TEST_URLS;
@@ -151,6 +153,7 @@ export default function Search() {
             getMatchImageUrls((retries -= 1));
           } else {
             setWarning(true);
+            setIsLoading(false);
           }
         }
       }
@@ -180,24 +183,9 @@ export default function Search() {
         >
           <LoadingSearch />
         </div>
-      ) : matches.length === 0 && !isLoading ? (
+      ) : matches.length === 0 && !isLoading && !warning ? (
         <EmptySearch />
-      ) : warning ? (
-        <Snackbar
-          open={warning}
-          autoHideDuration={2000}
-          onClose={() => setWarning(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert
-            onClose={() => setWarning(false)}
-            severity="warning"
-            sx={{ width: "100%" }}
-          >
-            An error occurred during the search. Please try again later.
-          </Alert>
-        </Snackbar>
-      ) : (
+      ) : !warning ? (
         <>
           {" "}
           <Grid container spacing={2} sx={{ marginTop: 1, marginLeft: 2 }}>
@@ -250,6 +238,21 @@ export default function Search() {
             ></Pagination>
           }
         </>
+      ) : (
+        <Snackbar
+          open={warning}
+          autoHideDuration={5000}
+          onClose={() => setWarning(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={() => setWarning(false)}
+            severity="warning"
+            sx={{ width: "100%" }}
+          >
+            An error occurred during the search. Please try again later.
+          </Alert>
+        </Snackbar>
       )}
     </>
   );
