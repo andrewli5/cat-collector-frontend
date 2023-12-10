@@ -93,7 +93,7 @@ export default function MyCats({ favorites = false, filter = false }) {
 
   return (
     <>
-      <Typography variant="h4" color="white" textAlign="center">
+      <Typography variant="h3" color="white" textAlign="center">
         {favorites
           ? "my favorites"
           : "my cats (" +

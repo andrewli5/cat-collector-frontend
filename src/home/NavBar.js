@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { name: "shop", path: "/shop" },
   { name: "favorites", path: "/favorites" },
   { name: "my profile", path: "/myprofile" },
+  { name: "find users", path: "/find-users" },
   { name: "admin tools", path: "/admin" },
 ];
 export default function NavBar({ coins }) {

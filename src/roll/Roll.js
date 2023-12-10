@@ -118,7 +118,7 @@ export default function Roll({ setCoins }) {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h3">Roll for cats!</Typography>
+        <Typography variant="h3">roll for cats!</Typography>
       </Box>
       <Box
         component="div"
@@ -190,7 +190,7 @@ export default function Roll({ setCoins }) {
           "Rolling..."
         ) : (
           <>
-            Roll for{" "}
+            roll for{" "}
             <img
               style={{ marginLeft: "5px" }}
               src={Coin}
