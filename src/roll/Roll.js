@@ -6,7 +6,7 @@ import Dice from "../assets/dice.png";
 import { importAll } from "../utils/importAll";
 import { useState } from "react";
 import * as client from "../client";
-import { getCurrentUser } from "../client";
+import { storeCurrentUser, getCurrentUser } from "../client";
 import { BREEDID_TO_CATICON, RARITY_TO_COLOR } from "../constants";
 import _ from "lodash";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
@@ -29,6 +29,13 @@ export default function Roll({ setCoins }) {
     setIsRolling(true);
     const results = await client.rollCatForUser(getCurrentUser().username);
     setRollResults(results);
+    // update locally
+    const user = {
+      ...getCurrentUser(),
+      cats: [...getCurrentUser().cats, results["breed"]],
+    };
+    storeCurrentUser(user);
+
     // {breed: 'toyg', rarity: 'R', duplicate: false, addedCoins: 0}
 
     const rolledCatBreedId = results["breed"];
