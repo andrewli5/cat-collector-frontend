@@ -7,26 +7,27 @@ import { getUserByUsername } from "../client";
 const SearchUser = () => {
     const [username, setUsername] = useState("find user...");
     const navigate = useNavigate();
+    let disable_click = false
     const handleKeyPress = async (event) => {
-        
         if (event.key === "Enter") {
+            disable_click = true;
             const userExists = await getUserByUsername(username);
             if (userExists === null) {
                 setUsername("user does not exist :(");
             } else {
                 navigate(`/profile/${username}`);
+                setUsername("user found!");
             }
         }
     };
 
     const handleFocus = () => {
-        if ((username === "find user...") || (username === "user does not exist :(")) {
+        if ((username === "find user...") || (username === "user does not exist :(") || (username === "user found!")) {
             setUsername("");
         }
     };
 
     const textFieldWidth = (username.length * 10)  
-
     return (
         <div>
             <TextField
@@ -49,9 +50,10 @@ const SearchUser = () => {
                         minWidth: "120px",
                         maxWidth: "300px",
                     },
+                    disabled: disable_click 
                 }}
             />
         </div>
     );
-};
-export default SearchUser;
+    };
+    export default SearchUser;
