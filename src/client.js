@@ -77,3 +77,20 @@ export const getCatsByUsername = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/ownerships/${username}`);
   return response.data;
 };
+
+export const getFavoritedCatsByUsername = async (username) => {
+  const response = await REQUEST.get(`${CATS_API}/favorites/${username}`);
+  return response.data;
+};
+
+export const addUserFavorites = async (username, favorite) => {
+  const response = await REQUEST.post(`${CATS_API}/favorites/${username}`, {
+    favorite,
+  });
+  return response.data;
+};
+
+export const removeUserFavorites = async (username, favorite) => {
+  const response = await REQUEST.delete(`${CATS_API}/favorites/${username}/${favorite}`);
+  return response.data;
+};
