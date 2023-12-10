@@ -43,7 +43,7 @@ export default function Search() {
   const [matches, setMatches] = useState([]);
   const [breeds, setBreeds] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
   const params = useParams();
   const query = params.query;
 
@@ -115,9 +115,9 @@ export default function Search() {
                     url: data[0]["url"],
                     name: match["name"],
                     id: match["id"],
-                  }
+                  },
             );
-          })
+          }),
         );
 
         // if breeds are done loading

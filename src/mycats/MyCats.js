@@ -10,13 +10,13 @@ import { importAll } from "../utils/importAll";
 export default function MyCats({ favorites = false }) {
   const navigate = useNavigate();
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
   var cats = [];
   if (getCurrentUser()) {
     cats = getCurrentUser().cats;
   }
-  
+
   useEffect(() => {
     document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
     if (!getCurrentUser()) {
@@ -43,7 +43,6 @@ export default function MyCats({ favorites = false }) {
     } else {
       icons = Object.keys(catIcons);
     }
-    console.log("icons to display: ", icons);
     return icons;
   }
 

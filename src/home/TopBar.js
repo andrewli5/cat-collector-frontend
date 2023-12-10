@@ -61,7 +61,11 @@ export default function TopBar() {
 
   return (
     <Toolbar>
-      <img src={Logo} alt="logo" style={{width: 40, height: 40, marginRight: '10px' }} />
+      <img
+        src={Logo}
+        alt="logo"
+        style={{ width: 40, height: 40, marginRight: "10px" }}
+      />
       <Typography variant="h3" noWrap>
         <Link style={{ color: "white", textDecoration: "none" }} href="/">
           {APP_NAME + "."}
