@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, Snackbar, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import CatSilhouette from "../assets/unknown_cat.png";
@@ -72,11 +72,15 @@ export default function Roll({ setCoins }) {
   function getRollResultsMessage() {
     return (
       <>
-        <Typography variant="h4" color={"white"}>
-          {rollResults["duplicate"] ? "You rolled:" : "New cat unlocked!"}
+        <Typography variant="h4" color={"white"} textAlign="center">
+          {rollResults["duplicate"] ? "you rolled:" : "new cat unlocked!"}
         </Typography>
-        <Typography variant="h4" color={RARITY_TO_COLOR[rollResults["rarity"]]}>
-          <Box alignItems={"center"} display={"flex"}>
+        <Typography
+          variant="h4"
+          textAlign="center"
+          color={RARITY_TO_COLOR[rollResults["rarity"]]}
+        >
+          <Box alignItems={"center"} display={"flex"} justifyContent={"center"}>
             {BREEDID_TO_CATICON[rollResults["breed"]]
               .replace(".png", "")
               .replace("_", " ")}
@@ -88,8 +92,8 @@ export default function Roll({ setCoins }) {
           </Box>
         </Typography>
         {rollResults["duplicate"] ? (
-          <Box alignItems={"center"} display={"flex"}>
-            Received:{" "}
+          <Box alignItems={"center"} display={"flex"} textAlign="center">
+            {"duplicate, received:  "}
             <img
               style={{ marginLeft: "5px" }}
               src={Coin}
@@ -131,7 +135,6 @@ export default function Roll({ setCoins }) {
         <NotificationSnackbar
           open={displayResults}
           setOpen={setDisplayResults}
-          severity="success"
           message={getRollResultsMessage()}
         />
       ) : (
@@ -146,22 +149,24 @@ export default function Roll({ setCoins }) {
           marginTop: "20px",
         }}
       >
-        <Box
-          component="img"
-          alt="cat-display"
-          src={displayedIcon}
-          sx={{
-            height: IMAGE_SIZE,
-            width: IMAGE_SIZE,
-            outline: `5px solid ${
-              isRolling || rollResults["breed"] === undefined
-                ? "white"
-                : RARITY_TO_COLOR[rollResults["rarity"]]
-            }`,
-            borderRadius: "5px",
-          }}
-        />
-      </Box>
+          <Box
+            component="img"
+            alt="cat-display"
+            src={displayedIcon}
+            sx={{
+              height: IMAGE_SIZE,
+              width: IMAGE_SIZE,
+              margin: "40px",
+              boxShadow: `0px 0px 90px ${
+                isRolling || rollResults["breed"] === undefined
+                  ? "rgba(128, 128, 128, 1)"
+                  : RARITY_TO_COLOR[rollResults["rarity"]]
+              }`,
+              borderRadius: "140px",
+              transition: "all 0.3s ease",
+            }}
+          />
+        </Box>
       <Button
         disabled={isRolling ? true : false}
         variant="contained"
