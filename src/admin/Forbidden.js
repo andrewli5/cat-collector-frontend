@@ -1,5 +1,12 @@
 import { Typography, Button } from "@mui/material";
+import { useEffect } from "react";
+import { APP_NAME } from "../constants";
+
 export default function Forbidden() {
+  useEffect(() => {
+    document.title = "forbidden | " + APP_NAME;
+  }, []);
+
   return (
     <div style={{ textAlign: "center" }}>
       <Typography

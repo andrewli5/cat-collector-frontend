@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import OtherProfile from "../profile/OtherProfile";
+import { APP_NAME } from "../constants";
 
 
 export default function SearchUsers() {
@@ -12,6 +13,10 @@ export default function SearchUsers() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "find users | " + APP_NAME;
+  }, []);
 
   const handleSubmit = async (e) => {
     if (e.key !== "Enter") {

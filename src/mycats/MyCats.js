@@ -19,7 +19,7 @@ export default function MyCats({ favorites = false }) {
   }
 
   useEffect(() => {
-    document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
+    document.title = (favorites ? "favorites" : "my cats") + " | " + APP_NAME;
     if (!getCurrentUser()) {
       navigate("/signin");
     }
