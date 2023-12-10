@@ -12,7 +12,7 @@ import Shop from "../shop/Shop";
 import Admin from "../admin/Admin";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
-import { getCurrentUser, storeCurrentUser, updateUserCoins } from "../client";
+import { getCurrentUser, storeCurrentUser, updateUserCoinsByUserId } from "../client";
 import Details from "../details/Details";
 import MyProfile from "../profile/MyProfile";
 import Favorites from "../favorites/Favorites";
@@ -50,7 +50,7 @@ export default function Home() {
       setWarning(true);
       return;
     }
-    const response = await updateUserCoins(getCurrentUser().username, coins);
+    const response = await updateUserCoinsByUserId(getCurrentUser()._id, coins);
     if (response.acknowledged) {
       setSuccess(true);
     }

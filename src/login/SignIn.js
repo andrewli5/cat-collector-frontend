@@ -42,7 +42,7 @@ export default function SignIn() {
       username: data.get("username"),
       password: data.get("password"),
     });
-    const userData = await client.getUserDataByUsername(user.username);
+    const userData = await client.getUserDataByUserId(user._id);
     client.storeCurrentUser({ ...userData });
     setSuccess(true);
     setTimeout(() => {

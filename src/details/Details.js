@@ -26,7 +26,7 @@ export default function Details() {
   const [owned, setOwned] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const params = useParams();
-  const id = params.id;
+  const breedId = params.id;
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
@@ -49,13 +49,13 @@ export default function Details() {
         },
       });
       const data = await response.json();
-      const currentBreed = data.find((breed) => breed.id === id);
+      const currentBreed = data.find((breed) => breed.id === breedId);
       setBreedData(currentBreed);
     }
 
     async function getImageURLS() {
       const urls = [];
-      const response = await fetch(CAT_API_URL_IMAGES.replace("{}", id), {
+      const response = await fetch(CAT_API_URL_IMAGES.replace("{}", breedId), {
         headers: {
           "x-api-key": CAT_API_KEY,
         },
@@ -69,11 +69,11 @@ export default function Details() {
       setImageUrls(urls);
     }
 
-    if (cats.includes(id)) {
+    if (cats.includes(breedId)) {
       setOwned(true);
     }
 
-    if (favorites.includes(id)) {
+    if (favorites.includes(breedId)) {
       setFavorite(true);
     }
 
@@ -114,15 +114,15 @@ export default function Details() {
     } else {
       if (favorite) {
         setFavorite(false);
-        await client.removeUserFavorites(getCurrentUser().username, id);
-        const newFavorites = getCurrentUser().favorites.filter((e) => e !== id);
+        await client.removeUserFavorites(getCurrentUser()._id, breedId);
+        const newFavorites = getCurrentUser().favorites.filter((e) => e !== breedId);
         const user = { ...getCurrentUser(), favorites: newFavorites };
         storeCurrentUser(user);
       } else {
         setFavorite(true);
-        await client.addUserFavorites(getCurrentUser().username, id);
+        await client.addUserFavorites(getCurrentUser()._id, breedId);
         const newFavorites = getCurrentUser().favorites;
-        newFavorites.push(id);
+        newFavorites.push(breedId);
         const user = { ...getCurrentUser(), favorites: newFavorites };
         storeCurrentUser(user);
       }

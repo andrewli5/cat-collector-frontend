@@ -20,9 +20,8 @@ export default function MyProfile() {
     const updatedUser = { ...user, ...updatedFields };
     try {
       setLoading(true);
-      const _ = await client.updateUser(user.username, {
+      const _ = await client.updateUserByUserId(user._id, {
         ...updatedFields,
-        from_username: user.username,
       });
       storeCurrentUser(updatedUser);
       setSuccess(true);

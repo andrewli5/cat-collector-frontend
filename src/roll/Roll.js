@@ -27,7 +27,7 @@ export default function Roll({ setCoins }) {
 
   const handleRoll = async () => {
     setIsRolling(true);
-    const results = await client.rollCatForUser(getCurrentUser().username);
+    const results = await client.rollCatForUser(getCurrentUser()._id);
     setRollResults(results);
     // update locally
     const user = {

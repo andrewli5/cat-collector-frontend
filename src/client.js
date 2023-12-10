@@ -22,8 +22,9 @@ export const clearBrowserStorage = () => {
 };
 
 // USERS API FUNCTIONS
-export const updateUserCoins = async (username, coins) => {
-  const response = await REQUEST.put(`${USERS_API}/${username}/coins`, {
+export const updateUserCoinsByUserId = async (userId, coins) => {
+  console.log(`${USERS_API}/${userId}/coins`, coins);
+  const response = await REQUEST.put(`${USERS_API}/${userId}/coins`, {
     coins: coins,
   });
   return response.data;
@@ -34,8 +35,8 @@ export const signIn = async (credentials) => {
   return response.data;
 };
 
-export const getUserDataByUsername = async (username) => {
-  const response = await REQUEST.get(`${USERS_API}/${username}/data`);
+export const getUserDataByUserId = async (userId) => {
+  const response = await REQUEST.get(`${USERS_API}/${userId}/data`);
   return response.data;
 };
 
@@ -59,49 +60,42 @@ export const findAllUsers = async () => {
   return response.data;
 };
 
-export const updateUser = async (username, updatedFields) => {
-  const response = await REQUEST.put(`${USERS_API}/${username}`, updatedFields);
+export const updateUserByUserId = async (userId, updatedFields) => {
+  const response = await REQUEST.put(`${USERS_API}/${userId}`, updatedFields);
   return response.data;
 };
 
 export const getUserByUsername = async (username) => {
-  try {
-    const response = await REQUEST.get(`${USERS_API}/${username}`);
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.status === 404) {
-      return null;
-    }
-    throw error;
-  }
+  const response = await REQUEST.get(`${USERS_API}/${username}`);
+  return response.data;
 };
 
 // CATS API FUNCTIONS
-export const getCatsByUsername = async (username) => {
-  const response = await REQUEST.get(`${CATS_API}/ownerships/${username}`);
+export const getCatsByUserId = async (userId) => {
+  const response = await REQUEST.get(`${CATS_API}/ownerships/${userId}`);
   return response.data;
 };
 
-export const getFavoritedCatsByUsername = async (username) => {
-  const response = await REQUEST.get(`${CATS_API}/favorites/${username}`);
+export const getFavoritedCatsByUserId = async (userId) => {
+  const response = await REQUEST.get(`${CATS_API}/favorites/${userId}`);
   return response.data;
 };
 
-export const addUserFavorites = async (username, favorite) => {
-  const response = await REQUEST.post(`${CATS_API}/favorites/${username}`, {
-    favorite,
+export const addUserFavorites = async (userId, breed) => {
+  const response = await REQUEST.post(`${CATS_API}/favorites/${userId}`, {
+    breed,
   });
   return response.data;
 };
 
-export const removeUserFavorites = async (username, favorite) => {
+export const removeUserFavorites = async (userId, breed) => {
   const response = await REQUEST.delete(
-    `${CATS_API}/favorites/${username}/${favorite}`,
+    `${CATS_API}/favorites/${userId}/${breed}`
   );
   return response.data;
 };
 
-export const rollCatForUser = async (username) => {
-  const response = await REQUEST.get(`${CATS_API}/roll/${username}`);
+export const rollCatForUser = async (userId) => {
+  const response = await REQUEST.get(`${CATS_API}/roll/${userId}`);
   return response.data;
 };

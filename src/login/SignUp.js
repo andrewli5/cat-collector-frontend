@@ -32,9 +32,6 @@ export default function SignUp() {
       lastName: data.get("lastName"),
     };
 
-    console.log("original: " + userObj.username + ".");
-    console.log("trimmed: " + userObj.username.trim() + ".");
-
     if (
       userObj.username.trim().length === 0 ||
       userObj.password.trim().length === 0 ||
@@ -52,17 +49,17 @@ export default function SignUp() {
     try {
       setError(false);
       setLoading(true);
+      var user = null;
       if (admin) {
-        const user = await client.signUpAsAdmin({
+        user = await client.signUpAsAdmin({
           ...userObj,
           admin_password: data.get("adminPassword"),
         });
-        client.storeCurrentUser(user);
       } else {
-        const user = await client.signUpAsUser(userObj);
-        client.storeCurrentUser(user);
+        user = await client.signUpAsUser(userObj);
       }
-
+      const userData = await client.getUserDataByUserId(user._id);
+      client.storeCurrentUser({ ...userData });
       setSuccess(true);
       setTimeout(() => {
         navigate("/");
