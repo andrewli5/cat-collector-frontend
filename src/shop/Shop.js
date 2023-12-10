@@ -1,5 +1,5 @@
-import { Grid } from "@mui/material";
-import { useEffect, useState, useRef } from "react";
+import { Grid, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import ShopItem from "./ShopItem";
 import "../css/styles.css";
@@ -15,16 +15,19 @@ export default function Shop() {
   }, []);
 
   return (
-    <Grid className="shopContainer" container spacing={1} mb={3}>
-      <Grid className="shop" item xs={7} style={{ padding: "0px" }}>
-        {<ShopItem title="Accessories" items={accessories} />}
+    <>
+      <Typography variant="h3" textAlign="center" marginBottom={5}>shop</Typography>
+      <Grid className="shopContainer" container spacing={1} mb={3}>
+        <Grid className="shop" item xs={7} style={{ padding: "0px" }}>
+          {<ShopItem title="Accessories" items={accessories} />}
+        </Grid>
+        <Grid className="shop" item xs={5} style={{ padding: "0px" }}>
+          <ShopItem title="Items" items={items} />
+        </Grid>
+        <Grid className="shop" item xs={12} style={{ padding: "0px" }}>
+          <ShopItem title="Skills" items={skills} />
+        </Grid>
       </Grid>
-      <Grid className="shop" item xs={5} style={{ padding: "0px" }}>
-        <ShopItem title="Items" items={items} />
-      </Grid>
-      <Grid className="shop" item xs={12} style={{ padding: "0px" }}>
-        <ShopItem title="Skills" items={skills} />
-      </Grid>
-    </Grid>
+    </>
   );
 }

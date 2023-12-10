@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, InputAdornment, TextField } from "@mui/material";
+import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../client";
@@ -47,6 +47,7 @@ export default function SearchUsers() {
         message={errorMessage.toLowerCase()}
         autoHideDuration={3000}
       />
+      <Typography variant="h3">find users</Typography>
       <Box sx={{ width: "250px" }}>
         <TextField
           size="small"
