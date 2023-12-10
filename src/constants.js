@@ -85,6 +85,13 @@ for (const [breedId, catIcon] of Object.entries(BREEDID_TO_CATICON)) {
   CATICON_TO_BREEDID[catIcon] = breedId;
 }
 
+export const RARITY_TO_COLOR = {
+  C: "gray",
+  U: "green",
+  R: "red",
+  E: "purple",
+  L: "yellow",
+};
 export const UPGRADES = {
   LUCK1: 'Luck of the Draw I',
   LUCK2: 'Luck of the Draw II',

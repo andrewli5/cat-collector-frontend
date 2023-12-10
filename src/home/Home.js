@@ -124,7 +124,7 @@ export default function Home() {
         <Route path="/mycats" element={<MyCats />} />
         <Route path="/search" element={<EmptySearch />} />
         <Route path="/search/:query" element={<Search />} />
-        <Route path="/roll" element={<Roll />} />
+        <Route path="/roll" element={<Roll setCoins={setCoins} />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
