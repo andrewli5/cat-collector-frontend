@@ -16,7 +16,7 @@ export default function Shop() {
 
   return (
     <>
-      <Typography variant="h3" textAlign="center" marginBottom={5}>shop</Typography>
+      <Typography variant="h3" textAlign="center" marginBottom={3}>shop</Typography>
       <Grid className="shopContainer" container spacing={1} mb={3}>
         <Grid className="shop" item xs={7} style={{ padding: "0px" }}>
           {<ShopItem title="Accessories" items={accessories} />}
