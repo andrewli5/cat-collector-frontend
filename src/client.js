@@ -9,9 +9,7 @@ const REQUEST = axios.create({
   withCredentials: true,
 });
 
-export const ALL_CAT_RARITIES = await REQUEST.get(
-  `${CATS_API}/rarities`
-);
+export const ALL_CAT_RARITIES = await REQUEST.get(`${CATS_API}/rarities`);
 
 // LOCAL FUNCTIONS
 export const getCurrentUser = () => {
@@ -98,7 +96,7 @@ export const addUserFavorites = async (userId, breed) => {
 
 export const removeUserFavorites = async (userId, breed) => {
   const response = await REQUEST.delete(
-    `${CATS_API}/favorites/${userId}/${breed}`
+    `${CATS_API}/favorites/${userId}/${breed}`,
   );
   return response.data;
 };

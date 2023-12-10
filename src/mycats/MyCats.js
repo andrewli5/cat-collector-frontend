@@ -7,17 +7,18 @@ import {
   CATICON_TO_BREEDID,
   RARITY_TO_COLOR,
   RARITY_TO_VALUE,
+  RARITY_TO_STRING,
 } from "../constants";
 import { getCurrentUser } from "../client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 
-export default function MyCats({ favorites = false }) {
-  const [catIcons, setCatIcons] = useState([]);
-
+export default function MyCats({ favorites = false, rarity = false }) {
   const navigate = useNavigate();
+  const params = useParams();
+  const [catIcons, setCatIcons] = useState([]);
 
   var cats = [];
   if (getCurrentUser()) {
@@ -25,7 +26,10 @@ export default function MyCats({ favorites = false }) {
   }
 
   useEffect(() => {
-    document.title = (favorites ? "favorites" : "my cats") + " | " + APP_NAME;
+    document.title =
+      (favorites ? "favorites" : rarity ? "rarities" : "my cats") +
+      " | " +
+      APP_NAME;
     if (!getCurrentUser()) {
       navigate("/signin");
     }
@@ -47,7 +51,19 @@ export default function MyCats({ favorites = false }) {
         const userFavorites = getCurrentUser().favorites;
         return userFavorites.includes(currentBreed);
       });
+    } else if (rarity && getCurrentUser()) {
+      // display icons of the current rarity
+      icons = Object.keys(catIcons).filter((catIcon) => {
+        const currentBreed = catIconToBreedId(catIcon);
+        const all_rarities = ALL_CAT_RARITIES;
+        console.log(all_rarities);
+        const currentRarity = all_rarities["data"].find(
+          (b) => b.breed === currentBreed
+        )["rarity"];
+        return currentRarity === params.rarity;
+      });
     } else {
+      // display all icons on mycats page
       icons = Object.keys(catIcons);
     }
     return icons;
@@ -122,11 +138,13 @@ export default function MyCats({ favorites = false }) {
       <Typography variant="h3" color="white" textAlign="center">
         {favorites
           ? "my favorites"
-          : "my cats (" +
-            cats.length +
-            "/" +
-            Object.keys(catIcons).length +
-            ")"}
+          : rarity
+            ? RARITY_TO_STRING[params.rarity].toLowerCase() + " cats"
+            : "my cats (" +
+              cats.length +
+              "/" +
+              Object.keys(catIcons).length +
+              ")"}
       </Typography>
       <Typography variant="h4" color="white" textAlign="center">
         <MyCatsSort
@@ -137,7 +155,7 @@ export default function MyCats({ favorites = false }) {
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
         {getIconsToDisplay().map((catIcon, index) => {
           const rarity = ALL_CAT_RARITIES["data"].find(
-            (b) => b.breed === CATICON_TO_BREEDID[catIcon],
+            (b) => b.breed === CATICON_TO_BREEDID[catIcon]
           )["rarity"];
           const name = catIcon.replace(".png", "").replace("_", " ");
           var textColor = "grey";

@@ -26,6 +26,8 @@ import { storeCurrentUser, getCurrentUser } from "../client";
 import * as client from "../client";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import { ALL_CAT_RARITIES } from "../client";
+import MyCats from "../mycats/MyCats";
+import { useNavigate } from "react-router-dom";
 
 const IMAGE_SIZE = 400;
 
@@ -37,6 +39,7 @@ export default function Details() {
   const [owned, setOwned] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const params = useParams();
+  const navigate = useNavigate();
   const breedId = params.id;
   const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === breedId)[
     "rarity"
@@ -55,6 +58,10 @@ export default function Details() {
   if (getCurrentUser()) {
     favorites = getCurrentUser().favorites;
   }
+
+  const handleChipClick = () => {
+    navigate(`/rarities/${rarity}`);
+  };
 
   useEffect(() => {
     async function getBreedData() {
@@ -213,6 +220,8 @@ export default function Details() {
           <Typography variant="h3" sx={{ margin: "0px", marginBottom: "20px" }}>
             {breedData.name}
             <Chip
+              className="hover"
+              onClick={handleChipClick}
               icon={<StarRateRoundedIcon color={RARITY_TO_COLOR[rarity]} />}
               label={RARITY_TO_STRING[rarity]}
               sx={{
