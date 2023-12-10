@@ -5,28 +5,20 @@ import "../css/styles.css";
 import { APP_NAME, CATICON_TO_BREEDID } from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate } from "react-router-dom";
+import { importAll } from "../utils/importAll";
 
-function importAll(r) {
-  let images = {};
-  r.keys().map((item, index) => {
-    images[item.replace("./", "")] = r(item);
-  });
-  return images;
-}
-
-export default function MyCats() {
+export default function MyCats({ favorites = false }) {
   const navigate = useNavigate();
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
-
   var cats = [];
   if (getCurrentUser()) {
     cats = getCurrentUser().cats;
   }
 
   useEffect(() => {
-    document.title = "my cats | " + APP_NAME;
+    document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
     if (!getCurrentUser()) {
       navigate("/signin");
     }
@@ -40,14 +32,34 @@ export default function MyCats() {
     return CATICON_TO_BREEDID[catIcon];
   }
 
+  function getIconsToDisplay() {
+    var icons = [];
+    if (favorites && getCurrentUser()) {
+      icons = Object.keys(catIcons).filter((catIcon) => {
+        const currentBreed = catIconToBreedId(catIcon);
+        const userFavorites = getCurrentUser().favorites;
+        return userFavorites.includes(currentBreed);
+      });
+    } else {
+      icons = Object.keys(catIcons);
+    }
+    return icons;
+  }
+
   return (
     <>
       <Typography variant="h4" color="white" textAlign="center">
-        {"my cats (" + cats.length + "/" + Object.keys(catIcons).length + ")"}
+        {favorites
+          ? "my favorites"
+          : "my cats (" +
+            cats.length +
+            "/" +
+            Object.keys(catIcons).length +
+            ")"}
       </Typography>
 
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
-        {Object.keys(catIcons).map((catIcon, index) => {
+        {getIconsToDisplay().map((catIcon, index) => {
           const name = catIcon.replace(".png", "").replace("_", " ");
           var textColor = "grey";
           var imageStyle = {

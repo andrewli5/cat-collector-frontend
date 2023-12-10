@@ -43,7 +43,7 @@ export default function ShopItem({ title, items }) {
             </TableCell>
             <TableCell colSpan={2}>
               <Typography color="white" textAlign="left">
-              <img src={Coin} width={15} height={15} />
+                <img src={Coin} width={15} height={15} />
               </Typography>{" "}
             </TableCell>
           </TableRow>

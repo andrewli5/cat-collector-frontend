@@ -59,8 +59,39 @@ export const updateUser = async (username, updatedFields) => {
   return response.data;
 };
 
+export const getUserByUsername = async (username) => {
+  try {
+    const response = await REQUEST.get(`${USERS_API}/${username}`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+};
+
 // CATS API FUNCTIONS
 export const getCatsByUsername = async (username) => {
   const response = await REQUEST.get(`${CATS_API}/ownerships/${username}`);
+  return response.data;
+};
+
+export const getFavoritedCatsByUsername = async (username) => {
+  const response = await REQUEST.get(`${CATS_API}/favorites/${username}`);
+  return response.data;
+};
+
+export const addUserFavorites = async (username, favorite) => {
+  const response = await REQUEST.post(`${CATS_API}/favorites/${username}`, {
+    favorite,
+  });
+  return response.data;
+};
+
+export const removeUserFavorites = async (username, favorite) => {
+  const response = await REQUEST.delete(
+    `${CATS_API}/favorites/${username}/${favorite}`,
+  );
   return response.data;
 };
