@@ -1,4 +1,4 @@
-import { Alert, Button, Container, Snackbar, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
@@ -17,6 +17,7 @@ import Details from "../details/Details";
 import MyProfile from "../profile/MyProfile";
 import Favorites from "../favorites/Favorites";
 import OtherProfile from "../profile/OtherProfile";
+import NotificationSnackbar from "../reusable/NotificationSnackbar";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -59,34 +60,20 @@ export default function Home() {
     <Container component="main" maxWidth="lg">
       <TopBar />
       <NavBar coins={coins} />
-      <Snackbar
+      <NotificationSnackbar
         open={warning}
-        autoHideDuration={2000}
-        onClose={() => setWarning(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={() => setWarning(false)}
-          severity="warning"
-          sx={{ width: "100%" }}
-        >
-          please sign in to do that!
-        </Alert>
-      </Snackbar>
-      <Snackbar
+        setOpen={setWarning}
+        severity="warning"
+        message="please sign in to do that!"
+        autoHideDuration={3000}
+      />
+      <NotificationSnackbar
         open={success}
-        autoHideDuration={2000}
-        onClose={() => setSuccess(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={() => setSuccess(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          successfully saved to cloud!
-        </Alert>
-      </Snackbar>
+        setOpen={setSuccess}
+        severity="success"
+        message="successfully saved to cloud!"
+        autoHideDuration={3000}
+      />
       {path === "/" && (
         <div
           style={{

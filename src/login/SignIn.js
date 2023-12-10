@@ -1,31 +1,39 @@
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useNavigate } from "react-router-dom";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
+import NotificationSnackbar from "../reusable/NotificationSnackbar";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
+    setError(false);
+    setLoading(true);
     try {
-      signIn(data);
+      await signIn(data);
     } catch (error) {
       // TODO: handle error with snackbar
-      if (error.response) {
-        console.log(error.response.data.message);
-      } else {
-        console.log(error.message);
-      }
+      setTimeout(() => {
+        if (error.response) {
+          setLoading(false);
+          setError(true);
+          setErrorMessage(error.response.data.message);
+        }
+      }, 700);
     }
   };
 
@@ -36,7 +44,10 @@ export default function SignIn() {
     });
     const userData = await client.getUserDataByUsername(user.username);
     client.storeCurrentUser({ ...userData });
-    navigate("/");
+    setSuccess(true);
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
 
   useEffect(() => {
@@ -48,6 +59,20 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
+      <NotificationSnackbar
+        open={success}
+        setOpen={setSuccess}
+        message="signed in successfully! redirecting..."
+        severity="success"
+        autoHideDuration={6000}
+      />
+      <NotificationSnackbar
+        open={error}
+        setOpen={setError}
+        message={errorMessage.toLowerCase()}
+        severity="error"
+        autoHideDuration={6000}
+      />
       <Box
         sx={{
           marginTop: 8,
@@ -81,14 +106,16 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
           />
-          <Button
+
+          <LoadingButton
+            loading={loading}
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
             sign in
-          </Button>
+          </LoadingButton>
           <Box
             sx={{
               textAlign: "center",
