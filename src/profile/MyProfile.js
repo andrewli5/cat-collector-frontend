@@ -9,6 +9,8 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 
 export default function MyProfile() {
   const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -25,16 +27,16 @@ export default function MyProfile() {
         ...updatedFields,
       });
       storeCurrentUser(updatedUser);
+      setError(false);
       setSuccess(true);
       setTimeout(() => {
         setLoading(false);
         window.location.reload();
-      }, 1000);
+      }, 500);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data.message);
-      } else {
-        console.log(error.message);
+        setError(true);
+        setErrorMessage(error.response.data.message);
       }
     }
   };
@@ -61,10 +63,22 @@ export default function MyProfile() {
         setOpen={setSuccess}
         severity="success"
         message="successfully saved! reloading..."
-        autoHideDuration={2000}
+        autoHideDuration={3000}
+      />
+      <NotificationSnackbar
+        open={error}
+        setOpen={setError}
+        severity="error"
+        message={errorMessage.toLowerCase()}
+        autoHideDuration={3000}
       />
       <Typography variant="h3">my profile</Typography>
-      <Box alignItems="center" textAlign="center" marginTop={1} marginBottom={2}>
+      <Box
+        alignItems="center"
+        textAlign="center"
+        marginTop={1}
+        marginBottom={2}
+      >
         <TextField
           size="small"
           label="username"

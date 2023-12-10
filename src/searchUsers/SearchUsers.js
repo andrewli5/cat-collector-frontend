@@ -7,7 +7,6 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import OtherProfile from "../profile/OtherProfile";
 import { APP_NAME } from "../constants";
 
-
 export default function SearchUsers() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState(false);
