@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Grid, Snackbar, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
-import CatSilhouette from "../assets/cat_face_silhouette.png";
+import CatSilhouette from "../assets/unknown_cat.png";
 import Dice from "../assets/dice.png";
 import { importAll } from "../utils/importAll";
 import { useState } from "react";
@@ -22,7 +22,7 @@ export default function Roll({ setCoins }) {
   const [displayResults, setDisplayResults] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   const handleRoll = async () => {
