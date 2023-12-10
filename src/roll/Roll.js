@@ -129,6 +129,7 @@ export default function Roll({ setCoins }) {
         />
       </Box>
       <Button
+        disabled={isRolling ? true : false}
         variant="contained"
         sx={{
           display: "flex",
