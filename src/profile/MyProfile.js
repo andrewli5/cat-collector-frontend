@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  Box,
-  Grid,
-  Button,
-  TextField,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Typography, Box, Grid, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { getCurrentUser, storeCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
+import NotificationSnackbar from "../reusable/NotificationSnackbar";
 
 export default function MyProfile() {
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
@@ -24,6 +19,7 @@ export default function MyProfile() {
     const updatedFields = { firstName, lastName };
     const updatedUser = { ...user, ...updatedFields };
     try {
+      setLoading(true);
       const _ = await client.updateUser(user.username, {
         ...updatedFields,
         from_username: user.username,
@@ -31,6 +27,7 @@ export default function MyProfile() {
       storeCurrentUser(updatedUser);
       setSuccess(true);
       setTimeout(() => {
+        setLoading(false);
         window.location.reload();
       }, 1000);
     } catch (error) {
@@ -58,20 +55,13 @@ export default function MyProfile() {
 
   return (
     <Box textAlign="center">
-      <Snackbar
+      <NotificationSnackbar
         open={success}
+        setOpen={setSuccess}
+        severity="success"
+        message="successfully saved! reloading..."
         autoHideDuration={2000}
-        onClose={() => setSuccess(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={() => setSuccess(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          successfully saved! reloading...
-        </Alert>
-      </Snackbar>
+      />
       <Typography variant="h3">my profile</Typography>
       <Typography variant="h5" color="grey">
         {"username " + " (" + user.username + ")"}
@@ -98,14 +88,16 @@ export default function MyProfile() {
           </Box>
         </Grid>
       </Grid>
-      <Button
-        variant="contained"
+      <LoadingButton
+        loading={loading}
+        type="submit"
         color="primary"
+        variant="contained"
         onClick={handleSave}
         sx={{ marginTop: 3 }}
       >
         save changes
-      </Button>
+      </LoadingButton>
     </Box>
   );
 }

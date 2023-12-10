@@ -1,4 +1,4 @@
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -11,9 +11,15 @@ import { useNavigate } from "react-router-dom";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
 import { FormControlLabel, Switch } from "@mui/material";
+import NotificationSnackbar from "../reusable/NotificationSnackbar";
 
 export default function SignUp() {
   const [admin, setAdmin] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -26,7 +32,23 @@ export default function SignUp() {
       lastName: data.get("lastName"),
     };
 
+    if (
+      userObj.username.trim() === "" ||
+      userObj.password.trim() === "" ||
+      userObj.firstName.trim() === "" ||
+      userObj.lastName.trim() === ""
+    ) {
+      setTimeout(() => {
+        setError(true);
+        setErrorMessage("please fill out all of the fields.");
+        setLoading(false);
+        return;
+      }, 700);
+    }
+
     try {
+      setError(false);
+      setLoading(true);
       if (admin) {
         const user = await client.signUpAsAdmin({
           ...userObj,
@@ -38,14 +60,18 @@ export default function SignUp() {
         client.storeCurrentUser(user);
       }
 
-      navigate("/");
+      setSuccess(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (error) {
-      // TODO: handle error with snackbar
-      if (error.response) {
-        console.log(error.response.data.message);
-      } else {
-        console.log(error.message);
-      }
+      setTimeout(() => {
+        if (error.response) {
+          setLoading(false);
+          setError(true);
+          setErrorMessage(error.response.data.message);
+        }
+      }, 700);
     }
   };
 
@@ -58,6 +84,20 @@ export default function SignUp() {
 
   return (
     <Container component="main" maxWidth="xs">
+      <NotificationSnackbar
+        open={success}
+        setOpen={setSuccess}
+        message="signed up successfully! redirecting..."
+        severity="success"
+        autoHideDuration={6000}
+      />
+      <NotificationSnackbar
+        open={error}
+        setOpen={setError}
+        message={errorMessage.toLowerCase()}
+        severity="error"
+        autoHideDuration={6000}
+      />
       <Box
         sx={{
           marginTop: 8,
@@ -144,9 +184,15 @@ export default function SignUp() {
               flexDirection: "column",
             }}
           >
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <LoadingButton
+              loading={loading}
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
               sign up
-            </Button>
+            </LoadingButton>
             <Link href="/signin" variant="h5">
               {"already have an account? sign in"}
             </Link>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Alert, Box, Snackbar } from "@mui/material";
+import { Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../client";
+import NotificationSnackbar from "../reusable/NotificationSnackbar";
 
 const SearchUser = () => {
   const [username, setUsername] = useState("");
@@ -29,26 +30,20 @@ const SearchUser = () => {
 
   return (
     <Box sx={{ width: 300 }}>
-      <Snackbar
+      <NotificationSnackbar
         open={dne}
+        setOpen={setDne}
+        severity="error"
+        message="user does not exist :("
         autoHideDuration={3000}
-        onClose={() => setDne(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {"user does not exist :("}
-        </Alert>
-      </Snackbar>
-      <Snackbar
+      />
+      <NotificationSnackbar
         open={found}
+        setOpen={setFound}
+        severity="error"
+        message="user does not exist :("
         autoHideDuration={3000}
-        onClose={() => setFound(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert severity="success" sx={{ width: "100%" }}>
-          {"user found!"}
-        </Alert>
-      </Snackbar>
+      />
       <TextField
         sx={{
           border: "0",
