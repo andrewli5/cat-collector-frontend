@@ -2,20 +2,22 @@ import { Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import { getCurrentUser } from "../client";
-import Forbidden from "./Forbidden";
+import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
+  const navigate = useNavigate();
   useEffect(() => {
     document.title = "admin tools | " + APP_NAME;
+
+    if (!getCurrentUser() || getCurrentUser().role !== "ADMIN") {
+      navigate("/forbidden");
+    } else {
+    }
   }, []);
 
-  if (!getCurrentUser() || getCurrentUser().role !== "ADMIN") {
-    return <Forbidden />;
-  } else {
-    return (
-      <Typography variant="h4" color="grey" textAlign="center">
-        Admin tools are in development...
-      </Typography>
-    );
-  }
+  return (
+    <Typography variant="h" color="white" textAlign="center">
+      admin tools
+    </Typography>
+  );
 }

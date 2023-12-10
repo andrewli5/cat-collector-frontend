@@ -24,6 +24,13 @@ export default function MyCats({ favorites = false }) {
     cats = getCurrentUser().cats;
   }
 
+  useEffect(() => {
+    document.title = (favorites ? "favorites" : "my cats") + " | " + APP_NAME;
+    if (!getCurrentUser()) {
+      navigate("/signin");
+    }
+  }, []);
+
   if (!getCurrentUser()) {
     return null;
   }

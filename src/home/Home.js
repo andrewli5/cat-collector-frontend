@@ -16,9 +16,9 @@ import { getCurrentUser, storeCurrentUser, updateUserCoinsByUserId } from "../cl
 import Details from "../details/Details";
 import MyProfile from "../profile/MyProfile";
 import Favorites from "../favorites/Favorites";
-import OtherProfile from "../profile/OtherProfile";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import SearchUsers from "../searchUsers/SearchUsers";
+import Forbidden from "../admin/Forbidden";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -132,6 +132,7 @@ export default function Home() {
         <Route path="/details/:id" element={<Details />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/find-users/*" element={<SearchUsers />} />
+        <Route path="/forbidden" element={<Forbidden />} />
       </Routes>
     </Container>
   );
