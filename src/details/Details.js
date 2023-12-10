@@ -58,7 +58,6 @@ export default function Details() {
   }
 
   const handleChipClick = () => {
-    // navigate to rarities page with the given rarity    
     navigate(`/rarities/${rarity}`);
   };
 

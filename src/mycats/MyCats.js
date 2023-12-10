@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { Typography, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
-import { APP_NAME, CATICON_TO_BREEDID, RARITY_TO_COLOR } from "../constants";
+import {
+  APP_NAME,
+  CATICON_TO_BREEDID,
+  RARITY_TO_COLOR,
+  RARITY_TO_STRING,
+} from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate, useParams } from "react-router-dom";
 import { importAll } from "../utils/importAll";
@@ -13,7 +18,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
   const params = useParams();
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var cats = [];
@@ -51,10 +56,12 @@ export default function MyCats({ favorites = false, rarity = false }) {
       // display icons of the current rarity
       icons = Object.keys(catIcons).filter((catIcon) => {
         const currentBreed = catIconToBreedId(catIcon);
-        const currentRarity = ALL_CAT_RARITIES["data"].find(
+        const all_rarities = ALL_CAT_RARITIES;
+        console.log(all_rarities);
+        const currentRarity = all_rarities["data"].find(
           (b) => b.breed === currentBreed
         )["rarity"];
-        return currentRarity === rarity;
+        return currentRarity === params.rarity;
       });
     } else {
       // display all icons on mycats page
@@ -69,7 +76,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
         {favorites
           ? "my favorites"
           : rarity
-            ? params.rarity + " cats"
+            ? RARITY_TO_STRING[params.rarity].toLowerCase() + " cats"
             : "my cats (" +
               cats.length +
               "/" +
@@ -80,7 +87,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
         {getIconsToDisplay().map((catIcon, index) => {
           const rarity = ALL_CAT_RARITIES["data"].find(
-            (b) => b.breed === CATICON_TO_BREEDID[catIcon],
+            (b) => b.breed === CATICON_TO_BREEDID[catIcon]
           )["rarity"];
           const name = catIcon.replace(".png", "").replace("_", " ");
           var textColor = "grey";
