@@ -7,6 +7,7 @@ import {
   Divider,
   TextField,
   InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
@@ -21,7 +22,8 @@ import SearchIcon from "@mui/icons-material/Search";
 
 export default function Admin() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [usersLoading, setUsersLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [queriedUsers, setQueriedUsers] = useState([]);
   const [success, setSuccess] = useState(false);
@@ -50,7 +52,7 @@ export default function Admin() {
     } else if (getCurrentUser().role !== "ADMIN") {
       navigate("/forbidden");
     } else {
-      setLoading(true);
+      setUsersLoading(true);
       fetchAllUsers();
     }
   }, []);
@@ -75,13 +77,13 @@ export default function Admin() {
     }
 
     try {
-      setLoading(true);
+      setSaveLoading(true);
       const _ = await client.updateUserByUserId(userBeingEdited._id, {
         ...userBeingEdited,
       });
       setSuccess(true);
       setTimeout(() => {
-        setLoading(false);
+        setSaveLoading(false);
         window.location.reload();
       }, 500);
     } catch (error) {
@@ -101,11 +103,13 @@ export default function Admin() {
       const fetchedUsers = await client.getAllUsers();
       setUsers([...fetchedUsers]);
       setQueriedUsers([...fetchedUsers]);
-      setLoading(false);
+      setTimeout(() => {
+        setUsersLoading(false);
+      }, 500);
     } catch {
       setError(true);
-      setLoading(false);
       setErrorMessage("error fetching users.");
+      setUsersLoading(false);
     }
   };
 
@@ -166,20 +170,24 @@ export default function Admin() {
         <Grid item xs={12}>
           <Divider flexItem />
         </Grid>
-        {queriedUsers.map((user) => (
-          <EditableUserRow
-            loading={loading}
-            edit={user._id === userBeingEdited._id}
-            key={user._id}
-            user={user}
-            userBeingEdited={userBeingEdited}
-            setUserBeingEdited={setUserBeingEdited}
-            handleFieldEdited={handleFieldEdited}
-            handleSave={() => handleSave(user._id)}
-            handleCancel={handleCancel}
-            emphasized={user._id === getCurrentUser()._id}
-          />
-        ))}
+        {usersLoading ? (
+          <CircularProgress color="white" sx={{ marginTop: 3 }} />
+        ) : (
+          queriedUsers.map((user) => (
+            <EditableUserRow
+              loading={saveLoading}
+              edit={user._id === userBeingEdited._id}
+              key={user._id}
+              user={user}
+              userBeingEdited={userBeingEdited}
+              setUserBeingEdited={setUserBeingEdited}
+              handleFieldEdited={handleFieldEdited}
+              handleSave={() => handleSave(user._id)}
+              handleCancel={handleCancel}
+              emphasized={user._id === getCurrentUser()._id}
+            />
+          ))
+        )}
       </Grid>
     </>
   );
