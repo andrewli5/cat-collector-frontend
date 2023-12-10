@@ -10,9 +10,12 @@ import { getCurrentUser } from "../client";
 import { BREEDID_TO_CATICON, RARITY_TO_COLOR } from "../constants";
 import _ from "lodash";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
+import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import Coin from "../assets/coin_icon.png";
 
+const ROLL_COST = 500;
 const IMAGE_SIZE = 400;
-export default function Roll() {
+export default function Roll({ setCoins }) {
   const [isRolling, setIsRolling] = useState(false);
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -31,6 +34,7 @@ export default function Roll() {
     const rolledCatBreedId = results["breed"];
     const rolledCatIcon = BREEDID_TO_CATICON[rolledCatBreedId];
     const rolledCatName = rolledCatIcon.replace(".png", "").replace("_", " ");
+    updateCoinAmt(getCurrentUser().coins - ROLL_COST);
 
     // rolling animation
     const interval = setInterval(() => {
@@ -45,48 +49,57 @@ export default function Roll() {
       clearInterval(interval);
       setDisplayedIcon(catIcons[rolledCatIcon]);
       setDisplayResults(true);
+      updateCoinAmt(getCurrentUser().coins + results["addedCoins"]);
     }, 2000);
+  };
 
-    // Banner to alert the user what they rolled
-    console.log("User rolled a " + rolledCatName);
+  const updateCoinAmt = (newCoinAmt) => {
+    setCoins(newCoinAmt); // display new coin amount
+    client.storeCurrentUser({ ...getCurrentUser(), coins: newCoinAmt }); // update user in local storage
   };
 
   useEffect(() => {
     document.title = "roll | " + APP_NAME;
   }, []);
 
+  function getRollResultsMessage() {
+    return (
+      <>
+        <Typography variant="h4" color={"white"}>
+          {rollResults["duplicate"] ? "You rolled:" : "New cat unlocked!"}
+        </Typography>
+        <Typography variant="h4" color={RARITY_TO_COLOR[rollResults["rarity"]]}>
+          {BREEDID_TO_CATICON[rollResults["breed"]]
+            .replace(".png", "")
+            .replace("_", " ")}
+          !{" "}
+          <StarRateRoundedIcon
+            fontSize="large"
+            sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
+          />
+        </Typography>
+        {rollResults["duplicate"] ? (
+          <>
+            Received: <img src={Coin} width={20} height={20} />x
+            {rollResults["addedCoins"]}{" "}
+          </>
+        ) : (
+          <></>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       {" "}
       {!_.isEmpty(rollResults) ? (
-        <Snackbar
+        <NotificationSnackbar
           open={displayResults}
-          onClose={() => setDisplayResults(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert
-            onClose={() => setDisplayResults(false)}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            <Typography variant="h4" color={"white"}>
-              You rolled:
-            </Typography>
-            <Typography
-              variant="h4"
-              color={RARITY_TO_COLOR[rollResults["rarity"]]}
-            >
-              {BREEDID_TO_CATICON[rollResults["breed"]]
-                .replace(".png", "")
-                .replace("_", " ")}
-              !{" "}
-              <StarRateRoundedIcon
-                fontSize="large"
-                sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
-              />
-            </Typography>
-          </Alert>
-        </Snackbar>
+          setOpen={setDisplayResults}
+          severity="success"
+          message={getRollResultsMessage()}
+        />
       ) : (
         <></>
       )}
@@ -106,7 +119,11 @@ export default function Roll() {
           sx={{
             height: IMAGE_SIZE,
             width: IMAGE_SIZE,
-            outline: "1px solid white",
+            outline: `5px solid ${
+              isRolling || rollResults["breed"] === undefined
+                ? "white"
+                : RARITY_TO_COLOR[rollResults["rarity"]]
+            }`,
             borderRadius: "5px",
           }}
         />
@@ -119,7 +136,7 @@ export default function Roll() {
           alignItems: "center",
           marginLeft: "auto",
           marginRight: "auto",
-          marginTop: "10px",
+          marginTop: "20px",
         }}
         onClick={handleRoll}
       >
@@ -129,7 +146,20 @@ export default function Roll() {
           height={30}
           style={{ marginRight: "10px" }}
         />
-        {isRolling ? "Rolling..." : "Roll!"}
+        {isRolling ? (
+          "Rolling..."
+        ) : (
+          <>
+            Roll for{" "}
+            <img
+              style={{ marginLeft: "5px" }}
+              src={Coin}
+              width={20}
+              height={20}
+            />
+            x500
+          </>
+        )}
       </Button>
     </>
   );
