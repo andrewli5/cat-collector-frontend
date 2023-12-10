@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { Typography, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
-import { APP_NAME, CATICON_TO_BREEDID, RARITY_TO_COLOR, RARITY_TO_VALUE } from "../constants";
+import {
+  APP_NAME,
+  CATICON_TO_BREEDID,
+  RARITY_TO_COLOR,
+  RARITY_TO_VALUE,
+} from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate } from "react-router-dom";
 import { importAll } from "../utils/importAll";
@@ -50,14 +55,16 @@ export default function MyCats({ favorites = false }) {
 
   const reverseFunction = () => {
     const reversedIcons = {};
-    Object.keys(catIcons).reverse().forEach((icon) => {
-      reversedIcons[icon] = catIcons[icon];
-    });
+    Object.keys(catIcons)
+      .reverse()
+      .forEach((icon) => {
+        reversedIcons[icon] = catIcons[icon];
+      });
     setCatIcons(reversedIcons);
-  }
+  };
 
   const sortFunction = (term) => {
-   // sort CatIcons by name, rarity, or ownership
+    // sort CatIcons by name, rarity, or ownership
     if (term === "name") {
       const sortedIcons = Object.keys(catIcons).sort();
       const sortedIconsObj = {};
@@ -94,42 +101,6 @@ export default function MyCats({ favorites = false }) {
     }
   };
 
-  const filterFunction = (term) => {
-    // filter catIcons by name, rarity, or ownership
-    if (term === "name") {
-      const filteredIcons = Object.keys(catIcons).filter((icon) => {
-        const name = icon.replace(".png", "").replace("_", " ");
-        return name.toLowerCase().includes(term.toLowerCase());
-      });
-      const filteredIconsObj = {};
-      filteredIcons.forEach((icon) => {
-        filteredIconsObj[icon] = catIcons[icon];
-      });
-      setCatIcons(filteredIconsObj);
-    } else if (term === "rarity") {
-      const filteredIcons = Object.keys(catIcons).filter((icon) => {
-        const rarity = ALL_CAT_RARITIES["data"].find(
-          (b) => b.breed === CATICON_TO_BREEDID[icon]
-        )["rarity"];
-        return rarity.toLowerCase().includes(term.toLowerCase());
-      });
-      const filteredIconsObj = {};
-      filteredIcons.forEach((icon) => {
-        filteredIconsObj[icon] = catIcons[icon];
-      });
-      setCatIcons(filteredIconsObj);
-    } else if (term === "owned") {
-      const filteredIcons = Object.keys(catIcons).filter((icon) => {
-        return cats.includes(CATICON_TO_BREEDID[icon]);
-      });
-      const filteredIconsObj = {};
-      filteredIcons.forEach((icon) => {
-        filteredIconsObj[icon] = catIcons[icon];
-      });
-      setCatIcons(filteredIconsObj);
-    }
-  }
-
   useEffect(() => {
     document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
     if (!getCurrentUser()) {
@@ -151,7 +122,10 @@ export default function MyCats({ favorites = false }) {
             ")"}
       </Typography>
       <Typography variant="h4" color="white" textAlign="center">
-        <MyCatsSort sortFunction={sortFunction} reverseFunction={reverseFunction} resetFunction={resetFunction} />
+        <MyCatsSort
+          sortFunction={sortFunction}
+          reverseFunction={reverseFunction}
+        />
       </Typography>
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
         {getIconsToDisplay().map((catIcon, index) => {
