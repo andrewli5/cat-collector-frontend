@@ -151,7 +151,6 @@ export default function Home() {
         <Route path="/details/:id" element={<Details />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/profile/:username" element={<OtherProfile />} />
-        <Route path="/profile/dne" element={<UserDNE />} />
       </Routes>
     </Container>
   );
