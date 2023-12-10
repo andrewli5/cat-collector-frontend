@@ -123,6 +123,7 @@ export default function Home() {
       )}
       <Routes>
         <Route path="/mycats" element={<MyCats />} />
+        <Route path="/rarities/:rarity" element={<MyCats rarity={true}/>} />
         <Route path="/search" element={<EmptySearch />} />
         <Route path="/search/:query" element={<Search />} />
         <Route path="/roll" element={<Roll setCoins={setCoins} />} />

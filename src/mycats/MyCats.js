@@ -1,25 +1,31 @@
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Typography, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
 import { APP_NAME, CATICON_TO_BREEDID, RARITY_TO_COLOR } from "../constants";
 import { getCurrentUser } from "../client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
 
-export default function MyCats({ favorites = false }) {
+export default function MyCats({ favorites = false, rarity = false }) {
   const navigate = useNavigate();
+  const params = useParams();
+
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
+
   var cats = [];
   if (getCurrentUser()) {
     cats = getCurrentUser().cats;
   }
 
   useEffect(() => {
-    document.title = (favorites ? "favorites" : "my cats") + " | " + APP_NAME;
+    document.title =
+      (favorites ? "favorites" : rarity ? "rarities" : "my cats") +
+      " | " +
+      APP_NAME;
     if (!getCurrentUser()) {
       navigate("/signin");
     }
@@ -41,7 +47,17 @@ export default function MyCats({ favorites = false }) {
         const userFavorites = getCurrentUser().favorites;
         return userFavorites.includes(currentBreed);
       });
+    } else if (rarity && getCurrentUser()) {
+      // display icons of the current rarity
+      icons = Object.keys(catIcons).filter((catIcon) => {
+        const currentBreed = catIconToBreedId(catIcon);
+        const currentRarity = ALL_CAT_RARITIES["data"].find(
+          (b) => b.breed === currentBreed
+        )["rarity"];
+        return currentRarity === rarity;
+      });
     } else {
+      // display all icons on mycats page
       icons = Object.keys(catIcons);
     }
     return icons;
@@ -52,11 +68,13 @@ export default function MyCats({ favorites = false }) {
       <Typography variant="h3" color="white" textAlign="center">
         {favorites
           ? "my favorites"
-          : "my cats (" +
-            cats.length +
-            "/" +
-            Object.keys(catIcons).length +
-            ")"}
+          : rarity
+            ? params.rarity + " cats"
+            : "my cats (" +
+              cats.length +
+              "/" +
+              Object.keys(catIcons).length +
+              ")"}
       </Typography>
 
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
