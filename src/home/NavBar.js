@@ -2,8 +2,6 @@ import { Toolbar, Button, Typography } from "@mui/material";
 import { getCurrentUser } from "../client";
 import coinIcon from "../assets/coin_icon.png";
 import { useLocation } from "react-router-dom";
-import SeachUser from "../search_user/Search";
-import Search from "../search/Search";
 import SearchUser from "../search_user/Search";
 
 export default function NavBar({ coins }) {
@@ -67,9 +65,7 @@ export default function NavBar({ coins }) {
       <Typography variant="h4" noWrap>
         {"|"}
       </Typography>
-      <Button>
-        <SearchUser />
-      </Button>
+      <SearchUser />
 
       {getCurrentUser() && getCurrentUser().role === "ADMIN" && (
         <>
