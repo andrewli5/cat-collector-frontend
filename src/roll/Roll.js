@@ -14,7 +14,7 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Coin from "../assets/coin_icon.png";
 
 const ROLL_COST = 500;
-const IMAGE_SIZE = 400;
+const IMAGE_SIZE = '40vh';
 export default function Roll({ setCoins }) {
   const [isRolling, setIsRolling] = useState(false);
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);

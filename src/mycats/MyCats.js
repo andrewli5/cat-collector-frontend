@@ -2,15 +2,16 @@ import React, { useEffect } from "react";
 import { Typography, Link } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
-import { APP_NAME, CATICON_TO_BREEDID } from "../constants";
+import { APP_NAME, CATICON_TO_BREEDID, RARITY_TO_COLOR } from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate } from "react-router-dom";
 import { importAll } from "../utils/importAll";
+import { ALL_CAT_RARITIES } from "../client";
 
 export default function MyCats({ favorites = false }) {
   const navigate = useNavigate();
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
   var cats = [];
   if (getCurrentUser()) {
@@ -60,6 +61,9 @@ export default function MyCats({ favorites = false }) {
 
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
         {getIconsToDisplay().map((catIcon, index) => {
+          const rarity = ALL_CAT_RARITIES["data"].find(
+            (b) => b.breed === CATICON_TO_BREEDID[catIcon]
+          )["rarity"];
           const name = catIcon.replace(".png", "").replace("_", " ");
           var textColor = "grey";
           var imageStyle = {
@@ -67,7 +71,7 @@ export default function MyCats({ favorites = false }) {
             border: "1px solid gray",
           };
           if (cats.includes(CATICON_TO_BREEDID[catIcon])) {
-            imageStyle = { border: "1px solid white" };
+            imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
             textColor = "white";
           }
           return (

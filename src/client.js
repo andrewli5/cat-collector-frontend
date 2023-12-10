@@ -4,9 +4,14 @@ import { LOCAL_API_URL } from "./constants";
 export const BASE_API_URL = process.env.REACT_APP_API_URL || LOCAL_API_URL;
 export const USERS_API = `${BASE_API_URL}/users`;
 export const CATS_API = `${BASE_API_URL}/cats`;
+
 const REQUEST = axios.create({
   withCredentials: true,
 });
+
+export const ALL_CAT_RARITIES = await REQUEST.get(
+  `${CATS_API}/rarities`
+);
 
 // LOCAL FUNCTIONS
 export const getCurrentUser = () => {
