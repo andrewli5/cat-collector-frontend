@@ -33,7 +33,7 @@ export default function SignIn() {
           setError(true);
           setErrorMessage(error.response.data.message);
         }
-      }, 700);
+      }, 500);
     }
   };
 
@@ -47,7 +47,7 @@ export default function SignIn() {
     setSuccess(true);
     setTimeout(() => {
       navigate("/");
-    }, 1000);
+    }, 500);
   };
 
   useEffect(() => {
