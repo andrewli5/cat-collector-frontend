@@ -68,7 +68,6 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
   return (
     <Box alignItems={"center"} display={"flex"} justifyContent={"right"}>
       <Button
-        height={50}
         id="sort-button"
         aria-controls={sortMenuOpen ? "sort-menu" : undefined}
         aria-haspopup="true"
@@ -87,6 +86,7 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
             }}
           />
         }
+        sx={{ height: "36px" }} // Add this line to set the height
       >
         {sortText !== "" ? sortText : "Sort"}
       </Button>
@@ -101,22 +101,36 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
         onClose={handleSortClose}
       >
         <MenuItem variant="contained" onClick={() => handleSort("name")}>
-          {"Name"}
+          {"name"}
         </MenuItem>
         <MenuItem variant="contained" onClick={() => handleSort("rarity")}>
-          {"Rarity"}
+          {"rarity"}
         </MenuItem>
         <MenuItem variant="contained" onClick={() => handleSort("owned")}>
-          {"Owned"}
+          {"owned"}
         </MenuItem>
       </StyledMenu>
       <Button
         onClick={handleReverse}
-        sx={{ marginLeft: "8px" }}
+        sx={{
+          marginLeft: "8px",
+          height: "36px",
+          minWidth: "10px",
+          paddingLeft: "8px",
+          paddingRight: "8px",
+        }}
         variant="contained"
         color="primary"
+        disableElevation
       >
-        <SyncAltIcon sx={{ color: "white", transform: "rotate(90deg)" }} />
+        <SyncAltIcon
+          sx={{
+            paddingLeft: "0px",
+            fontSize: "medium",
+            color: "white",
+            transform: "rotate(90deg)",
+          }}
+        />
       </Button>
     </Box>
   );
