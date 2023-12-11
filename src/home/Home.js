@@ -26,6 +26,7 @@ import Forbidden from "../admin/Forbidden";
 
 export default function Home() {
   const path = useLocation().pathname;
+  const [user, setUser] = useState(getCurrentUser());
   const [warning, setWarning] = useState(false);
   const [success, setSuccess] = useState(false);
   const [coins, setCoins] = useState(0); // used to force rerender of NavBar

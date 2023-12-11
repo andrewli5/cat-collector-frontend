@@ -13,35 +13,39 @@ import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Coin from "../assets/coin_icon.png";
 
-const ROLL_COST = 500;
 const IMAGE_SIZE = "40vh";
+
 export default function Roll({ setCoins }) {
   const [isRolling, setIsRolling] = useState(false);
+  const [rollCost, setRollCost] = useState(
+    getCurrentUser() ? getCurrentUser().rollCost : 100
+  );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
   const [displayResults, setDisplayResults] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   const handleRoll = async () => {
     setIsRolling(true);
     const results = await client.rollCatForUser(getCurrentUser()._id);
     setRollResults(results);
+
     // update locally
-    const user = {
-      ...getCurrentUser(),
-      cats: [...getCurrentUser().cats, results["breed"]],
-    };
-    storeCurrentUser(user);
-
-    // {breed: 'toyg', rarity: 'R', duplicate: false, addedCoins: 0}
-
+    if (!results["duplicate"]) {
+      const user = {
+        ...getCurrentUser(),
+        cats: [...getCurrentUser().cats, results["breed"]],
+      };
+      storeCurrentUser(user);
+    }
+   
     const rolledCatBreedId = results["breed"];
     const rolledCatIcon = BREEDID_TO_CATICON[rolledCatBreedId];
     const rolledCatName = rolledCatIcon.replace(".png", "").replace("_", " ");
-    updateCoinAmt(getCurrentUser().coins - ROLL_COST);
+    updateCoinAmt(getCurrentUser().coins - rollCost);
 
     // rolling animation
     const interval = setInterval(() => {
@@ -57,12 +61,20 @@ export default function Roll({ setCoins }) {
       setDisplayedIcon(catIcons[rolledCatIcon]);
       setDisplayResults(true);
       updateCoinAmt(getCurrentUser().coins + results["addedCoins"]);
+      if (!results["duplicate"]) {
+        updateRollCost(results["rollCost"]);
+      }
     }, 2000);
   };
 
   const updateCoinAmt = (newCoinAmt) => {
     setCoins(newCoinAmt); // display new coin amount
     client.storeCurrentUser({ ...getCurrentUser(), coins: newCoinAmt }); // update user in local storage
+  };
+
+  const updateRollCost = (newRollCost) => {
+    setRollCost(newRollCost); // display new roll cost
+    client.storeCurrentUser({ ...getCurrentUser(), rollCost: newRollCost }); // update user in local storage
   };
 
   useEffect(() => {
@@ -197,7 +209,7 @@ export default function Roll({ setCoins }) {
               width={20}
               height={20}
             />
-            x500
+            x{rollCost}
           </>
         )}
       </Button>
