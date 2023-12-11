@@ -57,12 +57,15 @@ export default function MyCats({ favorites = false, rarity = false }) {
       // display icons of the current rarity
       icons = Object.keys(catIcons).filter((catIcon) => {
         const currentBreed = catIconToBreedId(catIcon);
-        const all_rarities = ALL_CAT_RARITIES;
-        console.log(all_rarities);
-        const currentRarity = all_rarities["data"].find(
-          (b) => b.breed === currentBreed
-        )["rarity"];
-        return currentRarity === params.rarity;
+        if (currentBreed === undefined) {
+          return false;
+        } else {
+          const all_rarities = ALL_CAT_RARITIES;
+          const currentRarity = all_rarities["data"].find(
+            (b) => b.breed === currentBreed
+          )["rarity"];
+          return currentRarity === params.rarity;
+        }
       });
     } else {
       // display all icons on mycats page
@@ -182,7 +185,10 @@ export default function MyCats({ favorites = false, rarity = false }) {
             const rarity = ALL_CAT_RARITIES["data"].find(
               (b) => b.breed === currentBreedId
             )["rarity"];
-            const name = catIcon.replace(".png", "").replace("_", " ");
+            const name = catIcon
+              .replace(".png", "")
+              .replace("_", " ")
+              .replace("cat", "");
             var textColor = "grey";
             var imageStyle = {
               WebkitFilter: "grayscale(100%)",
