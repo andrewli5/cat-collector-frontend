@@ -7,7 +7,6 @@ import {
   Divider,
   TextField,
   InputAdornment,
-  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
@@ -19,6 +18,7 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import EditableText from "../reusable/EditableText";
 import { LoadingButton } from "@mui/lab";
 import SearchIcon from "@mui/icons-material/Search";
+import JumpingCat from "../assets/gifs/jumping_cat.gif";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -171,7 +171,20 @@ export default function Admin() {
           <Divider flexItem />
         </Grid>
         {usersLoading ? (
-          <CircularProgress color="white" sx={{ marginTop: 3 }} />
+          <Box
+            sx={{
+              textAlign: "center",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <img src={JumpingCat} />
+            <Typography variant="h4" sx={{ marginTop: "10px" }}>
+              Loading...
+            </Typography>
+          </Box>
         ) : (
           queriedUsers.map((user) => (
             <EditableUserRow

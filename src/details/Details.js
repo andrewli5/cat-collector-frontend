@@ -13,7 +13,6 @@ import {
   Alert,
   Box,
   Chip,
-  CircularProgress,
   Grid,
   Snackbar,
   Typography,
@@ -29,6 +28,7 @@ import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import { ALL_CAT_RARITIES } from "../client";
 import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import JumpingCat from "../assets/gifs/jumping_cat.gif";
 
 const IMAGE_SIZE = 400;
 
@@ -266,7 +266,10 @@ export default function Details() {
                 flexDirection: "column",
               }}
             >
-              <CircularProgress color="white" />
+              <img src={JumpingCat} />
+              <Typography variant="h4" sx={{ marginTop: "10px" }}>
+                Loading...
+              </Typography>
             </Box>
           ) : (
             <img

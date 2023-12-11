@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
