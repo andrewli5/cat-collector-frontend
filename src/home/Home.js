@@ -1,4 +1,4 @@
-import { Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
@@ -23,23 +23,18 @@ import Favorites from "../favorites/Favorites";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import SearchUsers from "../searchUsers/SearchUsers";
 import Forbidden from "../admin/Forbidden";
+import { importAll } from "../utils/importAll";
 
 export default function Home() {
   const path = useLocation().pathname;
-  const [user, setUser] = useState(getCurrentUser());
   const [warning, setWarning] = useState(false);
   const [success, setSuccess] = useState(false);
   const [coins, setCoins] = useState(0); // used to force rerender of NavBar
   const coinRate = 1;
 
-  useEffect(() => {
-    if (path === "/") {
-      document.title = "home | " + APP_NAME;
-    }
-    if (getCurrentUser()) {
-      setCoins(getCurrentUser().coins);
-    }
-  }, [path]);
+  const catGifs = importAll(
+    require.context("../assets/gifs", false, /\.(gif)$/)
+  );
 
   const handleCoinClick = () => {
     if (!getCurrentUser()) {
@@ -61,6 +56,21 @@ export default function Home() {
       setSuccess(true);
     }
   };
+
+  const getRandomCatGif = () => {
+    const keys = Object.keys(catGifs);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    return catGifs[randomKey];
+  };
+
+  useEffect(() => {
+    if (path === "/") {
+      document.title = "home | " + APP_NAME;
+    }
+    if (getCurrentUser()) {
+      setCoins(getCurrentUser().coins);
+    }
+  }, []);
 
   return (
     <Container component="main" maxWidth="lg">
@@ -89,6 +99,12 @@ export default function Home() {
             flexDirection: "column",
           }}
         >
+          <Box bgcolor="primary.main" sx={{ marginTop: "15px", marginBottom: "10px" }}>
+            <Typography variant="h3" color="white" sx={{ width: "100vw" }}>
+              {APP_NAME}
+            </Typography>
+          </Box>
+          <img src={getRandomCatGif()} width={"150px"} height={"150px"} />
           <Typography variant="h4" color="white" sx={{ marginTop: 10 }}>
             current coin rate: {coinRate}
             <img
