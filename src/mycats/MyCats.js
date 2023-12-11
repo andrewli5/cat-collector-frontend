@@ -169,11 +169,15 @@ export default function MyCats({ favorites = false, rarity = false }) {
         {getIconsToDisplay().map((catIcon, index) => {
           const currentBreedId = CATICON_TO_BREEDID[catIcon];
           if (currentBreedId === undefined) {
+            // no match was found
             return null;
+          }
+          const rarity = ALL_CAT_RARITIES["data"].find(
+            (b) => b.breed === currentBreedId
+          )["rarity"];
+          if (rarity === "M") {
+            // one of the mythic cats
           } else {
-            const rarity = ALL_CAT_RARITIES["data"].find(
-              (b) => b.breed === currentBreedId
-            )["rarity"];
             const name = catIcon
               .replace(".png", "")
               .replace("_", " ")
@@ -183,7 +187,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
               WebkitFilter: "grayscale(100%)",
               border: "1px solid gray",
             };
-            if (cats.includes(CATICON_TO_BREEDID[catIcon])) {
+            if (cats.includes(currentBreedId)) {
               imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
               textColor = "white";
             }
