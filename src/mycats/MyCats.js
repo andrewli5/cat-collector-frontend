@@ -35,14 +35,14 @@ export default function MyCats({ favorites = false, rarity = false }) {
     var icons = Object.keys(allCatIcons);
     if (favorites && getCurrentUser()) {
       icons = icons.filter((catIcon) => {
-        const currentBreed = CATICON_TO_BREEDID(catIcon);
+        const currentBreed = CATICON_TO_BREEDID[catIcon];
         const userFavorites = getCurrentUser().favorites;
         return userFavorites.includes(currentBreed);
       });
     } else if (rarity) {
       // display icons of the current rarity
       icons = icons.filter((catIcon) => {
-        const currentBreed = CATICON_TO_BREEDID(catIcon);
+        const currentBreed = CATICON_TO_BREEDID[catIcon];
         if (currentBreed === undefined) {
           return false;
         } else {
