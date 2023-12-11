@@ -15,7 +15,6 @@ import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 import UnknownCat from "../assets/unknown_cat.png";
-import { all } from "axios";
 
 export default function MyCats({ favorites = false, rarity = false }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -106,7 +105,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
     // sort all cat icon png/jpg files
     var sortedIcons = Object.keys(allCatIcons).sort();
     var sortedIconsObj = {};
-    const rarities = ALL_CAT_RARITIES["data"];
     if (term === "name") {
       // A-Z sorting but put unowned mythic cats at the end
       sortedIcons.sort((b1, b2) => {
@@ -115,8 +113,8 @@ export default function MyCats({ favorites = false, rarity = false }) {
         if (breed1 === undefined || breed2 === undefined) {
           return breed1 === undefined ? -1 : 1;
         }
-        const b1Rarity = rarities.find((b) => b.breed === breed1)["rarity"];
-        const b2Rarity = rarities.find((b) => b.breed === breed2)["rarity"];
+        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)["rarity"];
+        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)["rarity"];
         if (b1Rarity === "M" || b2Rarity === "M") {
           return b1Rarity === "M" && !cats.includes(CATICON_TO_BREEDID[breed1])
             ? 1
@@ -204,8 +202,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
           if (currentBreedId === undefined) {
             return null;
           }
-          const rarities = ALL_CAT_RARITIES["data"];
-          const rarity = rarities.find((b) => b.breed === currentBreedId)[
+          const rarity = ALL_CAT_RARITIES.find((b) => b.breed === currentBreedId)[
             "rarity"
           ];
           const [name, src] = getIconData(catIcon, currentBreedId, rarity);

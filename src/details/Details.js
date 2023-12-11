@@ -10,11 +10,9 @@ import {
   RARITY_TO_STRING,
 } from "../constants";
 import {
-  Alert,
   Box,
   Chip,
   Grid,
-  Snackbar,
   Typography,
 } from "@mui/material";
 import { importAll } from "../utils/importAll";
@@ -46,13 +44,6 @@ export default function Details() {
   const params = useParams();
   const navigate = useNavigate();
   const breedId = params.id;
-  const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === breedId)[
-    "rarity"
-  ];
-
-  const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
-  );
 
   var cats = [];
   if (getCurrentUser()) {
@@ -185,7 +176,7 @@ export default function Details() {
       setFavorite(true);
     }
 
-    const r = ALL_CAT_RARITIES["data"].find((b) => b.breed === breedId)[
+    const r = ALL_CAT_RARITIES.find((b) => b.breed === breedId)[
       "rarity"
     ];
     var icons = [];
