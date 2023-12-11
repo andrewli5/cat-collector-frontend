@@ -14,6 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
+import UnknownCat from "../assets/unknown_cat.png";
 
 export default function MyCats({ favorites = false, rarity = false }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +22,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
   const navigate = useNavigate();
   const params = useParams();
   const [catIcons, setCatIcons] = useState([]);
+  const [mythicCatIcons, setMythicCatIcons] = useState([]);
 
   var cats = [];
   if (getCurrentUser()) {
@@ -64,7 +66,11 @@ export default function MyCats({ favorites = false, rarity = false }) {
     const icons = importAll(
       require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
     );
+    const mythicIcons = importAll(
+      require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
+    );
     setCatIcons(icons);
+    setMythicCatIcons(mythicIcons);
   };
 
   const reverseFunction = () => {
@@ -175,56 +181,66 @@ export default function MyCats({ favorites = false, rarity = false }) {
           const rarity = ALL_CAT_RARITIES["data"].find(
             (b) => b.breed === currentBreedId
           )["rarity"];
+          var name = "?????";
+          var src = "";
+          var textColor = "grey";
+          var imageStyle = {
+            WebkitFilter: "grayscale(100%)",
+            border: "1px solid gray",
+          };
+          if (cats.includes(currentBreedId)) {
+            imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
+            textColor = "white";
+          }
           if (rarity === "M") {
-            // one of the mythic cats
+            // a mythic cat's icon has "?" display, and its name isn't shown
+            // catIcon can be unknown vs shown
+            // src is unknowncat if the user doesn't own the cat, but if
+            // they do then its just the regular png, stored in assets
+            src =
+              !cats.includes(currentBreedId) || !getCurrentUser()
+                ? UnknownCat
+                : mythicCatIcons[catIcon];
           } else {
-            const name = catIcon
+            name = catIcon
               .replace(".png", "")
               .replace("_", " ")
               .replace(" cat", "");
-            var textColor = "grey";
-            var imageStyle = {
-              WebkitFilter: "grayscale(100%)",
-              border: "1px solid gray",
-            };
-            if (cats.includes(currentBreedId)) {
-              imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
-              textColor = "white";
-            }
-            return (
-              <Grid
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                item
-                xs={2}
-                key={index}
-                sx={{ marginBottom: 3 }}
-                className="hover"
-              >
-                <Link
-                  textAlign="center"
-                  underline="none"
-                  color="inherit"
-                  href={`/details/${catIconToBreedId(catIcon)}`}
-                >
-                  <img
-                    style={{
-                      ...imageStyle,
-                      borderRadius: "5px",
-                    }}
-                    src={catIcons[catIcon]}
-                    width={60}
-                    height={60}
-                    alt={catIcon}
-                  />
-                  <Typography variant="h5" color={textColor} textAlign="center">
-                    {name}
-                  </Typography>
-                </Link>
-              </Grid>
-            );
+            src = catIcons[catIcon];
           }
+          return (
+            <Grid
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              item
+              xs={2}
+              key={index}
+              sx={{ marginBottom: 3 }}
+              className="hover"
+            >
+              <Link
+                textAlign="center"
+                underline="none"
+                color="inherit"
+                href={`/details/${catIconToBreedId(catIcon)}`}
+              >
+                <img
+                  style={{
+                    ...imageStyle,
+                    borderRadius: "5px",
+                  }}
+                  src={src}
+                  width={60}
+                  height={60}
+                  alt={catIcon}
+                />
+                <Typography variant="h5" color={textColor} textAlign="center">
+                  {name}
+                </Typography>
+              </Link>
+            </Grid>
+          );
         })}
       </Grid>
     </>
