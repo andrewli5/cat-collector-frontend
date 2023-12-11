@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
@@ -13,6 +13,7 @@ import Admin from "../admin/Admin";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
 import {
+  catGif,
   getCurrentUser,
   storeCurrentUser,
   updateUserCoinsByUserId,
@@ -24,43 +25,48 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import SearchUsers from "../searchUsers/SearchUsers";
 import Forbidden from "../admin/Forbidden";
 import { importAll } from "../utils/importAll";
+import { Check, CheckCircle } from "@mui/icons-material";
 
 export default function Home() {
   const path = useLocation().pathname;
   const [warning, setWarning] = useState(false);
   const [success, setSuccess] = useState(false);
   const [coins, setCoins] = useState(0); // used to force rerender of NavBar
-  const coinRate = 1;
+  const [timeoutId, setTimeoutId] = useState(null); // used to debounce save to cloud
+  const [effectCount, setEffectCount] = useState(0);
+  const [saving, setSaving] = useState(false);
 
-  const catGifs = importAll(
-    require.context("../assets/gifs", false, /\.(gif)$/)
-  );
+  useEffect(() => {
+    if (effectCount < 2) {
+      setEffectCount(effectCount + 1);
+      return;
+    }
+    setSaving(true);
+
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    const newTimeoutId = setTimeout(() => {
+      updateUserCoinsByUserId(getCurrentUser()._id, coins, () => {
+        setSaving(false);
+      });
+    }, 1500);
+    setTimeoutId(newTimeoutId);
+  }, [coins]);
+
+  var coinsPerClick = 50;
+  if (getCurrentUser()) {
+    coinsPerClick = getCurrentUser().coinsPerClick;
+  }
 
   const handleCoinClick = () => {
     if (!getCurrentUser()) {
       setWarning(true);
       return;
     } else {
-      storeCurrentUser({ ...getCurrentUser(), coins: coins + coinRate });
-      setCoins(coins + 1);
+      storeCurrentUser({ ...getCurrentUser(), coins: coins + coinsPerClick });
+      setCoins(coins + coinsPerClick);
     }
-  };
-
-  const handleSaveCoins = async () => {
-    if (!getCurrentUser()) {
-      setWarning(true);
-      return;
-    }
-    const response = await updateUserCoinsByUserId(getCurrentUser()._id, coins);
-    if (response.acknowledged) {
-      setSuccess(true);
-    }
-  };
-
-  const getRandomCatGif = () => {
-    const keys = Object.keys(catGifs);
-    const randomKey = keys[Math.floor(Math.random() * keys.length)];
-    return catGifs[randomKey];
   };
 
   useEffect(() => {
@@ -99,14 +105,17 @@ export default function Home() {
             flexDirection: "column",
           }}
         >
-          <Box bgcolor="primary.main" sx={{ marginTop: "15px", marginBottom: "10px" }}>
+          <Box
+            bgcolor="primary.main"
+            sx={{ marginTop: "15px", marginBottom: "10px" }}
+          >
             <Typography variant="h3" color="white" sx={{ width: "100vw" }}>
               {APP_NAME}
             </Typography>
           </Box>
-          <img src={getRandomCatGif()} width={"150px"} height={"150px"} />
+          <img src={catGif} width={"150px"} height={"150px"} />
           <Typography variant="h4" color="white" sx={{ marginTop: 10 }}>
-            current coin rate: {coinRate}
+            current coin rate: {coinsPerClick}
             <img
               src={coinIcon}
               width={20}
@@ -131,15 +140,25 @@ export default function Home() {
             />
             click for coins!
           </Button>
-          <Button
-            variant="contained"
-            color="tertiary"
-            onClick={handleSaveCoins}
-            sx={{ maxWidth: 300 }}
-          >
-            <CloudUploadIcon sx={{ marginRight: 1.3 }} />
-            save coin balance to cloud
-          </Button>
+          {saving ? (
+            <Typography
+              variant="body1"
+              color="gray"
+              display="flex"
+              alignItems="center"
+            >
+              saving...
+            </Typography>
+          ) : (
+            <Typography
+              variant="body1"
+              color="gray"
+              display="flex"
+              alignItems="center"
+            >
+              <Check fontSize="10px" sx={{marginRight: 1}}/> saved!
+            </Typography>
+          )}
         </div>
       )}
       <Routes>
