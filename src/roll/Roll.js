@@ -31,8 +31,17 @@ export default function Roll({ setCoins }) {
   );
 
   var results = null;
+
   const handleRoll = async () => {
     setIsRolling(true);
+    if (!getCurrentUser()) {
+      setTimeout(() => {
+        setError(true);
+        setErrorMessage("please sign in to roll.");
+        setIsRolling(false);
+      }, 150);
+      return;
+    }
     try {
       results = await client.rollCatForUser(getCurrentUser()._id);
     } catch (error) {
