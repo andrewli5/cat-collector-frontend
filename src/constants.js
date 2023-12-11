@@ -52,7 +52,6 @@ export const BREEDID_TO_CATICON = {
   kral: "kornish_rex.png",
   lape: "laperm.png",
   mcoo: "maine_coon.png",
-  mala: "malayan.png",
   manx: "manx.png",
   munc: "munchkin.png",
   nebe: "nebelung.png",
