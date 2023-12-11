@@ -43,12 +43,12 @@ export default function Details() {
   const params = useParams();
   const navigate = useNavigate();
   const breedId = params.id;
-  const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === breedId)[
+  const rarity = ALL_CAT_RARITIES.find((b) => b.breed === breedId)[
     "rarity"
   ];
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var cats = [];
@@ -95,7 +95,7 @@ export default function Details() {
             headers: {
               "x-api-key": CAT_API_KEY,
             },
-          }
+          },
         );
         const data = await response.json();
         for (const datum of data) {
@@ -161,7 +161,7 @@ export default function Details() {
         setFavorite(false);
         await client.removeUserFavorites(getCurrentUser()._id, breedId);
         const newFavorites = getCurrentUser().favorites.filter(
-          (e) => e !== breedId
+          (e) => e !== breedId,
         );
         const user = { ...getCurrentUser(), favorites: newFavorites };
         storeCurrentUser(user);

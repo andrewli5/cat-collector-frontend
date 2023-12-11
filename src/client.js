@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LOCAL_API_URL } from "./constants";
 import { importAll } from "./utils/importAll";
+import { useLocation } from "react-router-dom";
 
 export const BASE_API_URL = process.env.REACT_APP_API_URL || LOCAL_API_URL;
 export const USERS_API = `${BASE_API_URL}/users`;
@@ -24,7 +25,11 @@ export const clearBrowserStorage = () => {
 };
 
 // USERS API FUNCTIONS
-export const updateUserCoinsByUserId = async (userId, coins, completionHandler) => {
+export const updateUserCoinsByUserId = async (
+  userId,
+  coins,
+  completionHandler,
+) => {
   const response = await REQUEST.put(`${USERS_API}/${userId}/coins`, {
     coins: coins,
   });
@@ -75,6 +80,13 @@ export const getUserByUsername = async (username) => {
   return response.data;
 };
 
+export const purchaseUpgradeForUser = async (userId, upgrade) => {
+  const response = await REQUEST.post(`${USERS_API}/${userId}/upgrade`, {
+    upgrade,
+  });
+  return response.data;
+};
+
 // CATS API FUNCTIONS
 export const getCatsByUserId = async (userId) => {
   const response = await REQUEST.get(`${CATS_API}/ownerships/${userId}`);
@@ -105,10 +117,7 @@ export const rollCatForUser = async (userId) => {
   return response.data;
 };
 
-
-const catGifs = importAll(
-  require.context("./assets/gifs", false, /\.(gif)$/)
-);
+const catGifs = importAll(require.context("./assets/gifs", false, /\.(gif)$/));
 
 const getRandomCatGif = () => {
   const keys = Object.keys(catGifs);
@@ -117,5 +126,14 @@ const getRandomCatGif = () => {
 };
 
 // update the following on every page load
-export const ALL_CAT_RARITIES = await REQUEST.get(`${CATS_API}/rarities`);
+if (!localStorage.getItem("rarities")) {
+  await REQUEST.get(`${CATS_API}/rarities`).then((response) => {
+    localStorage.setItem("rarities", JSON.stringify(response.data));
+  });
+}
+export const ALL_CAT_RARITIES = JSON.parse(localStorage.getItem("rarities"));
 export const catGif = getRandomCatGif();
+if (getCurrentUser()) {
+  const updatedUser = await getUserDataByUserId(getCurrentUser()._id);
+  storeCurrentUser({...getCurrentUser(), ...updatedUser});
+}

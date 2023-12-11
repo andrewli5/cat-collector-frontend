@@ -46,9 +46,8 @@ export default function MyCats({ favorites = false, rarity = false }) {
         if (currentBreed === undefined) {
           return false;
         } else {
-          const all_rarities = ALL_CAT_RARITIES;
-          const currentRarity = all_rarities["data"].find(
-            (b) => b.breed === currentBreed
+          const currentRarity = ALL_CAT_RARITIES.find(
+            (b) => b.breed === currentBreed,
           )["rarity"];
           return currentRarity === params.rarity;
         }
@@ -62,7 +61,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   const resetFunction = () => {
     const icons = importAll(
-      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
     );
     setCatIcons(icons);
   };
@@ -87,15 +86,14 @@ export default function MyCats({ favorites = false, rarity = false }) {
       });
       setCatIcons(sortedIconsObj);
     } else if (term === "rarity") {
-      const rarities = ALL_CAT_RARITIES["data"];
       const sortedIcons = Object.keys(catIcons).sort((b1, b2) => {
         const breed1 = CATICON_TO_BREEDID[b1];
         const breed2 = CATICON_TO_BREEDID[b2];
         if (breed1 === undefined || breed2 === undefined) {
           return 0;
         }
-        const b1Rarity = rarities.find((b) => b.breed === breed1)["rarity"];
-        const b2Rarity = rarities.find((b) => b.breed === breed2)["rarity"];
+        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)["rarity"];
+        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)["rarity"];
         return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
       });
       const sortedIconsObj = {};
@@ -119,7 +117,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   useEffect(() => {
     document.title =
-      (favorites ? "favorites" : rarity ? "rarities" : "my cats | ") + APP_NAME;
+      (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") + APP_NAME;
     if (!getCurrentUser() && favorites) {
       navigate("/signin");
     }
@@ -144,7 +142,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
               cats.length +
               "/" +
               (Object.keys(catIcons).length - 1) +
-              ")"
+              ")",
           );
         }
       }
@@ -171,8 +169,8 @@ export default function MyCats({ favorites = false, rarity = false }) {
           if (currentBreedId === undefined) {
             return null;
           } else {
-            const rarity = ALL_CAT_RARITIES["data"].find(
-              (b) => b.breed === currentBreedId
+            const rarity = ALL_CAT_RARITIES.find(
+              (b) => b.breed === currentBreedId,
             )["rarity"];
             const name = catIcon
               .replace(".png", "")
