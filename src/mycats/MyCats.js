@@ -192,10 +192,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
             textColor = "white";
           }
           if (rarity === "M") {
-            // a mythic cat's icon has "?" display, and its name isn't shown
-            // catIcon can be unknown vs shown
-            // src is unknowncat if the user doesn't own the cat, but if
-            // they do then its just the regular png, stored in assets
             src =
               !cats.includes(currentBreedId) || !getCurrentUser()
                 ? UnknownCat
@@ -222,7 +218,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
                 textAlign="center"
                 underline="none"
                 color="inherit"
-                href={`/details/${catIconToBreedId(catIcon)}`}
+                href={(rarity === "M" && !cats.includes(currentBreedId) ? "/details/???" :`/details/${catIconToBreedId(catIcon)}`)}
               >
                 <img
                   style={{

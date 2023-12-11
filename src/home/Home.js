@@ -24,6 +24,7 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import SearchUsers from "../searchUsers/SearchUsers";
 import Forbidden from "../admin/Forbidden";
 import { importAll } from "../utils/importAll";
+import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -152,6 +153,7 @@ export default function Home() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/details/:id" element={<Details />} />
+        <Route path="/details/???" element={<UnknownMythicCatDetails />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/find-users/*" element={<SearchUsers />} />
         <Route path="/forbidden" element={<Forbidden />} />

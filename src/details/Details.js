@@ -184,6 +184,10 @@ export default function Details() {
     var icons = [];
     setRarity(r);
     if (r === "M") {
+      if (!cats.includes(breedId)) {
+        // nav away from this page because they don't even own this mythic cat
+        navigate("/details/???");
+      }
       icons = importAll(
         require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
       );
