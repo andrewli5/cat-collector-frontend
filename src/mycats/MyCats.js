@@ -177,7 +177,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
             const name = catIcon
               .replace(".png", "")
               .replace("_", " ")
-              .replace("cat", "");
+              .replace(" cat", "");
             var textColor = "grey";
             var imageStyle = {
               WebkitFilter: "grayscale(100%)",
