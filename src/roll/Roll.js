@@ -30,6 +30,10 @@ export default function Roll({ setCoins }) {
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
+  const mythicCatIcons = importAll(
+    require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/),
+  );
+
   var results = null;
 
   const handleRoll = async () => {
@@ -82,9 +86,10 @@ export default function Roll({ setCoins }) {
     }, 100);
 
     setTimeout(() => {
+      const allIcons = Object.assign({}, catIcons, mythicCatIcons);
       setIsRolling(false);
       clearInterval(interval);
-      setDisplayedIcon(catIcons[rolledCatIcon]);
+      setDisplayedIcon(allIcons[rolledCatIcon]);
       setDisplayResults(true);
       updateCoinAmt(getCurrentUser().coins + results["addedCoins"]);
       if (!results["duplicate"]) {
