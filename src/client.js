@@ -1,5 +1,6 @@
 import axios from "axios";
 import { LOCAL_API_URL } from "./constants";
+import { importAll } from "./utils/importAll";
 
 export const BASE_API_URL = process.env.REACT_APP_API_URL || LOCAL_API_URL;
 export const USERS_API = `${BASE_API_URL}/users`;
@@ -8,8 +9,6 @@ export const CATS_API = `${BASE_API_URL}/cats`;
 const REQUEST = axios.create({
   withCredentials: true,
 });
-
-export const ALL_CAT_RARITIES = await REQUEST.get(`${CATS_API}/rarities`);
 
 // LOCAL FUNCTIONS
 export const getCurrentUser = () => {
@@ -25,11 +24,11 @@ export const clearBrowserStorage = () => {
 };
 
 // USERS API FUNCTIONS
-export const updateUserCoinsByUserId = async (userId, coins) => {
-  console.log(`${USERS_API}/${userId}/coins`, coins);
+export const updateUserCoinsByUserId = async (userId, coins, completionHandler) => {
   const response = await REQUEST.put(`${USERS_API}/${userId}/coins`, {
     coins: coins,
   });
+  completionHandler();
   return response.data;
 };
 
@@ -105,3 +104,18 @@ export const rollCatForUser = async (userId) => {
   const response = await REQUEST.get(`${CATS_API}/roll/${userId}`);
   return response.data;
 };
+
+
+const catGifs = importAll(
+  require.context("./assets/gifs", false, /\.(gif)$/)
+);
+
+const getRandomCatGif = () => {
+  const keys = Object.keys(catGifs);
+  const randomKey = keys[Math.floor(Math.random() * keys.length)];
+  return catGifs[randomKey];
+};
+
+// update the following on every page load
+export const ALL_CAT_RARITIES = await REQUEST.get(`${CATS_API}/rarities`);
+export const catGif = getRandomCatGif();
