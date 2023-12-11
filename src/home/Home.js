@@ -23,6 +23,7 @@ import Favorites from "../favorites/Favorites";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import SearchUsers from "../searchUsers/SearchUsers";
 import Forbidden from "../admin/Forbidden";
+import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import { Check } from "@mui/icons-material";
 
 export default function Home() {
@@ -169,6 +170,7 @@ export default function Home() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/details/:id" element={<Details />} />
+        <Route path="/details/???" element={<UnknownMythicCatDetails />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/find-users/*" element={<SearchUsers />} />
         <Route path="/forbidden" element={<Forbidden />} />

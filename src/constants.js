@@ -77,6 +77,8 @@ export const BREEDID_TO_CATICON = {
   toyg: "toyger.png",
   tvan: "turkish_van.png",
   ycho: "york_chocolate.png",
+  rory: "rory.jpg",
+  mimi: "mimi.jpg"
 };
 
 export const CATICON_TO_BREEDID = {};
@@ -90,6 +92,7 @@ export const RARITY_TO_COLOR = {
   R: "blue",
   E: "rgba(128, 0, 128, 1)",
   L: "rgba(255, 255, 0, 1)",
+  M: "gold",
 };
 
 export const RARITY_TO_STRING = {
@@ -98,6 +101,7 @@ export const RARITY_TO_STRING = {
   R: "Rare",
   E: "Epic",
   L: "Legendary",
+  M: "Mythic",
 };
 
 export const RARITY_TO_VALUE = {
@@ -106,6 +110,7 @@ export const RARITY_TO_VALUE = {
   R: 3,
   E: 4,
   L: 5,
+  M: 6,
 };
 
 const UPGRADE_DESCRIPTIONS = {

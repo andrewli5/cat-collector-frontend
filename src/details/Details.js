@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import mythicCatData from "../assets/mythicCatData.json";
 import {
   APP_NAME,
   CAT_API_KEY,
@@ -9,12 +10,9 @@ import {
   RARITY_TO_STRING,
 } from "../constants";
 import {
-  Alert,
   Box,
   Chip,
-  CircularProgress,
   Grid,
-  Snackbar,
   Typography,
 } from "@mui/material";
 import { importAll } from "../utils/importAll";
@@ -28,14 +26,17 @@ import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import { ALL_CAT_RARITIES } from "../client";
 import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import JumpingCat from "../assets/gifs/jumping_cat.gif";
 
 const IMAGE_SIZE = 400;
 
 export default function Details() {
   const [breedData, setBreedData] = useState("");
+  const [rarity, setRarity] = useState("");
   const [imageUrls, setImageUrls] = useState([]);
   const [imageIdx, setImageIdx] = useState(0);
   const [catIcon, setCatIcon] = useState("");
+  const [catIcons, setCatIcons] = useState([]);
   const [owned, setOwned] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [warning, setWarning] = useState(false);
@@ -43,13 +44,6 @@ export default function Details() {
   const params = useParams();
   const navigate = useNavigate();
   const breedId = params.id;
-  const rarity = ALL_CAT_RARITIES.find((b) => b.breed === breedId)[
-    "rarity"
-  ];
-
-  const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
-  );
 
   var cats = [];
   if (getCurrentUser()) {
@@ -63,6 +57,66 @@ export default function Details() {
 
   const handleChipClick = () => {
     navigate(`/rarities/${rarity}`);
+  };
+
+  function nextImage() {
+    setImageIdx((imageIdx + 1) % imageUrls.length);
+  }
+
+  function prevImage() {
+    const idx = imageIdx - 1;
+    if (idx < 0) {
+      setImageIdx(imageUrls.length - 1);
+    } else {
+      setImageIdx((imageIdx - 1) % imageUrls.length);
+    }
+  }
+
+  const handleFavorite = async () => {
+    if (!getCurrentUser()) {
+      setLogInWarning(true);
+      return;
+    } else {
+      if (favorite) {
+        setFavorite(false);
+        await client.removeUserFavorites(getCurrentUser()._id, breedId);
+        const newFavorites = getCurrentUser().favorites.filter(
+          (e) => e !== breedId
+        );
+        const user = { ...getCurrentUser(), favorites: newFavorites };
+        storeCurrentUser(user);
+      } else {
+        setFavorite(true);
+        await client.addUserFavorites(getCurrentUser()._id, breedId);
+        const newFavorites = getCurrentUser().favorites;
+        newFavorites.push(breedId);
+        const user = { ...getCurrentUser(), favorites: newFavorites };
+        storeCurrentUser(user);
+      }
+    }
+  };
+
+  const getMythicCatImages = () => {
+    // rory, mimi
+    var images = [];
+    if (breedId === "rory") {
+      images = importAll(
+        require.context("../assets/rory", false, /\.(png|jpe?g|svg)$/)
+      );
+    } else if (breedId === "mimi") {
+      images = importAll(
+        require.context("../assets/mimi", false, /\.(png|jpe?g|svg)$/)
+      );
+    }
+    return images;
+  };
+
+  const getMythicCatData = () => {
+    if (breedId === "rory") {
+      return mythicCatData.rory;
+    } else if (breedId === "mimi") {
+      return mythicCatData.mimi;
+    }
   };
 
   useEffect(() => {
@@ -122,8 +176,33 @@ export default function Details() {
       setFavorite(true);
     }
 
-    getImageURLS();
-    getBreedData();
+    const r = ALL_CAT_RARITIES.find((b) => b.breed === breedId)[
+      "rarity"
+    ];
+    var icons = [];
+    setRarity(r);
+    if (r === "M") {
+      if (!cats.includes(breedId)) {
+        // nav away from this page because they don't even own this mythic cat
+        navigate("/details/???");
+      }
+      icons = importAll(
+        require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
+      );
+      const images = getMythicCatImages();
+      const currentBreed = getMythicCatData();
+      setImageUrls(Object.values(images));
+      setBreedData(currentBreed);
+    } else {
+      icons = importAll(
+        require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+      );
+
+      getImageURLS();
+      getBreedData();
+    }
+
+    setCatIcons(icons);
   }, []);
 
   useEffect(() => {
@@ -135,46 +214,10 @@ export default function Details() {
     const catIconName =
       breedData.name === undefined
         ? ""
-        : breedData.name.toLowerCase().replaceAll(" ", "_") + ".png";
+        : breedData.name.toLowerCase().replaceAll(" ", "_") +
+          (rarity === "M" ? ".jpg" : ".png");
     setCatIcon(catIconName);
   }, [breedData]);
-
-  function nextImage() {
-    setImageIdx((imageIdx + 1) % imageUrls.length);
-  }
-
-  function prevImage() {
-    const idx = imageIdx - 1;
-    if (idx < 0) {
-      setImageIdx(imageUrls.length - 1);
-    } else {
-      setImageIdx((imageIdx - 1) % imageUrls.length);
-    }
-  }
-
-  const handleFavorite = async () => {
-    if (!getCurrentUser()) {
-      setLogInWarning(true);
-      return;
-    } else {
-      if (favorite) {
-        setFavorite(false);
-        await client.removeUserFavorites(getCurrentUser()._id, breedId);
-        const newFavorites = getCurrentUser().favorites.filter(
-          (e) => e !== breedId,
-        );
-        const user = { ...getCurrentUser(), favorites: newFavorites };
-        storeCurrentUser(user);
-      } else {
-        setFavorite(true);
-        await client.addUserFavorites(getCurrentUser()._id, breedId);
-        const newFavorites = getCurrentUser().favorites;
-        newFavorites.push(breedId);
-        const user = { ...getCurrentUser(), favorites: newFavorites };
-        storeCurrentUser(user);
-      }
-    }
-  };
 
   return (
     <div>
@@ -221,7 +264,10 @@ export default function Details() {
                 flexDirection: "column",
               }}
             >
-              <CircularProgress color="white" />
+              <img src={JumpingCat} />
+              <Typography variant="h4" sx={{ marginTop: "10px" }}>
+                Loading...
+              </Typography>
             </Box>
           ) : (
             <img
