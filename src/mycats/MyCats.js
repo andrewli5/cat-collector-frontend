@@ -120,6 +120,9 @@ export default function MyCats({ favorites = false, rarity = false }) {
   useEffect(() => {
     document.title =
       (favorites ? "favorites" : rarity ? "rarities" : "my cats | ") + APP_NAME;
+    if (!getCurrentUser() && favorites) {
+      navigate("/signin");
+    }
 
     resetFunction();
   }, []);
