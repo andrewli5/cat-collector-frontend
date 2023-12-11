@@ -27,20 +27,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
     cats = getCurrentUser().cats;
   }
 
-  useEffect(() => {
-    document.title =
-      (favorites ? "favorites" : rarity ? "rarities" : "my cats") +
-      " | " +
-      APP_NAME;
-    if (!getCurrentUser()) {
-      navigate("/signin");
-    }
-  }, []);
-
-  if (!getCurrentUser()) {
-    return null;
-  }
-
   function catIconToBreedId(catIcon) {
     return CATICON_TO_BREEDID[catIcon];
   }
@@ -53,7 +39,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
         const userFavorites = getCurrentUser().favorites;
         return userFavorites.includes(currentBreed);
       });
-    } else if (rarity && getCurrentUser()) {
+    } else if (rarity) {
       // display icons of the current rarity
       icons = Object.keys(catIcons).filter((catIcon) => {
         const currentBreed = catIconToBreedId(catIcon);
@@ -132,10 +118,8 @@ export default function MyCats({ favorites = false, rarity = false }) {
   };
 
   useEffect(() => {
-    document.title = (favorites ? "favorites" : "my cats | ") + APP_NAME;
-    if (!getCurrentUser()) {
-      navigate("/signin");
-    }
+    document.title =
+      (favorites ? "favorites" : rarity ? "rarities" : "my cats | ") + APP_NAME;
 
     resetFunction();
   }, []);
