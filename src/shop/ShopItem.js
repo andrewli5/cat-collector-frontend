@@ -8,14 +8,61 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { getCurrentUser, purchaseUpgradeForUser, storeCurrentUser } from "../client";
+import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import { useState } from "react";
+import { LoadingButton } from "@mui/lab";
 
-export default function ShopItem({ title, items }) {
-  const handlePurchase = () => {
-    // TODO: this
+export default function ShopItem({ title, items, setCoins, updateItems }) {
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handlePurchase = async (item) => {
+    if (!getCurrentUser()) {
+      setError(true);
+      setErrorMessage("please sign in to purchase.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await purchaseUpgradeForUser(getCurrentUser()._id, item.id);
+      setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+        setCoins(getCurrentUser().coins - item.price);
+        storeCurrentUser({...getCurrentUser(), coins: getCurrentUser().coins - item.price, upgrades: [...getCurrentUser().upgrades, item.id]});
+        updateItems();
+      }, 500);
+    } catch (error) {
+      if (error.response) {
+        setTimeout(() => {
+          setLoading(false);
+          setError(true);
+          setErrorMessage(error.response.data.message);
+        }, 500);
+        return;
+      }
+    }
   };
 
   return (
     <TableContainer>
+      <NotificationSnackbar
+        open={success}
+        setOpen={setSuccess}
+        severity="success"
+        message="thank you for your purchase!"
+        autoHideDuration={3000}
+      />
+      <NotificationSnackbar
+        open={error}
+        setOpen={setError}
+        severity="error"
+        message={errorMessage.toLowerCase()}
+        autoHideDuration={3000}
+      />
       <Table stickyHeader style={{ backgroundColor: "rgb(25, 18, 31)" }}>
         <TableHead>
           <TableRow>
@@ -26,26 +73,28 @@ export default function ShopItem({ title, items }) {
                 color="white"
                 textAlign="center"
               >
-                {title}
+                {title.toLowerCase()}
               </Typography>{" "}
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell colSpan={2}>
-              <Typography color="white" textAlign="center">
-                Name
+            <TableCell colSpan={1}></TableCell>
+            <TableCell colSpan={1}>
+              <Typography color="white" variant="h5" textAlign="left">
+                name
               </Typography>{" "}
             </TableCell>
             <TableCell colSpan={1}>
-              <Typography color="white" textAlign="right">
-                Description
+              <Typography color="white" variant="h5" textAlign="left">
+                description
               </Typography>{" "}
             </TableCell>
-            <TableCell colSpan={2}>
-              <Typography color="white" textAlign="left">
-                <img src={Coin} width={15} height={15} />
+            <TableCell colSpan={1}>
+              <Typography color="white" variant="h5" textAlign="left">
+                current
               </Typography>{" "}
             </TableCell>
+            <TableCell colSpan={1}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -71,37 +120,37 @@ export default function ShopItem({ title, items }) {
                 }
               </TableCell>
               <TableCell align="left">
-                <Typography variant="h6">{item.title} </Typography>
+                <Typography variant="h5">
+                  {item.title.toLowerCase()}{" "}
+                </Typography>
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="left">
                 {" "}
-                <Typography variant="h6">{item.description} </Typography>
+                <Typography variant="h5">
+                  {item.description.toLowerCase()}{" "}
+                </Typography>
               </TableCell>
-              <TableCell
-                style={{ paddingRight: "0px", paddingLeft: "0px" }}
-                align="right"
-              >
-                <Typography
-                  variant="h6"
-                  display="inline"
-                  noWrap
-                  style={{ paddingRight: "0px", display: "inline-block" }}
-                >
-                  {item.price}
+              <TableCell align="left">
+                {" "}
+                <Typography variant="h5" color="gray">
+                  {item.current.toLowerCase()}{" "}
                 </Typography>
               </TableCell>
               <TableCell xs={1} md={1} align="right">
                 {
-                  <Button variant="contained" onClick={handlePurchase}>
-                    <Typography variant="h6" color={"white"}>
-                      Buy{" "}
+                  <LoadingButton
+                    variant="contained"
+                    onClick={() => handlePurchase(item)}
+                    loading={loading}
+                  >
+                    <Typography variant="h5" color="white" marginRight={3}>
+                      Buy
                     </Typography>
-                    <img
-                      src={"/images/" + "money_bag.png"}
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
+                    <Typography variant="h5" color="white" marginRight={0.7}>
+                      {item.price.toLocaleString()}
+                    </Typography>
+                    <img src={Coin} width={15} height={15} />
+                  </LoadingButton>
                 }
               </TableCell>
             </TableRow>

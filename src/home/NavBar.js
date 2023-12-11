@@ -63,7 +63,7 @@ export default function NavBar({ coins }) {
         }}
       >
         <Typography variant="h4" noWrap marginRight={1}>
-           {coins.toLocaleString()}
+          {coins.toLocaleString()}
         </Typography>
         <img src={coinIcon} style={{ height: 40, width: 40 }} />
       </div>

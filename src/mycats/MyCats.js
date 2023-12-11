@@ -46,9 +46,8 @@ export default function MyCats({ favorites = false, rarity = false }) {
         if (currentBreed === undefined) {
           return false;
         } else {
-          const all_rarities = ALL_CAT_RARITIES;
-          const currentRarity = all_rarities["data"].find(
-            (b) => b.breed === currentBreed
+          const currentRarity = ALL_CAT_RARITIES.find(
+            (b) => b.breed === currentBreed,
           )["rarity"];
           return currentRarity === params.rarity;
         }
@@ -83,7 +82,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   const resetFunction = () => {
     const icons = importAll(
-      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
     );
     const mythicIcons = importAll(
       require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
@@ -133,8 +132,8 @@ export default function MyCats({ favorites = false, rarity = false }) {
         if (breed1 === undefined || breed2 === undefined) {
           return breed1 === undefined ? -1 : 1;
         }
-        const b1Rarity = rarities.find((b) => b.breed === breed1)["rarity"];
-        const b2Rarity = rarities.find((b) => b.breed === breed2)["rarity"];
+        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)["rarity"];
+        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)["rarity"];
         return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
       });
     } else if (term === "owned") {
@@ -153,7 +152,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   useEffect(() => {
     document.title =
-      (favorites ? "favorites" : rarity ? "rarities" : "my cats | ") + APP_NAME;
+      (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") + APP_NAME;
     if (!getCurrentUser() && favorites) {
       navigate("/signin");
     }
@@ -178,7 +177,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
               cats.length +
               "/" +
               (Object.keys(allCatIcons).length - 1) +
-              ")"
+              ")",
           );
         }
       }

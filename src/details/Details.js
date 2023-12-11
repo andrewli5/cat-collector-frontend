@@ -46,6 +46,13 @@ export default function Details() {
   const params = useParams();
   const navigate = useNavigate();
   const breedId = params.id;
+  const rarity = ALL_CAT_RARITIES["data"].find((b) => b.breed === breedId)[
+    "rarity"
+  ];
+
+  const catIcons = importAll(
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+  );
 
   var cats = [];
   if (getCurrentUser()) {
@@ -151,7 +158,7 @@ export default function Details() {
             headers: {
               "x-api-key": CAT_API_KEY,
             },
-          }
+          },
         );
         const data = await response.json();
         for (const datum of data) {

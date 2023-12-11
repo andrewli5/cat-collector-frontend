@@ -10,7 +10,6 @@ import NavBar from "./NavBar";
 import Roll from "../roll/Roll";
 import Shop from "../shop/Shop";
 import Admin from "../admin/Admin";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import coinIcon from "../assets/coin_icon.png";
 import {
   catGif,
@@ -24,9 +23,8 @@ import Favorites from "../favorites/Favorites";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import SearchUsers from "../searchUsers/SearchUsers";
 import Forbidden from "../admin/Forbidden";
-import { importAll } from "../utils/importAll";
-import { Check, CheckCircle } from "@mui/icons-material";
 import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
+import { Check } from "@mui/icons-material";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -157,7 +155,7 @@ export default function Home() {
               display="flex"
               alignItems="center"
             >
-              <Check fontSize="10px" sx={{marginRight: 1}}/> saved!
+              <Check fontSize="10px" sx={{ marginRight: 1 }} /> saved!
             </Typography>
           )}
         </div>
@@ -168,7 +166,7 @@ export default function Home() {
         <Route path="/search" element={<EmptySearch />} />
         <Route path="/search/:query" element={<Search />} />
         <Route path="/roll" element={<Roll setCoins={setCoins} />} />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop" element={<Shop setCoins={setCoins} />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/details/:id" element={<Details />} />
