@@ -1,0 +1,24 @@
+{
+  "rory": {
+    "name": "rory",
+    "origin": "Who knows???",
+    "weight": { "imperial": "9" },
+    "temperament": "Food motivated, VERY VERY VOCAL, clingy, kinda dumb.",
+    "description": "Look at him. He's literally just a silly goofy little boy.",
+    "adaptability": 2,
+    "affection_level": 10,
+    "energy_level": 8,
+    "intelligence": 1
+  },
+  "mimi": {
+    "name": "mimi",
+    "origin": "Who knows???",
+    "weight": { "imperial": "9" },
+    "temperament": "Food motivated, VERY VERY VOCAL, clingy, kinda dumb.",
+    "description": "Look at him. He's literally just a silly goofy little boy.",
+    "adaptability": 2,
+    "affection_level": 10,
+    "energy_level": 8,
+    "intelligence": 1
+  }
+}
