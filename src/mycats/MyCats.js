@@ -34,16 +34,16 @@ export default function MyCats({ favorites = false, rarity = false }) {
   }
 
   function getIconsToDisplay() {
-    var icons = [];
+    var icons = Object.keys(catIcons).concat(Object.keys(mythicCatIcons));
     if (favorites && getCurrentUser()) {
-      icons = Object.keys(catIcons).filter((catIcon) => {
+      icons = icons.filter((catIcon) => {
         const currentBreed = catIconToBreedId(catIcon);
         const userFavorites = getCurrentUser().favorites;
         return userFavorites.includes(currentBreed);
       });
     } else if (rarity) {
       // display icons of the current rarity
-      icons = Object.keys(catIcons).filter((catIcon) => {
+      icons = icons.filter((catIcon) => {
         const currentBreed = catIconToBreedId(catIcon);
         if (currentBreed === undefined) {
           return false;
@@ -55,9 +55,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
           return currentRarity === params.rarity;
         }
       });
-    } else {
-      // display all icons on mycats page
-      icons = Object.keys(catIcons);
     }
     return icons;
   }
@@ -176,11 +173,13 @@ export default function MyCats({ favorites = false, rarity = false }) {
           const currentBreedId = CATICON_TO_BREEDID[catIcon];
           if (currentBreedId === undefined) {
             // no match was found
+            console.log("no match was found for " + catIcon);
             return null;
           }
-          const rarity = ALL_CAT_RARITIES["data"].find(
-            (b) => b.breed === currentBreedId
-          )["rarity"];
+          const rarities = ALL_CAT_RARITIES["data"];
+          const rarity = rarities.find((b) => b.breed === currentBreedId)[
+            "rarity"
+          ];
           var name = "?????";
           var src = "";
           var textColor = "grey";

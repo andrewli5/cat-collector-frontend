@@ -77,6 +77,8 @@ export const BREEDID_TO_CATICON = {
   toyg: "toyger.png",
   tvan: "turkish_van.png",
   ycho: "york_chocolate.png",
+  rory: "rory.jpg",
+  mimi: "mimi.jpg"
 };
 
 export const CATICON_TO_BREEDID = {};
