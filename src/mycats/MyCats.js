@@ -15,12 +15,14 @@ import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 import UnknownCat from "../assets/unknown_cat.png";
+import { all } from "axios";
 
 export default function MyCats({ favorites = false, rarity = false }) {
   const [isLoading, setIsLoading] = useState(true);
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const params = useParams();
+  const [allCatIcons, setAllCatIcons] = useState([]); // [catIcons, mythicCatIcons]
   const [catIcons, setCatIcons] = useState([]);
   const [mythicCatIcons, setMythicCatIcons] = useState([]);
 
@@ -29,22 +31,18 @@ export default function MyCats({ favorites = false, rarity = false }) {
     cats = getCurrentUser().cats;
   }
 
-  function catIconToBreedId(catIcon) {
-    return CATICON_TO_BREEDID[catIcon];
-  }
-
   function getIconsToDisplay() {
-    var icons = Object.keys(catIcons).concat(Object.keys(mythicCatIcons));
+    var icons = Object.keys(allCatIcons);
     if (favorites && getCurrentUser()) {
       icons = icons.filter((catIcon) => {
-        const currentBreed = catIconToBreedId(catIcon);
+        const currentBreed = CATICON_TO_BREEDID(catIcon);
         const userFavorites = getCurrentUser().favorites;
         return userFavorites.includes(currentBreed);
       });
     } else if (rarity) {
       // display icons of the current rarity
       icons = icons.filter((catIcon) => {
-        const currentBreed = catIconToBreedId(catIcon);
+        const currentBreed = CATICON_TO_BREEDID(catIcon);
         if (currentBreed === undefined) {
           return false;
         } else {
@@ -66,58 +64,57 @@ export default function MyCats({ favorites = false, rarity = false }) {
     const mythicIcons = importAll(
       require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
     );
-    setCatIcons(icons);
+    const allIcons = Object.assign({}, icons, mythicIcons);
+    setAllCatIcons(allIcons);
     setMythicCatIcons(mythicIcons);
   };
 
   const reverseFunction = () => {
     const reversedIcons = {};
-    Object.keys(catIcons)
+    Object.keys(allCatIcons)
       .reverse()
       .forEach((icon) => {
-        reversedIcons[icon] = catIcons[icon];
+        reversedIcons[icon] = allCatIcons[icon];
       });
-    setCatIcons(reversedIcons);
+    setAllCatIcons(reversedIcons);
   };
 
   const sortFunction = (term) => {
-    // sort CatIcons by name, rarity, or ownership
+    // sort all cat icon png/jpg files
+    const sortedIcons = Object.keys(allCatIcons).sort();
+    var sortedIconsObj = {};
     if (term === "name") {
-      const sortedIcons = Object.keys(catIcons).sort();
-      const sortedIconsObj = {};
       sortedIcons.forEach((icon) => {
-        sortedIconsObj[icon] = catIcons[icon];
+        console.log(allCatIcons[icon]);
+        sortedIconsObj[icon] = allCatIcons[icon];
       });
-      setCatIcons(sortedIconsObj);
     } else if (term === "rarity") {
       const rarities = ALL_CAT_RARITIES["data"];
-      const sortedIcons = Object.keys(catIcons).sort((b1, b2) => {
+      sortedIcons.sort((b1, b2) => {
         const breed1 = CATICON_TO_BREEDID[b1];
         const breed2 = CATICON_TO_BREEDID[b2];
         if (breed1 === undefined || breed2 === undefined) {
-          return 0;
+          console.log("b1 or b2 is undefined", breed1, +" or " + breed2);
+          return breed1 === undefined ? -1 : 1;
         }
         const b1Rarity = rarities.find((b) => b.breed === breed1)["rarity"];
         const b2Rarity = rarities.find((b) => b.breed === breed2)["rarity"];
         return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
       });
-      const sortedIconsObj = {};
       sortedIcons.forEach((icon) => {
-        sortedIconsObj[icon] = catIcons[icon];
+        sortedIconsObj[icon] = allCatIcons[icon];
       });
-      setCatIcons(sortedIconsObj);
     } else if (term === "owned") {
-      const sortedIcons = Object.keys(catIcons).sort((a, b) => {
+      sortedIcons.sort((a, b) => {
         const aOwned = cats.includes(CATICON_TO_BREEDID[a]);
         const bOwned = cats.includes(CATICON_TO_BREEDID[b]);
         return aOwned - bOwned;
       });
-      const sortedIconsObj = {};
       sortedIcons.forEach((icon) => {
-        sortedIconsObj[icon] = catIcons[icon];
+        sortedIconsObj[icon] = allCatIcons[icon];
       });
-      setCatIcons(sortedIconsObj);
     }
+    setAllCatIcons(sortedIconsObj);
   };
 
   useEffect(() => {
@@ -146,7 +143,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
               "(" +
               cats.length +
               "/" +
-              (Object.keys(catIcons).length - 1) +
+              (Object.keys(allCatIcons).length - 1) +
               ")"
           );
         }
@@ -172,8 +169,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
         {getIconsToDisplay().map((catIcon, index) => {
           const currentBreedId = CATICON_TO_BREEDID[catIcon];
           if (currentBreedId === undefined) {
-            // no match was found
-            console.log("no match was found for " + catIcon);
             return null;
           }
           const rarities = ALL_CAT_RARITIES["data"];
@@ -196,12 +191,13 @@ export default function MyCats({ favorites = false, rarity = false }) {
               !cats.includes(currentBreedId) || !getCurrentUser()
                 ? UnknownCat
                 : mythicCatIcons[catIcon];
+            name = catIcon.replace(".jpg", "").replace("_", " ");
           } else {
             name = catIcon
               .replace(".png", "")
               .replace("_", " ")
               .replace(" cat", "");
-            src = catIcons[catIcon];
+            src = allCatIcons[catIcon];
           }
           return (
             <Grid
@@ -218,7 +214,11 @@ export default function MyCats({ favorites = false, rarity = false }) {
                 textAlign="center"
                 underline="none"
                 color="inherit"
-                href={(rarity === "M" && !cats.includes(currentBreedId) ? "/details/???" :`/details/${catIconToBreedId(catIcon)}`)}
+                href={
+                  rarity === "M" && !cats.includes(currentBreedId)
+                    ? "/details/???"
+                    : `/details/${CATICON_TO_BREEDID[catIcon]}`
+                }
               >
                 <img
                   style={{
