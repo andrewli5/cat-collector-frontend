@@ -29,8 +29,7 @@ export default function NavBar({ coins }) {
       {NAV_ITEMS.map(({ name, path }) => {
         if (
           name === "admin tools" &&
-          getCurrentUser() &&
-          getCurrentUser().role !== "ADMIN"
+          (!getCurrentUser() || getCurrentUser().role !== "ADMIN")
         ) {
           return null;
         }
