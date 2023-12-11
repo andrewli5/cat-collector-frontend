@@ -131,6 +131,9 @@ export default function Search() {
                   },
                 });
                 const data = await response.json();
+                if (data.length === 0 || data[0]["url"] === undefined) {
+                  return;
+                }
                 imageUrls.push(
                   data.length === 0 || data[0]["url"] === undefined
                     ? {
