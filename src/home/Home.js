@@ -99,7 +99,7 @@ export default function Home() {
             flexDirection: "column",
           }}
         >
-          <Box bgcolor="primary.main" sx={{ marginTop: "15px" }}>
+          <Box bgcolor="primary.main" sx={{ marginTop: "15px", marginBottom: "10px" }}>
             <Typography variant="h3" color="white" sx={{ width: "100vw" }}>
               {APP_NAME}
             </Typography>
