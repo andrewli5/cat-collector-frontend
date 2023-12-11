@@ -23,14 +23,29 @@ export default function Roll({ setCoins }) {
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
   const [displayResults, setDisplayResults] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
+  var results = null;
   const handleRoll = async () => {
     setIsRolling(true);
-    const results = await client.rollCatForUser(getCurrentUser()._id);
+    try {
+      results = await client.rollCatForUser(getCurrentUser()._id);
+    } catch (error) {
+      if (error.response) {
+        setTimeout(() => {
+          setError(true);
+          setErrorMessage(error.response.data.message);
+          setIsRolling(false);
+        }, 500);
+        return;
+      }
+    }
+
     setRollResults(results);
 
     // update locally
@@ -41,11 +56,13 @@ export default function Roll({ setCoins }) {
       };
       storeCurrentUser(user);
     }
-   
+
     const rolledCatBreedId = results["breed"];
     const rolledCatIcon = BREEDID_TO_CATICON[rolledCatBreedId];
     const rolledCatName = rolledCatIcon.replace(".png", "").replace("_", " ");
-    updateCoinAmt(getCurrentUser().coins - rollCost);
+    if (getCurrentUser().coins - rollCost >= 0) {
+      updateCoinAmt(getCurrentUser().coins - rollCost);
+    }
 
     // rolling animation
     const interval = setInterval(() => {
@@ -143,6 +160,13 @@ export default function Roll({ setCoins }) {
           Discover new cats & receive coins for rolling owned cats
         </Typography>
       </Box>
+      <NotificationSnackbar
+        open={error}
+        setOpen={setError}
+        message={errorMessage}
+        severity="error"
+        autoHideDuration={6000}
+      />
       {!_.isEmpty(rollResults) ? (
         <NotificationSnackbar
           open={displayResults}
