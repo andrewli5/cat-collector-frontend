@@ -57,6 +57,30 @@ export default function MyCats({ favorites = false, rarity = false }) {
     return icons;
   }
 
+  const getIconSrcForMythicCat = (catIcon, currentBreedId) => {
+    return !cats.includes(currentBreedId) || !getCurrentUser()
+      ? UnknownCat
+      : mythicCatIcons[catIcon];
+  };
+
+  const getIconNameForMythicCat = (catIcon, currentBreedId) => {
+    return !cats.includes(currentBreedId) || !getCurrentUser()
+      ? "?????"
+      : catIcon.replace(".jpg", "").replace("_", " ");
+  };
+
+  const getIconData = (catIcon, currentBreedId, rarity) => {
+    var [name, src] = ["", ""];
+    if (rarity === "M") {
+      src = getIconSrcForMythicCat(catIcon, currentBreedId);
+      name = getIconNameForMythicCat(catIcon, currentBreedId);
+    } else {
+      name = catIcon.replace(".png", "").replace("_", " ").replace(" cat", "");
+      src = allCatIcons[catIcon];
+    }
+    return [name, src];
+  };
+
   const resetFunction = () => {
     const icons = importAll(
       require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
@@ -81,39 +105,49 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   const sortFunction = (term) => {
     // sort all cat icon png/jpg files
-    const sortedIcons = Object.keys(allCatIcons).sort();
+    var sortedIcons = Object.keys(allCatIcons).sort();
     var sortedIconsObj = {};
+    const rarities = ALL_CAT_RARITIES["data"];
     if (term === "name") {
-      sortedIcons.forEach((icon) => {
-        console.log(allCatIcons[icon]);
-        sortedIconsObj[icon] = allCatIcons[icon];
-      });
-    } else if (term === "rarity") {
-      const rarities = ALL_CAT_RARITIES["data"];
+      // A-Z sorting but put unowned mythic cats at the end
       sortedIcons.sort((b1, b2) => {
         const breed1 = CATICON_TO_BREEDID[b1];
         const breed2 = CATICON_TO_BREEDID[b2];
         if (breed1 === undefined || breed2 === undefined) {
-          console.log("b1 or b2 is undefined", breed1, +" or " + breed2);
+          return breed1 === undefined ? -1 : 1;
+        }
+        const b1Rarity = rarities.find((b) => b.breed === breed1)["rarity"];
+        const b2Rarity = rarities.find((b) => b.breed === breed2)["rarity"];
+        if (b1Rarity === "M" || b2Rarity === "M") {
+          return b1Rarity === "M" && !cats.includes(CATICON_TO_BREEDID[breed1])
+            ? 1
+            : b2Rarity === "M" && !cats.includes(CATICON_TO_BREEDID[breed2])
+              ? -1
+              : 0;
+        }
+      });
+    } else if (term === "rarity") {
+      sortedIcons.sort((b1, b2) => {
+        const breed1 = CATICON_TO_BREEDID[b1];
+        const breed2 = CATICON_TO_BREEDID[b2];
+        if (breed1 === undefined || breed2 === undefined) {
           return breed1 === undefined ? -1 : 1;
         }
         const b1Rarity = rarities.find((b) => b.breed === breed1)["rarity"];
         const b2Rarity = rarities.find((b) => b.breed === breed2)["rarity"];
         return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
       });
-      sortedIcons.forEach((icon) => {
-        sortedIconsObj[icon] = allCatIcons[icon];
-      });
     } else if (term === "owned") {
+      sortedIcons = Object.keys(allCatIcons);
       sortedIcons.sort((a, b) => {
         const aOwned = cats.includes(CATICON_TO_BREEDID[a]);
         const bOwned = cats.includes(CATICON_TO_BREEDID[b]);
         return aOwned - bOwned;
       });
-      sortedIcons.forEach((icon) => {
-        sortedIconsObj[icon] = allCatIcons[icon];
-      });
     }
+    sortedIcons.forEach((icon) => {
+      sortedIconsObj[icon] = allCatIcons[icon];
+    });
     setAllCatIcons(sortedIconsObj);
   };
 
@@ -175,8 +209,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
           const rarity = rarities.find((b) => b.breed === currentBreedId)[
             "rarity"
           ];
-          var name = "?????";
-          var src = "";
+          const [name, src] = getIconData(catIcon, currentBreedId, rarity);
           var textColor = "grey";
           var imageStyle = {
             WebkitFilter: "grayscale(100%)",
@@ -185,19 +218,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
           if (cats.includes(currentBreedId)) {
             imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
             textColor = "white";
-          }
-          if (rarity === "M") {
-            src =
-              !cats.includes(currentBreedId) || !getCurrentUser()
-                ? UnknownCat
-                : mythicCatIcons[catIcon];
-            name = catIcon.replace(".jpg", "").replace("_", " ");
-          } else {
-            name = catIcon
-              .replace(".png", "")
-              .replace("_", " ")
-              .replace(" cat", "");
-            src = allCatIcons[catIcon];
           }
           return (
             <Grid
