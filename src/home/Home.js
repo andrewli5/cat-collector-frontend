@@ -24,8 +24,8 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import SearchUsers from "../searchUsers/SearchUsers";
 import Forbidden from "../admin/Forbidden";
 import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
-import { Check } from "@mui/icons-material";
 import Footer from "./Footer";
+import * as meows from "../assets/meows";
 
 const CRIT_MULTIPLIER = 28.5;
 const BASE_COINS_PER_CLICK = 50;
@@ -40,6 +40,18 @@ export default function Home() {
   const [saveTimeoutId, setSaveTimeoutId] = useState(null); // used to debounce save to cloud
   const [effectCount, setEffectCount] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [music, setMusic] = useState(true);
+
+  const meowFiles = [
+    meows.meow,
+    meows.meow1,
+    meows.meow2,
+    meows.meow3,
+    meows.meow4,
+    meows.meow5,
+    meows.meow6,
+    meows.meow7,
+  ];
 
   const setCoinHandler = (newCoins, skipCoinDiff) => {
     if (!skipCoinDiff) {
@@ -69,6 +81,15 @@ export default function Home() {
     }, 500);
     setSaveTimeoutId(newTimeoutId);
   }, [coins]);
+
+  const playSoundEffect = () => {
+    if (!music) {
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * meowFiles.length);
+    const audio = new Audio(meowFiles[randomIndex]);
+    audio.play();
+  };
 
   var coinsPerClick = BASE_COINS_PER_CLICK;
   if (getCurrentUser()) {
@@ -111,7 +132,7 @@ export default function Home() {
       style={{ paddingLeft: 0, paddingRight: 0 }}
       sx={{ minWidth: "100vw" }}
     >
-      <TopBar />
+      <TopBar music={music} setMusic={setMusic}/>
       <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
       <NotificationSnackbar
         open={warning}
@@ -143,6 +164,7 @@ export default function Home() {
           </Box>
           <img
             src={catGif}
+            onClick={playSoundEffect}
             width={"150px"}
             height={"150px"}
             style={{ marginTop: 5 }}
