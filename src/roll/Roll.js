@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import CatSilhouette from "../assets/unknown_cat.png";
@@ -7,7 +7,11 @@ import { importAll } from "../utils/importAll";
 import { useState } from "react";
 import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";
-import { BREEDID_TO_CATICON, RARITY_TO_COLOR } from "../constants";
+import {
+  BREEDID_TO_CATICON,
+  RARITY_TO_COLOR,
+  RARITY_TO_STRING,
+} from "../constants";
 import _ from "lodash";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
@@ -46,7 +50,30 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
     try {
       results = await client.rollCatForUser(getCurrentUser()._id);
       const multipliers = await client.getMultipliers();
-      console.log(multipliers);
+      const odds = await client.getOdds();
+      const userData = await client.getUserDataByUserId(getCurrentUser()._id);
+
+      const luckUpgrades = userData["upgrades"].filter((u) =>
+        u.includes("LUCK")
+      );
+      const highestUpgrade = luckUpgrades.sort().reverse()[0];
+      const currentOdds = odds[highestUpgrade];
+      const rarity = results.rarity;
+      const rarityPercentage = currentOdds[rarity] * 100;
+      results = { ...results, odds: rarityPercentage };
+
+      // if user rolls a new cat, show old coins per click -> new coins per click
+      if (!results["duplicate"]) {
+        const multiplier = multipliers[rarity];
+        results = {
+          ...results,
+          multiplier: multiplier,
+          oldCoinsPerClick: getCurrentUser().coinsPerClick,
+          newCoinsPerClick: Math.round(
+            getCurrentUser().coinsPerClick * multiplier
+          ),
+        };
+      }
     } catch (error) {
       if (error.response) {
         setTimeout(() => {
@@ -116,16 +143,22 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
         <Typography variant="h4" color={"white"} textAlign="center">
           {rollResults["duplicate"] ? "you rolled:" : "new cat unlocked!"}
         </Typography>
-        <Typography
-          variant="h4"
-          textAlign="center"
-          color={RARITY_TO_COLOR[rollResults["rarity"]]}
-        >
+        <Typography variant="h3" textAlign="center" color="white">
           <Box alignItems={"center"} display={"flex"} justifyContent={"center"}>
             {BREEDID_TO_CATICON[rollResults["breed"]]
               .replace(".png", "")
               .replace("_", " ")}
-            !{" "}
+          </Box>
+        </Typography>
+        <Typography
+          variant="h4"
+          display="flex"
+          justifyContent={"center"}
+          color={RARITY_TO_COLOR[rollResults["rarity"]]}
+        >
+          {RARITY_TO_STRING[rollResults["rarity"]].toLowerCase()}
+          <Box>
+            {" "}
             <StarRateRoundedIcon
               fontSize="large"
               sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
@@ -135,7 +168,6 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
         {rollResults["duplicate"] ? (
           <Box alignItems={"center"} display={"flex"} textAlign="center">
             {"duplicate, received:  "}
-
             {rollResults["addedCoins"]}
             <img
               style={{ marginLeft: "5px" }}
@@ -145,7 +177,11 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
             />
           </Box>
         ) : (
-          <></>
+          <Box>
+            coins per click: {rollResults["oldCoinsPerClick"]} ⇒{" "}
+            {rollResults["newCoinsPerClick"]}
+            {"  (+" + (rollResults["multiplier"] - 1).toFixed(2) + "%)"}
+          </Box>
         )}
       </>
     );
