@@ -25,6 +25,7 @@ import SearchUsers from "../searchUsers/SearchUsers";
 import Forbidden from "../admin/Forbidden";
 import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import { Check } from "@mui/icons-material";
+import Footer from "./Footer";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -176,6 +177,7 @@ export default function Home() {
         <Route path="/find-users/*" element={<SearchUsers />} />
         <Route path="/forbidden" element={<Forbidden />} />
       </Routes>
+      <Footer></Footer>
     </Container>
   );
 }

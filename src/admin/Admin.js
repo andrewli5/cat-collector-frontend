@@ -165,6 +165,7 @@ export default function Admin() {
         rowSpacing={3}
         alignItems="center"
         justifyContent="center"
+        sx={{ marginBottom: "30px", paddingLeft: "20px" }}
       >
         <UserRowHeaders />
         <Grid item xs={12}>
