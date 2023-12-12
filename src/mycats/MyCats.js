@@ -221,7 +221,16 @@ export default function MyCats({ favorites = false, rarity = false }) {
           reverseFunction={reverseFunction}
         />
       </Typography>
-      <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
+      <Grid
+        container
+        spacing={0.5}
+        sx={{
+          marginTop: 3,
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          paddingBottom: "10px",
+        }}
+      >
         {getCurrentUser() && favorites && isEmptyFavorites ? (
           <Box
             sx={{
