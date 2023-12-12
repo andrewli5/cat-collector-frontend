@@ -15,6 +15,7 @@ export const THEME = createTheme({
     white: createColor("#FFFFFF"),
     red: createColor("#FF0000"),
   },
+  shadows: [createColor("#363457")],
   components: {
     MuiTextField: {
       styleOverrides: {
