@@ -26,6 +26,8 @@ import Forbidden from "../admin/Forbidden";
 import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import Footer from "./Footer";
 import * as meows from "../assets/meows";
+import minecraftButton from "../assets/sounds/minecraft_button.mp3";
+import critSound from "../assets/sounds/crit_sound.mp3";
 
 const CRIT_MULTIPLIER = 28.5;
 const BASE_COINS_PER_CLICK = 50;
@@ -41,6 +43,7 @@ export default function Home() {
   const [effectCount, setEffectCount] = useState(0);
   const [saving, setSaving] = useState(false);
   const [music, setMusic] = useState(true);
+  const [crit, setCrit] = useState(false);
 
   const meowFiles = [
     meows.meow,
@@ -75,7 +78,7 @@ export default function Home() {
       updateUserCoinsByUserId(getCurrentUser()._id, coins, () => {
         setTimeout(() => {
           setCoinDiff(0);
-        }, 150);
+        }, 250);
         setSaving(false);
       });
     }, 500);
@@ -97,7 +100,7 @@ export default function Home() {
   }
   var critRate = BASE_CRIT_RATE;
   if (getCurrentUser()) {
-    critRate = getCurrentUser().critRate;
+    critRate = getCurrentUser().critChance;
   }
 
   const handleCoinClick = () => {
@@ -109,7 +112,20 @@ export default function Home() {
       var newCoins = coins;
       if (rand < critRate) {
         newCoins += Math.floor(coinsPerClick * CRIT_MULTIPLIER);
+        if (music) {
+          const audio = new Audio(critSound);
+          audio.play();
+        }
+        setCrit(true);
+        setTimeout(() => {
+          setCrit(false);
+        }, 350);
       } else {
+         if (music) {
+           const audio = new Audio(minecraftButton);
+           audio.currentTime = 0.25; 
+           audio.play();
+         }
         newCoins += coinsPerClick;
       }
       storeCurrentUser({ ...getCurrentUser(), coins: newCoins });
@@ -214,11 +230,22 @@ export default function Home() {
             <Typography
               variant="h4"
               alignItems="center"
-              color={coinDiff > 0 ? "lightgreen" : "error"}
+              color={coinDiff >= 0 ? "lightgreen" : "error"}
               marginTop={1}
             >
-              {coinDiff > 0 ? "+" : "-"}
+              {coinDiff >= 0 ? "+" : "-"}
               {Math.abs(coinDiff).toLocaleString()}
+            </Typography>
+          </Grow>
+          <Grow in={crit}>
+            <Typography
+              variant="h4"
+              alignItems="center"
+              color="error"
+              fontWeight="bold"
+              style={{ textShadow: "0px 0px 50px red" }}
+            >
+              CRIT! x28.5
             </Typography>
           </Grow>
         </div>
