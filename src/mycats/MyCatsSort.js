@@ -43,21 +43,18 @@ export function MyCatsSort({
   };
 
   const handleCheckbox = () => {
-    if (showUnowned) {
-      setShowUnowned(false);
-    } else {
-      setShowUnowned(true);
-    }
+    setShowUnowned(!showUnowned);
   };
 
   const getCheckBox = () => {
     if (getCurrentUser()) {
-      setShowUnowned(false);
+      setShowUnowned(showUnowned);
       return <Checkbox onClick={handleCheckbox} style={{ color: "white" }} />;
     } else {
       setShowUnowned(true);
       return (
         <Checkbox
+          disabled
           onClick={handleCheckbox}
           style={{ color: "white" }}
           checked={true}

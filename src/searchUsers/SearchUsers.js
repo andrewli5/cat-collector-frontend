@@ -37,13 +37,7 @@ export default function SearchUsers() {
   };
 
   return (
-    <Box
-      textAlign={"center"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      display={"flex"}
-      flexDirection={"column"}
-    >
+    <Box justifyContent={"center"} display={"flex"} sx={{ minHeight: "50vh" }}>
       <NotificationSnackbar
         open={error}
         setOpen={setError}
@@ -51,8 +45,16 @@ export default function SearchUsers() {
         message={errorMessage.toLowerCase()}
         autoHideDuration={3000}
       />
-      <Typography variant="h3">find users</Typography>
-      <Box sx={{ width: "250px" }}>
+      <Box
+        justifyContent={"center"}
+        display={"flex"}
+        flexDirection={"column"}
+        sx={{
+          width: "25vw",
+          padding: 2,
+        }}
+      >
+        <Typography variant="h3">find users</Typography>
         <TextField
           size="small"
           label="find user..."
@@ -70,11 +72,9 @@ export default function SearchUsers() {
           }}
         />
       </Box>
-      <div>
-        <Routes>
-          <Route path="/:username" element={<OtherProfile />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/:username" element={<OtherProfile />} />
+      </Routes>
     </Box>
   );
 }

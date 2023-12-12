@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Grid, TextField } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { Typography, Box, Grid, TextField, Button } from "@mui/material";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { getUserByUsername } from "../client";
 import { APP_NAME } from "../constants";
+import MyCats from "../mycats/MyCats";
 
 export default function OtherProfile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const navigate = useNavigate();
   const { username } = useParams();
+
+  const handleViewCats = () => {
+    navigate(`/view/${username}`);
+  }
 
   useEffect(() => {
     document.title = `${username}'s profile | ${APP_NAME}`;
@@ -27,17 +32,32 @@ export default function OtherProfile() {
   }, [username, navigate]);
 
   return (
-    <Box textAlign="center">
+    <Box
+      justifyContent="center"
+      alignItems={"center"}
+      textAlign={"center"}
+      display="flex"
+      flexDirection="column"
+      sx={{ marginLeft: "70px", width: "30vw", padding: 2 }}
+    >
       <Typography variant="h3">{`${username}'s profile`}</Typography>
       <Typography variant="h5" color="grey">
-        {"username " + " (" + username + ")"}
+        {"username" + ": " + username}
       </Typography>
       <Typography variant="h5" color="grey">
-        {"first name " + " (" + firstName + ")"}
+        {"first name" + ": " + firstName}
       </Typography>
       <Typography variant="h5" color="grey">
-        {"last name " + " (" + lastName + ")"}
+        {"last name" + ": " + lastName}
       </Typography>
+      <Button
+        onClick={handleViewCats}
+        variant="contained"
+        color="primary"
+        sx={{ marginTop: 2, width: "50%" }}
+      >
+        view cats
+      </Button>
     </Box>
   );
 }
