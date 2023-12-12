@@ -27,6 +27,10 @@ import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import { Check } from "@mui/icons-material";
 import Footer from "./Footer";
 
+const CRIT_MULTIPLIER = 28.5;
+const BASE_COINS_PER_CLICK = 50;
+const BASE_CRIT_RATE = 0.0025;
+
 export default function Home() {
   const path = useLocation().pathname;
   const [warning, setWarning] = useState(false);
@@ -54,9 +58,13 @@ export default function Home() {
     setTimeoutId(newTimeoutId);
   }, [coins]);
 
-  var coinsPerClick = 50;
+  var coinsPerClick = BASE_COINS_PER_CLICK;
   if (getCurrentUser()) {
     coinsPerClick = getCurrentUser().coinsPerClick;
+  }
+  var critRate = BASE_CRIT_RATE;
+  if (getCurrentUser()) {
+    critRate = getCurrentUser().critRate;
   }
 
   const handleCoinClick = () => {
@@ -64,8 +72,15 @@ export default function Home() {
       setWarning(true);
       return;
     } else {
-      storeCurrentUser({ ...getCurrentUser(), coins: coins + coinsPerClick });
-      setCoins(coins + coinsPerClick);
+      const rand = Math.random();
+      var newCoins = coins;
+      if (rand < critRate) {
+        newCoins += Math.floor(coinsPerClick * CRIT_MULTIPLIER);
+      } else {
+        newCoins += coinsPerClick;
+      }
+      storeCurrentUser({ ...getCurrentUser(), coins: newCoins });
+      setCoins(newCoins);
     }
   };
 
