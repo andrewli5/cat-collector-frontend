@@ -45,113 +45,119 @@ export default function TopBar() {
   };
 
   return (
-    <Toolbar>
-      <img
-        src={Logo}
-        alt="logo"
-        style={{ width: 40, height: 40, marginRight: "10px" }}
-      />
-      <Typography variant="h3" noWrap>
-        <Link style={{ color: "white", textDecoration: "none" }} href="/">
-          {APP_NAME + "."}
-        </Link>
-      </Typography>
-      <Box
-        sx={{
-          marginLeft: 5,
-          flexGrow: 1,
-          height: 80,
-          display: { xs: "none", md: "flex", alignItems: "center" },
-        }}
-      >
-        <Box
-          component="form"
-          action="search"
-          onSubmit={handleSearch}
-          noValidate
-          sx={{ width: "100%" }}
-        >
-          <ExpandingTextField
-            size="small"
-            id="search"
-            label="search cats..."
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon color="primary" />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
-      </Box>
-      <Dialog
-        onClose={() => setIsLogoutDialogOpen(false)}
-        open={isLogoutDialogOpen}
-        aria-labelledby="alert-dialog-title"
-      >
-        <DialogTitle id="alert-dialog-title" variant="h3">
-          {"Log out?"}
-        </DialogTitle>
-        <Box textAlign={"center"}>
-          <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
-        </Box>
-        <div
+    <Box bgcolor="primary.main" sx={{ marginTop: "5px" }}>
+      <Toolbar>
+        <img
+          src={Logo}
+          alt="logo"
           style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: 10,
+            width: 40,
+            height: 40,
+            marginRight: "10px",
+          }}
+        />
+        <Typography variant="h3" noWrap>
+          <Link style={{ color: "white", textDecoration: "none" }} href="/">
+            {APP_NAME + "."}
+          </Link>
+        </Typography>
+        <Box
+          sx={{
+            marginLeft: 5,
+            flexGrow: 1,
+            height: 80,
+            display: { xs: "none", md: "flex", alignItems: "center" },
           }}
         >
-          <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
-            <Typography variant="h4" textAlign="center">
-              No
-            </Typography>
-          </Button>
-          <Button color="error" onClick={handleLogout}>
-            <Typography variant="h4" textAlign="center">
-              Yes
-            </Typography>
-          </Button>
-        </div>
-      </Dialog>
-      {getCurrentUser() ? (
-        <Box>
-          <Grid container spacing={1}>
-            <Grid item>
-              <Button href="/myprofile" color="white">
-                {"hi, " + getCurrentUser().firstName + "!"}
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="tertiary"
-                onClick={() => setIsLogoutDialogOpen(true)}
-              >
-                log out
-              </Button>
-            </Grid>
-          </Grid>
+          <Box
+            component="form"
+            action="search"
+            onSubmit={handleSearch}
+            noValidate
+            sx={{ width: "100%" }}
+          >
+            <ExpandingTextField
+              size="small"
+              id="search"
+              label="search cats..."
+              variant="outlined"
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon color="white" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
         </Box>
-      ) : (
-        <Box>
-          <Grid container spacing={1}>
-            <Grid item>
-              <Button href="/signin" color="white">
-                sign in
-              </Button>
+        <Dialog
+          onClose={() => setIsLogoutDialogOpen(false)}
+          open={isLogoutDialogOpen}
+          aria-labelledby="alert-dialog-title"
+        >
+          <DialogTitle id="alert-dialog-title" variant="h3">
+            {"Log out?"}
+          </DialogTitle>
+          <Box textAlign={"center"}>
+            <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
+          </Box>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: 10,
+            }}
+          >
+            <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
+              <Typography variant="h4" textAlign="center">
+                No
+              </Typography>
+            </Button>
+            <Button color="error" onClick={handleLogout}>
+              <Typography variant="h4" textAlign="center">
+                Yes
+              </Typography>
+            </Button>
+          </div>
+        </Dialog>
+        {getCurrentUser() ? (
+          <Box>
+            <Grid container spacing={1}>
+              <Grid item>
+                <Button href="/myprofile" color="white">
+                  {"hi, " + getCurrentUser().firstName + "!"}
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="tertiary"
+                  onClick={() => setIsLogoutDialogOpen(true)}
+                >
+                  log out
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Button href="/signup" variant="contained">
-                sign up
-              </Button>
+          </Box>
+        ) : (
+          <Box>
+            <Grid container spacing={1}>
+              <Grid item>
+                <Button href="/signin" color="white">
+                  sign in
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button href="/signup" variant="contained">
+                  sign up
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      )}
-    </Toolbar>
+          </Box>
+        )}
+      </Toolbar>
+    </Box>
   );
 }
