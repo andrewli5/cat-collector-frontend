@@ -22,6 +22,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmptyFavorites, setIsEmptyFavorites] = useState(false);
   const [title, setTitle] = useState("");
+  const [showUnowned, setShowUnowned] = useState(false);
   const navigate = useNavigate();
   const params = useParams();
   const [allCatIcons, setAllCatIcons] = useState([]); // [catIcons, mythicCatIcons]
@@ -216,10 +217,16 @@ export default function MyCats({ favorites = false, rarity = false }) {
         textAlign="center"
         sx={{ paddingRight: "20px", paddingTop: "10px" }}
       >
-        <MyCatsSort
-          sortFunction={sortFunction}
-          reverseFunction={reverseFunction}
-        />
+        {favorites && getCurrentUser() && isEmptyFavorites ? (
+          <></>
+        ) : (
+          <MyCatsSort
+            sortFunction={sortFunction}
+            reverseFunction={reverseFunction}
+            showUnowned={showUnowned}
+            setShowUnowned={setShowUnowned}
+          />
+        )}
       </Typography>
       <Grid
         container
@@ -257,6 +264,9 @@ export default function MyCats({ favorites = false, rarity = false }) {
           </Box>
         ) : (
           getIconsToDisplay().map((catIcon, index) => {
+            if (!showUnowned && !cats.includes(CATICON_TO_BREEDID[catIcon])) {
+              return null;
+            }
             const currentBreedId = CATICON_TO_BREEDID[catIcon];
             if (currentBreedId === undefined) {
               return null;

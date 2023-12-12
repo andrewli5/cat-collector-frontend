@@ -13,7 +13,7 @@ import SortIcon from "@mui/icons-material/Sort";
 import { styled, alpha } from "@mui/material/styles";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 
-export function MyCatsSort({ sortFunction, reverseFunction }) {
+export function MyCatsSort({ sortFunction, reverseFunction, showUnowned, setShowUnowned }) {
   const [sortAnchorEl, setSortAnchorEl] = useState(null);
   const sortMenuOpen = Boolean(sortAnchorEl);
   const [sortText, setSortText] = useState("");
@@ -33,6 +33,14 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
 
   const handleSortClose = () => {
     setSortAnchorEl(null);
+  };
+
+  const handleCheckbox = () => {
+    if (showUnowned) {
+      setShowUnowned(false);
+    } else {
+      setShowUnowned(true);
+    }
   };
 
   const StyledMenu = styled((props) => (
@@ -76,13 +84,17 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
   return (
     <Box alignItems={"center"} display={"flex"} justifyContent={"right"}>
       <FormControlLabel
-        sx={{ backgroundColor: "primary" }}
-        control={<Checkbox />}
-        label={
-          <Typography variant="h5" sx={{ bgcolor: "primary" }}>
-            {"owned"}
-          </Typography>
+        sx={{
+          height: "36px",
+          borderRadius: "4px",
+          bgcolor: "primary.main",
+          color: "white",
+          paddingRight: "8px",
+        }}
+        control={
+          <Checkbox onClick={handleCheckbox} style={{ color: "white" }} />
         }
+        label={<Typography variant="h5">{"show unowned"}</Typography>}
       />
       <Button
         id="sort-button"
