@@ -215,7 +215,7 @@ export default function Roll({ setCoins }) {
       <Button
         disabled={
           isRolling ||
-          getCurrentUser() ||
+          !getCurrentUser() ||
           getCurrentUser().coins < getCurrentUser().rollCost
             ? true
             : false

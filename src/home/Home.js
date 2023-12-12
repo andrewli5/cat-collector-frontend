@@ -2,7 +2,7 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import MyCats from "../mycats/MyCats";
 import Search from "../search/Search";
 import EmptySearch from "../search/EmptySearch";
@@ -163,6 +163,7 @@ export default function Home() {
         </div>
       )}
       <Routes>
+        <Route path="/home" element={<Navigate to="/" />} />
         <Route path="/mycats" element={<MyCats />} />
         <Route path="/rarities/:rarity" element={<MyCats rarity={true} />} />
         <Route path="/search" element={<EmptySearch />} />

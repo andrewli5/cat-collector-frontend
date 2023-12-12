@@ -43,3 +43,18 @@
   bottom: 0;
   width: 100%;
 }
+.shimmer {
+  animation: shimmer 5s infinite linear;
+  mask: linear-gradient(-60deg, transparent, #000, transparent);
+}
+
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
