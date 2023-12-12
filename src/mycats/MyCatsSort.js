@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Box, Button, Menu, MenuItem } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import "../css/styles.css";
 import SortIcon from "@mui/icons-material/Sort";
 import { styled, alpha } from "@mui/material/styles";
@@ -58,7 +66,7 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
         "&:active": {
           backgroundColor: alpha(
             theme.palette.secondary.main,
-            theme.palette.action.selectedOpacity,
+            theme.palette.action.selectedOpacity
           ),
         },
       },
@@ -67,6 +75,15 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
 
   return (
     <Box alignItems={"center"} display={"flex"} justifyContent={"right"}>
+      <FormControlLabel
+        sx={{ backgroundColor: "primary" }}
+        control={<Checkbox />}
+        label={
+          <Typography variant="h5" sx={{ bgcolor: "primary" }}>
+            {"owned"}
+          </Typography>
+        }
+      />
       <Button
         id="sort-button"
         aria-controls={sortMenuOpen ? "sort-menu" : undefined}
@@ -88,7 +105,7 @@ export function MyCatsSort({ sortFunction, reverseFunction }) {
         }
         sx={{ height: "36px" }} // Add this line to set the height
       >
-        {sortText !== "" ? sortText : "Sort"}
+        {sortText !== "" ? sortText : "sort"}
       </Button>
       <StyledMenu
         id="sort-menu"
