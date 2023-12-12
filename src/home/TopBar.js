@@ -45,7 +45,7 @@ export default function TopBar() {
   };
 
   return (
-    <Box bgcolor="primary.main">
+    <Box bgcolor="primary.main" sx={{ marginTop: "5px" }}>
       <Toolbar>
         <img
           src={Logo}
