@@ -5,7 +5,6 @@ import "../css/styles.css";
 import {
   APP_NAME,
   CATICON_TO_BREEDID,
-  RARITY_TO_COLOR,
   RARITY_TO_VALUE,
   RARITY_TO_STRING,
 } from "../constants";
@@ -23,10 +22,10 @@ export default function MyCats({ favorites = false, rarity = false }) {
   const [isEmptyFavorites, setIsEmptyFavorites] = useState(false);
   const [title, setTitle] = useState("");
   const [showUnowned, setShowUnowned] = useState(false);
+  const [allCatIcons, setAllCatIcons] = useState([]);
+  const [mythicCatIcons, setMythicCatIcons] = useState([]);
   const navigate = useNavigate();
   const params = useParams();
-  const [allCatIcons, setAllCatIcons] = useState([]); // [catIcons, mythicCatIcons]
-  const [mythicCatIcons, setMythicCatIcons] = useState([]);
 
   var cats = [];
   if (getCurrentUser()) {
@@ -42,7 +41,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
         return userFavorites.includes(currentBreed);
       });
     } else if (rarity) {
-      // display icons of the current rarity
       icons = icons.filter((catIcon) => {
         const currentBreed = CATICON_TO_BREEDID[catIcon];
         if (currentBreed === undefined) {
@@ -71,7 +69,16 @@ export default function MyCats({ favorites = false, rarity = false }) {
   };
 
   const getIconData = (catIcon, currentBreedId, rarity) => {
-    var [name, src] = ["", ""];
+    var [name, src, imageStyle, textColor] = [
+      "",
+      "",
+      {
+        WebkitFilter: "grayscale(100%)",
+        opacity: 0.2,
+        mask: "linear-gradient(-60deg, transparent, #000, transparent)",
+      },
+      "grey",
+    ];
     if (rarity === "M") {
       src = getIconSrcForMythicCat(catIcon, currentBreedId);
       name = getIconNameForMythicCat(catIcon, currentBreedId);
@@ -79,7 +86,27 @@ export default function MyCats({ favorites = false, rarity = false }) {
       name = catIcon.replace(".png", "").replace("_", " ").replace(" cat", "");
       src = allCatIcons[catIcon];
     }
-    return [name, src];
+    if (cats.includes(currentBreedId)) {
+      imageStyle.opacity = 1;
+      imageStyle.WebkitFilter = "grayscale(0%)";
+      textColor = "white";
+    }
+    return [name, src, imageStyle, textColor];
+  };
+
+  const getHref = (rarity, catIcon) => {
+    const currentBreedId = CATICON_TO_BREEDID[catIcon];
+    return rarity === "M" && !cats.includes(currentBreedId)
+      ? "/details/???"
+      : `/details/${CATICON_TO_BREEDID[catIcon]}`;
+  };
+
+  const skipDisplay = (currentBreedId) => {
+    // Don't display the cat if the breed is undefined, or if we aren't showing unowned cats
+    return (
+      (!showUnowned && !cats.includes(currentBreedId)) ||
+      currentBreedId === undefined
+    );
   };
 
   const resetFunction = () => {
@@ -204,40 +231,21 @@ export default function MyCats({ favorites = false, rarity = false }) {
       <Box bgcolor="primary.main" sx={{ marginBottom: "10px" }}>
         <Typography
           variant="h3"
-          color="white"
+          color={"white"}
           textAlign="center"
           sx={{ width: "100vw", overflowX: "hidden" }}
         >
           {title}
         </Typography>
       </Box>
-      <Typography
-        variant="h4"
-        color="white"
-        textAlign="center"
-        sx={{ paddingRight: "20px", paddingTop: "10px" }}
-      >
-        {favorites && getCurrentUser() && isEmptyFavorites ? (
-          <></>
-        ) : (
-          <MyCatsSort
-            sortFunction={sortFunction}
-            reverseFunction={reverseFunction}
-            showUnowned={showUnowned}
-            setShowUnowned={setShowUnowned}
-          />
-        )}
-      </Typography>
 
-      {getCurrentUser() && favorites && isEmptyFavorites ? (
+      {favorites && getCurrentUser() && isEmptyFavorites ? (
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
             minWidth: "100vw",
-            justifyContent: "center",
             padding: "20px",
           }}
         >
@@ -254,82 +262,83 @@ export default function MyCats({ favorites = false, rarity = false }) {
           </Typography>
         </Box>
       ) : (
-        <Box display="flex" justifyContent="center">
-          <Grid
-            container
-            sx={{
-              marginTop: 3,
-            }}
-            maxWidth="1100px"
-            columns={{ xs: 4, sm: 8, md: 12 }}
+        <>
+          <Typography
+            variant="h4"
+            color="white"
+            textAlign="center"
+            sx={{ paddingRight: "20px", paddingTop: "10px" }}
           >
-            {getIconsToDisplay().map((catIcon, index) => {
-              if (!showUnowned && !cats.includes(CATICON_TO_BREEDID[catIcon])) {
-                return null;
-              }
-              const currentBreedId = CATICON_TO_BREEDID[catIcon];
-              if (currentBreedId === undefined) {
-                return null;
-              }
-              const rarity = ALL_CAT_RARITIES.find(
-                (b) => b.breed === currentBreedId
-              )["rarity"];
-              const [name, src] = getIconData(catIcon, currentBreedId, rarity);
-              var textColor = "grey";
-              var imageStyle = {
-                WebkitFilter: "grayscale(100%)",
-                opacity: 0.2,
-                mask: "linear-gradient(-60deg, transparent, #000, transparent)",
-              };
-              if (cats.includes(currentBreedId)) {
-                imageStyle.opacity = 1;
-                imageStyle.WebkitFilter = "grayscale(0%)";
-                textColor = "white";
-              }
-              return (
-                <Grid
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  item
-                  xs={2}
-                  key={index}
-                  sx={{ marginBottom: 3 }}
-                  className="hover"
-                >
-                  <Link
-                    textAlign="center"
-                    underline="none"
-                    color="inherit"
-                    href={
-                      rarity === "M" && !cats.includes(currentBreedId)
-                        ? "/details/???"
-                        : `/details/${CATICON_TO_BREEDID[catIcon]}`
-                    }
+            <MyCatsSort
+              sortFunction={sortFunction}
+              reverseFunction={reverseFunction}
+              showUnowned={showUnowned}
+              setShowUnowned={setShowUnowned}
+            />
+          </Typography>
+          <Box display="flex" justifyContent="center">
+            <Grid
+              container
+              sx={{
+                marginTop: 3,
+              }}
+              maxWidth="1100px"
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
+              {getIconsToDisplay().map((catIcon, index) => {
+                const currentBreedId = CATICON_TO_BREEDID[catIcon];
+                if (skipDisplay(currentBreedId)) {
+                  return null;
+                }
+                const rarity = ALL_CAT_RARITIES.find(
+                  (b) => b.breed === currentBreedId
+                )["rarity"];
+                const [name, src, imageStyle, textColor] = getIconData(
+                  catIcon,
+                  currentBreedId,
+                  rarity
+                );
+                return (
+                  <Grid
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    item
+                    xs={2}
+                    key={index}
+                    sx={{ marginBottom: 3 }}
+                    className="hover"
                   >
-                    <img
-                      style={{
-                        ...imageStyle,
-                        borderRadius: "10px",
-                      }}
-                      src={src}
-                      width={120}
-                      height={120}
-                      alt={catIcon}
-                    />
-                    <Typography
-                      variant="h5"
-                      color={textColor}
+                    <Link
                       textAlign="center"
+                      underline="none"
+                      color="inherit"
+                      href={getHref(rarity, catIcon)}
                     >
-                      {name}
-                    </Typography>
-                  </Link>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Box>
+                      <img
+                        style={{
+                          ...imageStyle,
+                          borderRadius: "10px",
+                        }}
+                        src={src}
+                        width={120}
+                        height={120}
+                        alt={catIcon}
+                      />
+                      <Typography
+                        variant="h5"
+                        color={textColor}
+                        textAlign="center"
+                      >
+                        {name}
+                      </Typography>
+                    </Link>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
+        </>
       )}
     </>
   );
