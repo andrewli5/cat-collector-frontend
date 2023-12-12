@@ -49,7 +49,7 @@ export default function Home() {
       updateUserCoinsByUserId(getCurrentUser()._id, coins, () => {
         setSaving(false);
       });
-    }, 1500);
+    }, 500);
     setTimeoutId(newTimeoutId);
   }, [coins]);
 
