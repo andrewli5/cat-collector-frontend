@@ -11,6 +11,7 @@ import Roll from "../roll/Roll";
 import Shop from "../shop/Shop";
 import Admin from "../admin/Admin";
 import coinIcon from "../assets/coin_icon.png";
+import coinGif from "../assets/coin_spin.gif";
 import {
   catGif,
   getCurrentUser,
@@ -36,9 +37,18 @@ export default function Home() {
   const [warning, setWarning] = useState(false);
   const [success, setSuccess] = useState(false);
   const [coins, setCoins] = useState(0); // used to force rerender of NavBar
-  const [timeoutId, setTimeoutId] = useState(null); // used to debounce save to cloud
+  const [coinDiff, setCoinDiff] = useState(0); // used to show change in coins
+  const [saveTimeoutId, setSaveTimeoutId] = useState(null); // used to debounce save to cloud
   const [effectCount, setEffectCount] = useState(0);
   const [saving, setSaving] = useState(false);
+
+  const setCoinHandler = (newCoins, skipCoinDiff) => {
+    if (!skipCoinDiff) {
+      const diff = newCoins - coins;
+      setCoinDiff(coinDiff + diff);
+    }
+    setCoins(newCoins);
+  };
 
   useEffect(() => {
     if (effectCount < 2) {
@@ -47,15 +57,18 @@ export default function Home() {
     }
     setSaving(true);
 
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+    if (saveTimeoutId) {
+      clearTimeout(saveTimeoutId);
     }
     const newTimeoutId = setTimeout(() => {
       updateUserCoinsByUserId(getCurrentUser()._id, coins, () => {
+        setTimeout(() => {
+          setCoinDiff(0);
+        }, 150);
         setSaving(false);
       });
     }, 500);
-    setTimeoutId(newTimeoutId);
+    setSaveTimeoutId(newTimeoutId);
   }, [coins]);
 
   var coinsPerClick = BASE_COINS_PER_CLICK;
@@ -80,7 +93,7 @@ export default function Home() {
         newCoins += coinsPerClick;
       }
       storeCurrentUser({ ...getCurrentUser(), coins: newCoins });
-      setCoins(newCoins);
+      setCoinHandler(newCoins);
     }
   };
 
@@ -100,7 +113,7 @@ export default function Home() {
       sx={{ minWidth: "100vw" }}
     >
       <TopBar />
-      <NavBar coins={coins} />
+      <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
       <NotificationSnackbar
         open={warning}
         setOpen={setWarning}
@@ -129,52 +142,62 @@ export default function Home() {
               {APP_NAME}
             </Typography>
           </Box>
-          <img src={catGif} width={"150px"} height={"150px"} />
-          <Typography variant="h4" color="white" sx={{ marginTop: 10 }}>
-            current coin rate: {coinsPerClick}
-            <img
-              src={coinIcon}
-              width={20}
-              height={20}
-              alt="coin"
-              style={{ marginBottom: -1.3, marginLeft: 9 }}
-            />
-            /click
+          <img
+            src={catGif}
+            width={"150px"}
+            height={"150px"}
+            style={{ marginTop: 5 }}
+          />
+          <Typography
+            variant="h4"
+            color="gray"
+            sx={{ marginTop: 3 }}
+            textAlign="center"
+          >
+            current coin rate:
+            <Typography
+              variant="h4"
+              color="lightgreen"
+              fontWeight="bold"
+              alignItems={"center"}
+              justifyContent={"center"}
+              display={"flex"}
+            >
+              <img
+                src={coinGif}
+                width={27}
+                height={27}
+                alt="coin"
+                style={{ marginRight: 3 }}
+              />
+              {coinsPerClick.toLocaleString()} per click
+            </Typography>
           </Typography>
           <Button
             variant="contained"
             color="primary"
             onClick={handleCoinClick}
-            sx={{ marginBottom: 1.3, marginTop: 3, maxWidth: 210 }}
+            className="quirkyButton quirkyButtonShadow"
+            sx={{ marginTop: 1, width: 100, height: 100 }}
+            disableRipple
           >
-            <img
-              src={coinIcon}
-              width={25}
-              height={25}
-              alt="coin"
-              style={{ marginRight: 6 }}
-            />
-            click for coins!
+            <img src={coinGif} width={80} height={80} alt="coin" />
           </Button>
-          {saving ? (
-            <Typography
-              variant="body1"
-              color="gray"
-              display="flex"
-              alignItems="center"
-            >
-              saving...
-            </Typography>
-          ) : (
-            <Typography
-              variant="body1"
-              color="gray"
-              display="flex"
-              alignItems="center"
-            >
-              <Check fontSize="10px" sx={{ marginRight: 1 }} /> saved!
-            </Typography>
-          )}
+          <Typography
+            variant="body1"
+            color="gray"
+            display="flex"
+            alignItems="center"
+            marginTop={1}
+          >
+            {saving ? (
+              "saving..."
+            ) : (
+              <>
+                <Check fontSize="10px" sx={{ marginRight: 1 }} /> saved!
+              </>
+            )}
+          </Typography>
         </div>
       )}
       <Routes>
@@ -182,8 +205,17 @@ export default function Home() {
         <Route path="/rarities/:rarity" element={<MyCats rarity={true} />} />
         <Route path="/search" element={<EmptySearch />} />
         <Route path="/search/:query" element={<Search />} />
-        <Route path="/roll" element={<Roll setCoins={setCoins} />} />
-        <Route path="/shop" element={<Shop setCoins={setCoins} />} />
+        <Route
+          path="/roll"
+          element={
+            <Roll
+              coins={coins}
+              setCoinDiff={setCoinDiff}
+              setCoins={setCoinHandler}
+            />
+          }
+        />
+        <Route path="/shop" element={<Shop setCoins={setCoinHandler} />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/details/:id" element={<Details />} />
@@ -192,7 +224,7 @@ export default function Home() {
         <Route path="/find-users/*" element={<SearchUsers />} />
         <Route path="/forbidden" element={<Forbidden />} />
       </Routes>
-      <Footer></Footer>
+      <Footer />
     </Container>
   );
 }

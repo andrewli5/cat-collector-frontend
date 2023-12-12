@@ -43,3 +43,13 @@
   bottom: 0;
   width: 100%;
 }
+
+.quirkyButton {
+  width: 180px;
+  transition: all 0.2s ease;
+}
+
+.quirkyButton:active {
+  transform: scale(0.9);
+  box-shadow: #363457 0px 0px 15px 15px;
+}
