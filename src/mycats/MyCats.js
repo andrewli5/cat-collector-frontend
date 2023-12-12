@@ -15,14 +15,16 @@ import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 import UnknownCat from "../assets/unknown_cat.png";
+import Heart from "../assets/heart_icon.png";
+import CatchingHeart from "../assets//gifs/cat_catching_heart.gif";
 
 export default function MyCats({ favorites = false, rarity = false }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isEmptyFavorites, setIsEmptyFavorites] = useState(false);
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
   const params = useParams();
   const [allCatIcons, setAllCatIcons] = useState([]); // [catIcons, mythicCatIcons]
-  const [catIcons, setCatIcons] = useState([]);
   const [mythicCatIcons, setMythicCatIcons] = useState([]);
 
   var cats = [];
@@ -33,9 +35,9 @@ export default function MyCats({ favorites = false, rarity = false }) {
   function getIconsToDisplay() {
     var icons = Object.keys(allCatIcons);
     if (favorites && getCurrentUser()) {
+      const userFavorites = getCurrentUser().favorites;
       icons = icons.filter((catIcon) => {
         const currentBreed = CATICON_TO_BREEDID[catIcon];
-        const userFavorites = getCurrentUser().favorites;
         return userFavorites.includes(currentBreed);
       });
     } else if (rarity) {
@@ -163,6 +165,9 @@ export default function MyCats({ favorites = false, rarity = false }) {
     if (!getCurrentUser() && favorites) {
       navigate("/signin");
     }
+    if (getCurrentUser && favorites) {
+      setIsEmptyFavorites(getCurrentUser().favorites.length === 0);
+    }
 
     resetFunction();
   }, []);
@@ -217,62 +222,88 @@ export default function MyCats({ favorites = false, rarity = false }) {
         />
       </Typography>
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
-        {getIconsToDisplay().map((catIcon, index) => {
-          const currentBreedId = CATICON_TO_BREEDID[catIcon];
-          if (currentBreedId === undefined) {
-            return null;
-          }
-          const rarity = ALL_CAT_RARITIES.find(
-            (b) => b.breed === currentBreedId
-          )["rarity"];
-          const [name, src] = getIconData(catIcon, currentBreedId, rarity);
-          var textColor = "grey";
-          var imageStyle = {
-            WebkitFilter: "grayscale(100%)",
-            border: "1px solid gray",
-          };
-          if (cats.includes(currentBreedId)) {
-            imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
-            textColor = "white";
-          }
-          return (
-            <Grid
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              item
-              xs={2}
-              key={index}
-              sx={{ marginBottom: 3 }}
-              className="hover"
-            >
-              <Link
-                textAlign="center"
-                underline="none"
-                color="inherit"
-                href={
-                  rarity === "M" && !cats.includes(currentBreedId)
-                    ? "/details/???"
-                    : `/details/${CATICON_TO_BREEDID[catIcon]}`
-                }
+        {favorites && isEmptyFavorites ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              minWidth: "100vw",
+              justifyContent: "center",
+              padding: "20px",
+            }}
+          >
+            <img
+              src={CatchingHeart}
+              width={175}
+              height={175}
+              style={{ paddingBottom: "10px" }}
+            />
+            <Typography variant="h5">
+              you have no favorites yet. click the{" "}
+              {<img src={Heart} width={15} height={15} />} icon on a cat's
+              profile to favorite it!
+            </Typography>
+          </Box>
+        ) : (
+          getIconsToDisplay().map((catIcon, index) => {
+            const currentBreedId = CATICON_TO_BREEDID[catIcon];
+            if (currentBreedId === undefined) {
+              return null;
+            }
+            const rarity = ALL_CAT_RARITIES.find(
+              (b) => b.breed === currentBreedId
+            )["rarity"];
+            const [name, src] = getIconData(catIcon, currentBreedId, rarity);
+            var textColor = "grey";
+            var imageStyle = {
+              WebkitFilter: "grayscale(100%)",
+              border: "1px solid gray",
+            };
+            if (cats.includes(currentBreedId)) {
+              imageStyle = { border: `1px solid ${RARITY_TO_COLOR[rarity]}` };
+              textColor = "white";
+            }
+            return (
+              <Grid
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                item
+                xs={2}
+                key={index}
+                sx={{ marginBottom: 3 }}
+                className="hover"
               >
-                <img
-                  style={{
-                    ...imageStyle,
-                    borderRadius: "5px",
-                  }}
-                  src={src}
-                  width={60}
-                  height={60}
-                  alt={catIcon}
-                />
-                <Typography variant="h5" color={textColor} textAlign="center">
-                  {name}
-                </Typography>
-              </Link>
-            </Grid>
-          );
-        })}
+                <Link
+                  textAlign="center"
+                  underline="none"
+                  color="inherit"
+                  href={
+                    rarity === "M" && !cats.includes(currentBreedId)
+                      ? "/details/???"
+                      : `/details/${CATICON_TO_BREEDID[catIcon]}`
+                  }
+                >
+                  <img
+                    style={{
+                      ...imageStyle,
+                      borderRadius: "5px",
+                    }}
+                    src={src}
+                    width={60}
+                    height={60}
+                    alt={catIcon}
+                  />
+                  <Typography variant="h5" color={textColor} textAlign="center">
+                    {name}
+                  </Typography>
+                </Link>
+              </Grid>
+            );
+          })
+        )}
       </Grid>
     </>
   );

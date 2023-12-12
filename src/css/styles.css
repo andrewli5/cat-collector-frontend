@@ -37,3 +37,9 @@
   background-color: #735290;
   border: 2px solid black;
 }
+.footer {
+  color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
