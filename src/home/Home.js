@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Grow, Typography } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
@@ -10,7 +10,6 @@ import NavBar from "./NavBar";
 import Roll from "../roll/Roll";
 import Shop from "../shop/Shop";
 import Admin from "../admin/Admin";
-import coinIcon from "../assets/coin_icon.png";
 import coinGif from "../assets/coin_spin.gif";
 import {
   catGif,
@@ -183,21 +182,17 @@ export default function Home() {
           >
             <img src={coinGif} width={80} height={80} alt="coin" />
           </Button>
-          <Typography
-            variant="body1"
-            color="gray"
-            display="flex"
-            alignItems="center"
-            marginTop={1}
-          >
-            {saving ? (
-              "saving..."
-            ) : (
-              <>
-                <Check fontSize="10px" sx={{ marginRight: 1 }} /> saved!
-              </>
-            )}
-          </Typography>
+          <Grow in={saving && coinDiff != 0}>
+            <Typography
+              variant="h4"
+              alignItems="center"
+              color={coinDiff > 0 ? "lightgreen" : "error"}
+              marginTop={1}
+            >
+              {coinDiff > 0 ? "+" : "-"}
+              {Math.abs(coinDiff).toLocaleString()}
+            </Typography>
+          </Grow>
         </div>
       )}
       <Routes>
