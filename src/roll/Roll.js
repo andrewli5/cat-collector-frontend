@@ -213,7 +213,13 @@ export default function Roll({ setCoins }) {
         />
       </Box>
       <Button
-        disabled={isRolling ? true : false}
+        disabled={
+          isRolling ||
+          getCurrentUser() ||
+          getCurrentUser().coins < getCurrentUser().rollCost
+            ? true
+            : false
+        }
         variant="contained"
         sx={{
           display: "flex",
@@ -235,14 +241,14 @@ export default function Roll({ setCoins }) {
           "Rolling..."
         ) : (
           <>
-            roll for{" "}
+            roll | 
+            <Typography variant="h5" marginLeft={1}>{rollCost}</Typography>
             <img
               style={{ marginLeft: "5px" }}
               src={Coin}
               width={20}
               height={20}
             />
-            x{rollCost}
           </>
         )}
       </Button>
