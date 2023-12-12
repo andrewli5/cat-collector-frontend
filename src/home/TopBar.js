@@ -18,8 +18,11 @@ import { useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
 import Logo from "../assets/main_icon.png";
 import ExpandingTextField from "../reusable/ExpandingTextField";
+import MusicOn from "@mui/icons-material/MusicNote";
+import MusicOff from "@mui/icons-material/MusicOff";
+import IconButton from "@mui/material/IconButton";
 
-export default function TopBar() {
+export default function TopBar({ music, setMusic }) {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -127,11 +130,14 @@ export default function TopBar() {
           <Box>
             <Grid container spacing={1}>
               <Grid item>
-                <Button
-                  href="/myprofile"
-                  color="primary"
-                  variant="contained"
-                >
+                <IconButton sx={{rightPadding: "0", marginRight: "5px"}}>
+                {music ? (
+                    <MusicOn onClick={() => setMusic(false)} />
+                  ) : (
+                    <MusicOff onClick={() => setMusic(true)} />
+                  )}
+                </IconButton>
+                <Button href="/myprofile" color="primary" variant="contained">
                   {"hi, " + getCurrentUser().firstName + "!"}
                 </Button>
               </Grid>

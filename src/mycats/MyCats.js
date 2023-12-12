@@ -8,7 +8,11 @@ import {
   RARITY_TO_VALUE,
   RARITY_TO_STRING,
 } from "../constants";
-import { getCurrentUser } from "../client";
+import {
+  getCurrentUser,
+  getUserByUsername,
+  getUserDataByUserId,
+} from "../client";
 import { useNavigate, useParams } from "react-router-dom";
 import { importAll } from "../utils/importAll";
 import { ALL_CAT_RARITIES } from "../client";
@@ -17,20 +21,20 @@ import UnknownCat from "../assets/unknown_cat.png";
 import Heart from "../assets/heart_icon.png";
 import CatchingHeart from "../assets//gifs/cat_catching_heart.gif";
 
-export default function MyCats({ favorites = false, rarity = false }) {
+export default function MyCats({
+  favorites = false,
+  rarity = false,
+  view = false,
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmptyFavorites, setIsEmptyFavorites] = useState(false);
   const [title, setTitle] = useState("");
   const [showUnowned, setShowUnowned] = useState(false);
   const [allCatIcons, setAllCatIcons] = useState([]);
   const [mythicCatIcons, setMythicCatIcons] = useState([]);
+  const [cats, setCats] = useState([]);
   const navigate = useNavigate();
   const params = useParams();
-
-  var cats = [];
-  if (getCurrentUser()) {
-    cats = getCurrentUser().cats;
-  }
 
   function getIconsToDisplay() {
     var icons = Object.keys(allCatIcons);
@@ -57,13 +61,21 @@ export default function MyCats({ favorites = false, rarity = false }) {
   }
 
   const getIconSrcForMythicCat = (catIcon, currentBreedId) => {
-    return !cats.includes(currentBreedId) || !getCurrentUser()
+    var c = cats;
+    if (view) {
+      c = getCurrentUser().cats;
+    }
+    return !c.includes(currentBreedId) || !getCurrentUser()
       ? UnknownCat
       : mythicCatIcons[catIcon];
   };
 
   const getIconNameForMythicCat = (catIcon, currentBreedId) => {
-    return !cats.includes(currentBreedId) || !getCurrentUser()
+    var c = cats;
+    if (view) {
+      c = getCurrentUser().cats;
+    }
+    return !c.includes(currentBreedId) || !getCurrentUser()
       ? "?????"
       : catIcon.replace(".jpg", "").replace("_", " ");
   };
@@ -95,14 +107,20 @@ export default function MyCats({ favorites = false, rarity = false }) {
   };
 
   const getHref = (rarity, catIcon) => {
+    // if in view mode, don't display mythic cats href that the user doesn't own
     const currentBreedId = CATICON_TO_BREEDID[catIcon];
-    return rarity === "M" && !cats.includes(currentBreedId)
+    var c = cats;
+    if (view) {
+      c = getCurrentUser().cats;
+    }
+    return rarity === "M" && !c.includes(currentBreedId)
       ? "/details/???"
       : `/details/${CATICON_TO_BREEDID[catIcon]}`;
   };
 
   const skipDisplay = (currentBreedId) => {
-    // Don't display the cat if the breed is undefined, or if we aren't showing unowned cats
+    // Don't display the cat if the breed is undefined,
+    // or if we are not showing cats the user doesn't own
     return (
       (!showUnowned && !cats.includes(currentBreedId)) ||
       currentBreedId === undefined
@@ -187,22 +205,47 @@ export default function MyCats({ favorites = false, rarity = false }) {
   };
 
   useEffect(() => {
+    async function getUserCats() {
+      setIsLoading(true);
+      const username = params.username;
+      try {
+        const user = await getUserByUsername(username);
+        const userId = user["_id"];
+        const userData = await getUserDataByUserId(userId);
+        setCats(userData.cats);
+      } catch (error) {
+        if ((error.name = "ERR_BAD_REQUEST")) {
+          // TODO: nav to 404 page
+          return;
+        }
+      }
+    }
+
     document.title =
       (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") +
       APP_NAME;
     if (!getCurrentUser() && favorites) {
       navigate("/signin");
-    }
-    if (getCurrentUser() && favorites) {
+    } else if (getCurrentUser() && !view) {
+      setCats(getCurrentUser().cats);
+    } else if (getCurrentUser() && favorites) {
       setIsEmptyFavorites(getCurrentUser().favorites.length === 0);
+    } else if (view) {
+      getUserCats();
     }
-
     resetFunction();
   }, []);
 
   useEffect(() => {
     const renderTitle = () => {
-      if (favorites) {
+      if (view) {
+        if (isLoading) {
+          setTitle("loading " + params.username + "'s cats...");
+          setIsLoading(false);
+        } else {
+          setTitle(params.username + "'s cats");
+        }
+      } else if (favorites) {
         setTitle("favorites");
       } else if (rarity) {
         setTitle(RARITY_TO_STRING[params.rarity].toLowerCase() + " cats");
@@ -227,7 +270,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
   }, [isLoading]);
 
   return (
-    <>
+    <Box sx={{ marginBottom: "10px" }}>
       <Box bgcolor="primary.main" sx={{ marginBottom: "10px" }}>
         <Typography
           variant="h3"
@@ -263,19 +306,23 @@ export default function MyCats({ favorites = false, rarity = false }) {
         </Box>
       ) : (
         <>
-          <Typography
-            variant="h4"
-            color="white"
-            textAlign="center"
-            sx={{ paddingRight: "20px", paddingTop: "10px" }}
-          >
-            <MyCatsSort
-              sortFunction={sortFunction}
-              reverseFunction={reverseFunction}
-              showUnowned={showUnowned}
-              setShowUnowned={setShowUnowned}
-            />
-          </Typography>
+          {view ? (
+            <></>
+          ) : (
+            <Typography
+              variant="h4"
+              color="white"
+              textAlign="center"
+              sx={{ paddingRight: "20px", paddingTop: "10px" }}
+            >
+              <MyCatsSort
+                sortFunction={sortFunction}
+                reverseFunction={reverseFunction}
+                showUnowned={showUnowned}
+                setShowUnowned={setShowUnowned}
+              />
+            </Typography>
+          )}
           <Box display="flex" justifyContent="center">
             <Grid
               container
@@ -340,6 +387,6 @@ export default function MyCats({ favorites = false, rarity = false }) {
           </Box>
         </>
       )}
-    </>
+    </Box>
   );
 }

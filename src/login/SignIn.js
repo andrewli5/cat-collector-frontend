@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import Footer from "../home/Footer";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -58,80 +59,91 @@ export default function SignIn() {
   }, []);
 
   return (
-    <Container component="main" maxWidth="xs">
-      <NotificationSnackbar
-        open={success}
-        setOpen={setSuccess}
-        message="signed in successfully! redirecting..."
-        severity="success"
-        autoHideDuration={6000}
-      />
-      <NotificationSnackbar
-        open={error}
-        setOpen={setError}
-        message={errorMessage.toLowerCase()}
-        severity="error"
-        autoHideDuration={6000}
-      />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <LockOpenIcon color="primary" sx={{ marginBottom: 2, fontSize: 40 }} />
-        <Typography variant="h3" textAlign="center">
-          sign in to {APP_NAME}
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="username"
-            name="username"
-            autoComplete="username"
-            autoFocus
+    <Box sx={{width: "100vw"}}>
+      <Container component="main" maxWidth="xs">
+        <NotificationSnackbar
+          open={success}
+          setOpen={setSuccess}
+          message="signed in successfully! redirecting..."
+          severity="success"
+          autoHideDuration={6000}
+        />
+        <NotificationSnackbar
+          open={error}
+          setOpen={setError}
+          message={errorMessage.toLowerCase()}
+          severity="error"
+          autoHideDuration={6000}
+        />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <LockOpenIcon
+            color="primary"
+            sx={{ marginBottom: 2, fontSize: 40 }}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-
-          <LoadingButton
-            loading={loading}
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            sign in
-          </LoadingButton>
+          <Typography variant="h3" textAlign="center">
+            sign in to {APP_NAME}
+          </Typography>
           <Box
-            sx={{
-              textAlign: "center",
-              display: "flex",
-              flexDirection: "column",
-            }}
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
           >
-            <Link href="/signup" variant="h5">
-              {"don't have an account? sign up"}
-            </Link>
-            <Link href="/" variant="h5">
-              {"back to home"}
-            </Link>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+
+            <LoadingButton
+              loading={loading}
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              sign in
+            </LoadingButton>
+            <Box
+              sx={{
+                textAlign: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Link href="/signup" variant="h5">
+                {"don't have an account? sign up"}
+              </Link>
+              <Link href="/" variant="h5">
+                {"back to home"}
+              </Link>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+      <Footer></Footer>
+    </Box>
   );
 }
