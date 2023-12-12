@@ -61,13 +61,21 @@ export default function MyCats({
   }
 
   const getIconSrcForMythicCat = (catIcon, currentBreedId) => {
-    return !cats.includes(currentBreedId) || !getCurrentUser()
+    var c = cats;
+    if (view) {
+      c = getCurrentUser().cats;
+    }
+    return !c.includes(currentBreedId) || !getCurrentUser()
       ? UnknownCat
       : mythicCatIcons[catIcon];
   };
 
   const getIconNameForMythicCat = (catIcon, currentBreedId) => {
-    return !cats.includes(currentBreedId) || !getCurrentUser()
+    var c = cats;
+    if (view) {
+      c = getCurrentUser().cats;
+    }
+    return !c.includes(currentBreedId) || !getCurrentUser()
       ? "?????"
       : catIcon.replace(".jpg", "").replace("_", " ");
   };
@@ -99,8 +107,13 @@ export default function MyCats({
   };
 
   const getHref = (rarity, catIcon) => {
+    // if in view mode, don't display mythic cats href that the user doesn't own
     const currentBreedId = CATICON_TO_BREEDID[catIcon];
-    return rarity === "M" && !cats.includes(currentBreedId)
+    var c = cats;
+    if (view) {
+      c = getCurrentUser().cats;
+    }
+    return rarity === "M" && !c.includes(currentBreedId)
       ? "/details/???"
       : `/details/${CATICON_TO_BREEDID[catIcon]}`;
   };
