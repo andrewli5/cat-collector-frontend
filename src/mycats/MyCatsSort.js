@@ -12,6 +12,7 @@ import "../css/styles.css";
 import SortIcon from "@mui/icons-material/Sort";
 import { styled, alpha } from "@mui/material/styles";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
+import { getCurrentUser } from "../client";
 
 export function MyCatsSort({
   sortFunction,
@@ -22,6 +23,7 @@ export function MyCatsSort({
   const [sortAnchorEl, setSortAnchorEl] = useState(null);
   const sortMenuOpen = Boolean(sortAnchorEl);
   const [sortText, setSortText] = useState("");
+
   const handleSortClick = (event) => {
     setSortAnchorEl(event.currentTarget);
   };
@@ -45,6 +47,22 @@ export function MyCatsSort({
       setShowUnowned(false);
     } else {
       setShowUnowned(true);
+    }
+  };
+
+  const getCheckBox = () => {
+    if (getCurrentUser()) {
+      setShowUnowned(false);
+      return <Checkbox onClick={handleCheckbox} style={{ color: "white" }} />;
+    } else {
+      setShowUnowned(true);
+      return (
+        <Checkbox
+          onClick={handleCheckbox}
+          style={{ color: "white" }}
+          checked={true}
+        />
+      );
     }
   };
 
@@ -96,9 +114,7 @@ export function MyCatsSort({
           color: "white",
           paddingRight: "8px",
         }}
-        control={
-          <Checkbox onClick={handleCheckbox} style={{ color: "white" }} />
-        }
+        control={getCheckBox()}
         label={<Typography variant="h5">{"show unowned"}</Typography>}
       />
       <Button
