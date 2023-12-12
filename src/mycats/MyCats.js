@@ -228,41 +228,42 @@ export default function MyCats({ favorites = false, rarity = false }) {
           />
         )}
       </Typography>
-      <Box display="flex" justifyContent="center">
-        <Grid
-          container
+
+      {getCurrentUser() && favorites && isEmptyFavorites ? (
+        <Box
           sx={{
-            marginTop: 3,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            minWidth: "100vw",
+            justifyContent: "center",
+            padding: "20px",
           }}
-          maxWidth="1100px"
-          columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {getCurrentUser() && favorites && isEmptyFavorites ? (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                textAlign: "center",
-                minWidth: "100vw",
-                justifyContent: "center",
-                padding: "20px",
-              }}
-            >
-              <img
-                src={CatchingHeart}
-                width={175}
-                height={175}
-                style={{ paddingBottom: "10px" }}
-              />
-              <Typography variant="h5">
-                you have no favorites yet. click the{" "}
-                {<img src={Heart} width={15} height={15} />} icon on a cat's
-                profile to favorite it!
-              </Typography>
-            </Box>
-          ) : (
-            getIconsToDisplay().map((catIcon, index) => {
+          <img
+            src={CatchingHeart}
+            width={175}
+            height={175}
+            style={{ paddingBottom: "10px" }}
+          />
+          <Typography variant="h5">
+            you have no favorites yet. click the{" "}
+            {<img src={Heart} width={15} height={15} />} icon on a cat's profile
+            to favorite it!
+          </Typography>
+        </Box>
+      ) : (
+        <Box display="flex" justifyContent="center">
+          <Grid
+            container
+            sx={{
+              marginTop: 3,
+            }}
+            maxWidth="1100px"
+            columns={{ xs: 4, sm: 8, md: 12 }}
+          >
+            {getIconsToDisplay().map((catIcon, index) => {
               if (!showUnowned && !cats.includes(CATICON_TO_BREEDID[catIcon])) {
                 return null;
               }
@@ -326,10 +327,10 @@ export default function MyCats({ favorites = false, rarity = false }) {
                   </Link>
                 </Grid>
               );
-            })
-          )}
-        </Grid>
-      </Box>
+            })}
+          </Grid>
+        </Box>
+      )}
     </>
   );
 }
