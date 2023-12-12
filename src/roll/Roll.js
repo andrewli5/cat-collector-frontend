@@ -137,11 +137,26 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
     document.title = "roll | " + APP_NAME;
   }, []);
 
+  const getNewCatUnlockedTitle = () => {
+    const imgSize = 25;
+    return (
+      <>
+        <img
+          src={client.catGif}
+          width={imgSize}
+          height={imgSize}
+          style={{ marginRight: "5px" }}
+        />
+        new cat unlocked!
+        <img src={client.catGif} width={imgSize} height={imgSize} />
+      </>
+    );
+  };
   function getRollResultsMessage() {
     return (
       <>
         <Typography variant="h4" color={"white"} textAlign="center">
-          {rollResults["duplicate"] ? "you rolled:" : "new cat unlocked!"}
+          {rollResults["duplicate"] ? "you rolled:" : getNewCatUnlockedTitle()}
         </Typography>
         <Typography variant="h3" textAlign="center" color="white">
           <Box alignItems={"center"} display={"flex"} justifyContent={"center"}>
@@ -166,7 +181,12 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
           </Box>
         </Typography>
         {rollResults["duplicate"] ? (
-          <Box alignItems={"center"} display={"flex"} textAlign="center">
+          <Box
+            alignItems={"center"}
+            display={"flex"}
+            justifyContent="center"
+            textAlign="center"
+          >
             {"duplicate, received:  "}
             {rollResults["addedCoins"]}
             <img
@@ -177,10 +197,22 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
             />
           </Box>
         ) : (
-          <Box>
-            coins per click: {rollResults["oldCoinsPerClick"]} ⇒{" "}
-            {rollResults["newCoinsPerClick"]}
-            {"  (+" + (rollResults["multiplier"] - 1).toFixed(2) + "%)"}
+          <Box alignItems="center" display="flex" textAlign="center">
+            coins per click: {rollResults["oldCoinsPerClick"]}
+            <img
+              style={{ marginLeft: "2px", marginRight: "5px" }}
+              src={Coin}
+              width={20}
+              height={20}
+            />
+            ⇒ {rollResults["newCoinsPerClick"]}
+            <img
+              style={{ marginRight: "5px" }}
+              src={Coin}
+              width={20}
+              height={20}
+            />
+            {"  (+" + ((rollResults["multiplier"] - 1) * 100).toFixed(0) + "%)"}
           </Box>
         )}
       </>
@@ -218,6 +250,7 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
       />
       {!_.isEmpty(rollResults) ? (
         <NotificationSnackbar
+          icon={false}
           open={displayResults}
           setOpen={setDisplayResults}
           message={getRollResultsMessage()}
