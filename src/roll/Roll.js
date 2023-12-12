@@ -15,10 +15,10 @@ import Coin from "../assets/coin_icon.png";
 
 const IMAGE_SIZE = "40vh";
 
-export default function Roll({ setCoins }) {
+export default function Roll({ coins, setCoins, setCoinDiff }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -27,7 +27,7 @@ export default function Roll({ setCoins }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
@@ -66,11 +66,16 @@ export default function Roll({ setCoins }) {
       storeCurrentUser(user);
     }
 
+    const updateRollCost = (newRollCost) => {
+      setRollCost(newRollCost); // display new roll cost
+      client.storeCurrentUser({ ...getCurrentUser(), rollCost: newRollCost }); // update user in local storage
+    };
+
     const rolledCatBreedId = results["breed"];
     const rolledCatIcon = BREEDID_TO_CATICON[rolledCatBreedId];
-    const rolledCatName = rolledCatIcon.replace(".png", "").replace("_", " ");
-    if (getCurrentUser().coins - rollCost >= 0) {
-      updateCoinAmt(getCurrentUser().coins - rollCost);
+    if (coins - rollCost >= 0) {
+      setCoins(coins - rollCost); // display new coin amount
+      client.storeCurrentUser({ ...getCurrentUser(), coins: coins - rollCost }); // update user in local storage
     }
 
     // rolling animation
@@ -82,25 +87,17 @@ export default function Roll({ setCoins }) {
     }, 100);
 
     setTimeout(() => {
-      setIsRolling(false);
       clearInterval(interval);
+      setIsRolling(false);
       setDisplayedIcon(catIcons[rolledCatIcon]);
       setDisplayResults(true);
-      updateCoinAmt(getCurrentUser().coins + results["addedCoins"]);
+      setCoinDiff(results["addedCoins"]);
+      setCoins(coins - rollCost + results["addedCoins"], true); 
+      client.storeCurrentUser({ ...getCurrentUser(), coins: coins - rollCost + results["addedCoins"] });
       if (!results["duplicate"]) {
         updateRollCost(results["rollCost"]);
       }
     }, 2000);
-  };
-
-  const updateCoinAmt = (newCoinAmt) => {
-    setCoins(newCoinAmt); // display new coin amount
-    client.storeCurrentUser({ ...getCurrentUser(), coins: newCoinAmt }); // update user in local storage
-  };
-
-  const updateRollCost = (newRollCost) => {
-    setRollCost(newRollCost); // display new roll cost
-    client.storeCurrentUser({ ...getCurrentUser(), rollCost: newRollCost }); // update user in local storage
   };
 
   useEffect(() => {
@@ -132,13 +129,14 @@ export default function Roll({ setCoins }) {
         {rollResults["duplicate"] ? (
           <Box alignItems={"center"} display={"flex"} textAlign="center">
             {"duplicate, received:  "}
+
+            {rollResults["addedCoins"]}
             <img
               style={{ marginLeft: "5px" }}
               src={Coin}
               width={20}
               height={20}
             />
-            x{rollResults["addedCoins"]}{" "}
           </Box>
         ) : (
           <></>
@@ -241,8 +239,10 @@ export default function Roll({ setCoins }) {
           "Rolling..."
         ) : (
           <>
-            roll | 
-            <Typography variant="h5" marginLeft={1}>{rollCost}</Typography>
+            roll |
+            <Typography variant="h5" marginLeft={1}>
+              {rollCost.toLocaleString()}
+            </Typography>
             <img
               style={{ marginLeft: "5px" }}
               src={Coin}

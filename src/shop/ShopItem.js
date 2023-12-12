@@ -12,6 +12,9 @@ import { getCurrentUser, purchaseUpgradeForUser, storeCurrentUser } from "../cli
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
+import { UPGRADES } from "../constants";
+
+const MAXED = [UPGRADES.LUCK3, UPGRADES.CRIT3, UPGRADES.COST3];
 
 export default function ShopItem({ title, items, setCoins, updateItems }) {
   const [success, setSuccess] = useState(false);
@@ -98,10 +101,10 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((item) => (
+          {items.map((item, index) => (
             <TableRow
               className="shopItem"
-              key={item.title}
+              key={item.title || index}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -113,7 +116,7 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
                         ? { filter: `hue-rotate(${item.filter}deg)` }
                         : {}
                     }
-                    src={"/images/" + item.icon}
+                    src={"/images/" + (item.icon ? item.icon : MAXED[index].icon)}
                     width="30"
                     height="30"
                   />
@@ -121,26 +124,34 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
               </TableCell>
               <TableCell align="left">
                 <Typography variant="h5">
-                  {item.title.toLowerCase()}{" "}
+                  {item.title
+                    ? item.title.toLowerCase()
+                    : MAXED[index].title}
                 </Typography>
               </TableCell>
               <TableCell align="left">
-                {" "}
                 <Typography variant="h5">
-                  {item.description.toLowerCase()}{" "}
+                  {item.description
+                    ? item.description.toLowerCase()
+                    : MAXED[index].description}
                 </Typography>
               </TableCell>
               <TableCell align="left">
-                {" "}
-                <Typography variant="h5" color="gray">
-                  {item.current.toLowerCase()}{" "}
+                <Typography variant="h5">
+                  {item.current
+                    ? item.current.toLowerCase()
+                    : MAXED[index].description}
                 </Typography>
               </TableCell>
               <TableCell xs={1} md={1} align="right">
                 {
                   <LoadingButton
                     variant="contained"
-                    disabled={!getCurrentUser() || getCurrentUser().coins < item.price}
+                    disabled={
+                      !getCurrentUser() ||
+                      !item.title ||
+                      getCurrentUser().coins < item.price
+                    }
                     onClick={() => handlePurchase(item)}
                     loading={loading}
                   >
@@ -148,7 +159,7 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
                       buy |
                     </Typography>
                     <Typography variant="h5" color="white" marginRight={0.7}>
-                      {item.price.toLocaleString()}
+                      {item.price ? item.price.toLocaleString() : "BOUGHT"}
                     </Typography>
                     <img src={Coin} width={15} height={15} />
                   </LoadingButton>
