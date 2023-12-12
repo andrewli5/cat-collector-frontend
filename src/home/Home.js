@@ -78,7 +78,11 @@ export default function Home() {
   }, []);
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Container
+      component="main"
+      style={{ paddingLeft: 0, paddingRight: 0 }}
+      sx={{ minWidth: "100vw" }}
+    >
       <TopBar />
       <NavBar coins={coins} />
       <NotificationSnackbar
@@ -104,10 +108,7 @@ export default function Home() {
             flexDirection: "column",
           }}
         >
-          <Box
-            bgcolor="primary.main"
-            sx={{ marginTop: "15px", marginBottom: "10px" }}
-          >
+          <Box bgcolor="primary.main" sx={{ marginBottom: "10px" }}>
             <Typography variant="h3" color="white" sx={{ width: "100vw" }}>
               {APP_NAME}
             </Typography>

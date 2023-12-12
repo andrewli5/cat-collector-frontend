@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Typography, Link } from "@mui/material";
+import { Typography, Link, Box } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
 import {
@@ -46,7 +46,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
           return false;
         } else {
           const currentRarity = ALL_CAT_RARITIES.find(
-            (b) => b.breed === currentBreed,
+            (b) => b.breed === currentBreed
           )["rarity"];
           return currentRarity === params.rarity;
         }
@@ -81,7 +81,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   const resetFunction = () => {
     const icons = importAll(
-      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
     );
     const mythicIcons = importAll(
       require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
@@ -113,8 +113,12 @@ export default function MyCats({ favorites = false, rarity = false }) {
         if (breed1 === undefined || breed2 === undefined) {
           return breed1 === undefined ? -1 : 1;
         }
-        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)["rarity"];
-        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)["rarity"];
+        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)[
+          "rarity"
+        ];
+        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)[
+          "rarity"
+        ];
         if (b1Rarity === "M" || b2Rarity === "M") {
           return b1Rarity === "M" && !cats.includes(CATICON_TO_BREEDID[breed1])
             ? 1
@@ -130,8 +134,12 @@ export default function MyCats({ favorites = false, rarity = false }) {
         if (breed1 === undefined || breed2 === undefined) {
           return breed1 === undefined ? -1 : 1;
         }
-        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)["rarity"];
-        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)["rarity"];
+        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)[
+          "rarity"
+        ];
+        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)[
+          "rarity"
+        ];
         return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
       });
     } else if (term === "owned") {
@@ -150,7 +158,8 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   useEffect(() => {
     document.title =
-      (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") + APP_NAME;
+      (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") +
+      APP_NAME;
     if (!getCurrentUser() && favorites) {
       navigate("/signin");
     }
@@ -175,7 +184,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
               cats.length +
               "/" +
               (Object.keys(allCatIcons).length - 1) +
-              ")",
+              ")"
           );
         }
       }
@@ -186,11 +195,22 @@ export default function MyCats({ favorites = false, rarity = false }) {
 
   return (
     <>
-      <Typography> {}</Typography>
-      <Typography variant="h3" color="white" textAlign="center">
-        {title}
-      </Typography>
-      <Typography variant="h4" color="white" textAlign="center">
+      <Box bgcolor="primary.main" sx={{ marginBottom: "10px" }}>
+        <Typography
+          variant="h3"
+          color="white"
+          textAlign="center"
+          sx={{ width: "100vw", overflowX: "hidden" }}
+        >
+          {title}
+        </Typography>
+      </Box>
+      <Typography
+        variant="h4"
+        color="white"
+        textAlign="center"
+        sx={{ paddingRight: "20px", paddingTop: "10px" }}
+      >
         <MyCatsSort
           sortFunction={sortFunction}
           reverseFunction={reverseFunction}
@@ -202,9 +222,9 @@ export default function MyCats({ favorites = false, rarity = false }) {
           if (currentBreedId === undefined) {
             return null;
           }
-          const rarity = ALL_CAT_RARITIES.find((b) => b.breed === currentBreedId)[
-            "rarity"
-          ];
+          const rarity = ALL_CAT_RARITIES.find(
+            (b) => b.breed === currentBreedId
+          )["rarity"];
           const [name, src] = getIconData(catIcon, currentBreedId, rarity);
           var textColor = "grey";
           var imageStyle = {
