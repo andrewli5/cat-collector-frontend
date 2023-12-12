@@ -165,7 +165,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
     if (!getCurrentUser() && favorites) {
       navigate("/signin");
     }
-    if (getCurrentUser && favorites) {
+    if (getCurrentUser() && favorites) {
       setIsEmptyFavorites(getCurrentUser().favorites.length === 0);
     }
 
