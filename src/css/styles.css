@@ -51,5 +51,37 @@
 
 .quirkyButton:active {
   transform: scale(0.9);
-  box-shadow: #363457 0px 0px 15px 15px;
+  box-shadow: #363457 0px 0px 20px 7px;
+}
+
+.flash-slide {
+  border: medium;
+  display: inline-block;
+  color: rgb(255, 255, 255);
+  margin: 20px;
+  width: 180px;
+  height: 80px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: Helvetica;
+  text-align: center;
+}
+
+.flash-slide::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  left: -120px;
+  height: 300px;
+  width: 70px;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(20deg);
+}
+
+.flash-slide:hover::before {
+  left: 190px;
+  transition: all 0.5s ease 0s;
 }

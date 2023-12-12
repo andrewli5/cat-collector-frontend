@@ -177,7 +177,7 @@ export default function Home() {
             variant="contained"
             color="primary"
             onClick={handleCoinClick}
-            className="quirkyButton quirkyButtonShadow"
+            className="quirkyButton quirkyButtonShadow flash-slide"
             sx={{ marginTop: 1, width: 100, height: 100 }}
             disableRipple
           >
