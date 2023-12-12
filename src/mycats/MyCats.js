@@ -107,8 +107,7 @@ export default function MyCats({
 
   const skipDisplay = (currentBreedId) => {
     // Don't display the cat if the breed is undefined,
-    // if we aren't showing unowned cats,
-    // or if cats is undefined
+    // or if we are not showing cats the user doesn't own
     return (
       (!showUnowned && !cats.includes(currentBreedId)) ||
       currentBreedId === undefined
@@ -196,14 +195,17 @@ export default function MyCats({
     async function getUserCats() {
       setIsLoading(true);
       const username = params.username;
-      const user = await getUserByUsername(username);
-      if (!user) {
-        navigate("/profile/dne");
-        return;
+      try {
+        const user = await getUserByUsername(username);
+        const userId = user["_id"];
+        const userData = await getUserDataByUserId(userId);
+        setCats(userData.cats);
+      } catch (error) {
+        if ((error.name = "ERR_BAD_REQUEST")) {
+          // TODO: nav to 404 page
+          return;
+        }
       }
-      const userId = user["_id"];
-      const userData = await getUserDataByUserId(userId);
-      setCats(userData.cats);
     }
 
     document.title =
@@ -219,6 +221,7 @@ export default function MyCats({
       getUserCats();
     }
     resetFunction();
+    console.log("current value of showUnowned: " + showUnowned);
   }, []);
 
   useEffect(() => {
