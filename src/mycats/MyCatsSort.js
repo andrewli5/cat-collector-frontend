@@ -13,7 +13,12 @@ import SortIcon from "@mui/icons-material/Sort";
 import { styled, alpha } from "@mui/material/styles";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 
-export function MyCatsSort({ sortFunction, reverseFunction, showUnowned, setShowUnowned }) {
+export function MyCatsSort({
+  sortFunction,
+  reverseFunction,
+  showUnowned,
+  setShowUnowned,
+}) {
   const [sortAnchorEl, setSortAnchorEl] = useState(null);
   const sortMenuOpen = Boolean(sortAnchorEl);
   const [sortText, setSortText] = useState("");
