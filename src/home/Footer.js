@@ -10,7 +10,8 @@ export default function Footer() {
         <Typography
           variant="h6"
           color="white"
-          sx={{ paddingLeft: "10px", width: "100vw" }}
+          textAlign={"right"}
+          sx={{ paddingRight: "10px", width: "100vw" }}
         >
           © 2023 {APP_NAME}.
         </Typography>
