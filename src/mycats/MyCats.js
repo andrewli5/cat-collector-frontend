@@ -222,7 +222,7 @@ export default function MyCats({ favorites = false, rarity = false }) {
         />
       </Typography>
       <Grid container spacing={0.5} sx={{ marginTop: 3 }}>
-        {favorites && isEmptyFavorites ? (
+        {getCurrentUser && favorites && isEmptyFavorites ? (
           <Box
             sx={{
               display: "flex",
