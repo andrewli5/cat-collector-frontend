@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
 import ShopItem from "./ShopItem";
@@ -75,11 +75,24 @@ export default function Shop({ setCoins }) {
       <Typography variant="h3" textAlign="center" marginBottom={3}>
         shop
       </Typography>
-      <Grid className="shopContainer" container spacing={1} mb={3}>
-        <Grid className="shop" item xs={12} style={{ padding: "0px" }}>
-          <ShopItem title="Upgrades" items={items} setCoins={setCoins} updateItems={updateItems} />
+      <Box display="flex" justifyContent="center">
+        <Grid
+          className="shopContainer"
+          container
+          spacing={1}
+          mb={3}
+          maxWidth="1200px"
+        >
+          <Grid className="shop" item xs={12} style={{ padding: "0px" }}>
+            <ShopItem
+              title="Upgrades"
+              items={items}
+              setCoins={setCoins}
+              updateItems={updateItems}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </>
   );
 }
