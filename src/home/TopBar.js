@@ -81,6 +81,7 @@ export default function TopBar() {
               id="search"
               label="search cats..."
               variant="outlined"
+              color="white"
               fullWidth
               InputProps={{
                 endAdornment: (

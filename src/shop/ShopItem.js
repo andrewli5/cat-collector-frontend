@@ -140,6 +140,7 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
                 {
                   <LoadingButton
                     variant="contained"
+                    disabled={!getCurrentUser() || getCurrentUser().coins < item.price}
                     onClick={() => handlePurchase(item)}
                     loading={loading}
                   >
