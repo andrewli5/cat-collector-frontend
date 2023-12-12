@@ -27,6 +27,7 @@ import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import Footer from "./Footer";
 import * as meows from "../assets/meows";
 import minecraftButton from "../assets/sounds/minecraft_button.mp3";
+import critSound from "../assets/sounds/crit_sound.mp3";
 
 const CRIT_MULTIPLIER = 28.5;
 const BASE_COINS_PER_CLICK = 50;
@@ -99,8 +100,7 @@ export default function Home() {
   }
   var critRate = BASE_CRIT_RATE;
   if (getCurrentUser()) {
-    //critRate = getCurrentUser().critRate;
-    critRate = 0.1;
+    critRate = getCurrentUser().critChance;
   }
 
   const handleCoinClick = () => {
@@ -113,8 +113,7 @@ export default function Home() {
       if (rand < critRate) {
         newCoins += Math.floor(coinsPerClick * CRIT_MULTIPLIER);
         if (music) {
-          const audio = new Audio(minecraftButton);
-          audio.currentTime = 0.25; 
+          const audio = new Audio(critSound);
           audio.play();
         }
         setCrit(true);
