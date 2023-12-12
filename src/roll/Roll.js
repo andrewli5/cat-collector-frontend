@@ -18,7 +18,7 @@ const IMAGE_SIZE = "40vh";
 export default function Roll({ setCoins }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -27,12 +27,13 @@ export default function Roll({ setCoins }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
 
   const handleRoll = async () => {
+    // start rolling animation
     setIsRolling(true);
     if (!getCurrentUser()) {
       setTimeout(() => {
@@ -44,6 +45,8 @@ export default function Roll({ setCoins }) {
     }
     try {
       results = await client.rollCatForUser(getCurrentUser()._id);
+      const multipliers = await client.getMultipliers();
+      console.log(multipliers);
     } catch (error) {
       if (error.response) {
         setTimeout(() => {
@@ -241,8 +244,10 @@ export default function Roll({ setCoins }) {
           "Rolling..."
         ) : (
           <>
-            roll | 
-            <Typography variant="h5" marginLeft={1}>{rollCost}</Typography>
+            roll |
+            <Typography variant="h5" marginLeft={1}>
+              {rollCost}
+            </Typography>
             <img
               style={{ marginLeft: "5px" }}
               src={Coin}
