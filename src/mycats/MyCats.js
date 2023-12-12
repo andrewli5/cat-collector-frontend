@@ -234,7 +234,6 @@ export default function MyCats({
       getUserCats();
     }
     resetFunction();
-    console.log("current value of showUnowned: " + showUnowned);
   }, []);
 
   useEffect(() => {
