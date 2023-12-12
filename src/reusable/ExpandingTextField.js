@@ -5,15 +5,12 @@ const ExpandingTextField = styled(
   {}
 )(() => ({
   "& .MuiOutlinedInput-root": {
-    border: ".8px solid white",
-    width: "40%",
-    transition: "width ease-in-out 0.25s",
+    width: "5%",
+    transition: "width ease-in-out 0.3s",
     minWidth: "200px",
+    maxWidth: "400px",
     "&.Mui-focused": {
-      width: "90%",
-    },
-    "& label.Mui-focused": {
-      color: "white",
+      width: "70%",
     },
   },
 }));
