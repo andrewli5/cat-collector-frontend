@@ -26,6 +26,7 @@ import Forbidden from "../admin/Forbidden";
 import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import { Check } from "@mui/icons-material";
 import Footer from "./Footer";
+import * as meows from "../assets/meows";
 
 export default function Home() {
   const path = useLocation().pathname;
@@ -35,6 +36,7 @@ export default function Home() {
   const [timeoutId, setTimeoutId] = useState(null); // used to debounce save to cloud
   const [effectCount, setEffectCount] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [music, setMusic] = useState(true);
 
   useEffect(() => {
     if (effectCount < 2) {
@@ -59,6 +61,17 @@ export default function Home() {
     coinsPerClick = getCurrentUser().coinsPerClick;
   }
 
+  const meowFiles = [
+    meows.meow,
+    meows.meow1,
+    meows.meow2,
+    meows.meow3,
+    meows.meow4,
+    meows.meow5,
+    meows.meow6,
+    meows.meow7,
+  ];
+
   const handleCoinClick = () => {
     if (!getCurrentUser()) {
       setWarning(true);
@@ -78,13 +91,22 @@ export default function Home() {
     }
   }, []);
 
+  const playSoundEffect = () => {
+    if (!music) {
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * meowFiles.length);
+    const audio = new Audio(meowFiles[randomIndex]);
+    audio.play();
+  };
+
   return (
     <Container
       component="main"
       style={{ paddingLeft: 0, paddingRight: 0 }}
       sx={{ minWidth: "100vw" }}
     >
-      <TopBar />
+      <TopBar music={music} setMusic={setMusic}/>
       <NavBar coins={coins} />
       <NotificationSnackbar
         open={warning}
@@ -114,7 +136,12 @@ export default function Home() {
               {APP_NAME}
             </Typography>
           </Box>
-          <img src={catGif} width={"150px"} height={"150px"} />
+          <img
+            src={catGif}
+            onClick={playSoundEffect}
+            width={"150px"}
+            height={"150px"}
+          />
           <Typography variant="h4" color="white" sx={{ marginTop: 10 }}>
             current coin rate: {coinsPerClick}
             <img
