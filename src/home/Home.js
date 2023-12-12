@@ -132,7 +132,7 @@ export default function Home() {
       style={{ paddingLeft: 0, paddingRight: 0 }}
       sx={{ minWidth: "100vw" }}
     >
-      <TopBar music={music} setMusic={setMusic}/>
+      <TopBar music={music} setMusic={setMusic} />
       <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
       <NotificationSnackbar
         open={warning}
@@ -202,7 +202,13 @@ export default function Home() {
             sx={{ marginTop: 1, width: 100, height: 100 }}
             disableRipple
           >
-            <img src={coinGif} width={80} height={80} alt="coin" />
+            <img
+              style={{ "-webkit-user-drag": "none" }}
+              src={coinGif}
+              width={80}
+              height={80}
+              alt="coin"
+            />
           </Button>
           <Grow in={saving && coinDiff != 0}>
             <Typography

@@ -47,6 +47,7 @@
 .quirkyButton {
   width: 180px;
   transition: all 0.2s ease;
+  -webkit-user-drag: none;
 }
 
 .quirkyButton:active {
