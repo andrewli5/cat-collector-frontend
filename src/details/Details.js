@@ -9,12 +9,7 @@ import {
   RARITY_TO_COLOR,
   RARITY_TO_STRING,
 } from "../constants";
-import {
-  Box,
-  Chip,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Chip, Grid, Typography } from "@mui/material";
 import { importAll } from "../utils/importAll";
 import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
@@ -149,7 +144,7 @@ export default function Details() {
             headers: {
               "x-api-key": CAT_API_KEY,
             },
-          },
+          }
         );
         const data = await response.json();
         for (const datum of data) {
@@ -176,9 +171,7 @@ export default function Details() {
       setFavorite(true);
     }
 
-    const r = ALL_CAT_RARITIES.find((b) => b.breed === breedId)[
-      "rarity"
-    ];
+    const r = ALL_CAT_RARITIES.find((b) => b.breed === breedId)["rarity"];
     var icons = [];
     setRarity(r);
     if (r === "M") {
@@ -220,7 +213,7 @@ export default function Details() {
   }, [breedData]);
 
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <NotificationSnackbar
         open={warning}
         setOpen={setWarning}
@@ -242,16 +235,10 @@ export default function Details() {
         spacing={2}
         maxHeight="lg"
         maxWidth="lg"
+        className="hakefjdksl"
         sx={{ marginTop: "2px", marginBottom: "15px" }}
       >
-        <Grid
-          alignItems="center"
-          style={{ paddingLeft: "70px" }}
-          item
-          xs={4}
-          sm={5}
-          md={6}
-        >
+        <Grid style={{ paddingLeft: "70px" }} item xs={4} sm={5} md={6}>
           {imageUrls.length === 0 ? (
             <Box
               sx={{
@@ -310,8 +297,9 @@ export default function Details() {
               className="hover"
               onClick={handleChipClick}
               icon={<StarRateRoundedIcon color={RARITY_TO_COLOR[rarity]} />}
-              label={RARITY_TO_STRING[rarity]}
+              label={<Typography variant="h6">{RARITY_TO_STRING[rarity]}</Typography>}
               sx={{
+                fontSize: "16px",
                 color: RARITY_TO_COLOR[rarity],
                 border: `1px solid ${RARITY_TO_COLOR[rarity]}`,
                 marginLeft: "5px",
@@ -420,7 +408,7 @@ export default function Details() {
                 : "?????"}
             </Box>
           </Typography>
-          <Typography variant="h6" sx={{ marginTop: "20px" }}>
+          <Typography variant="h5" sx={{ marginTop: "20px" }}>
             {breedData.description}
           </Typography>
         </Grid>
