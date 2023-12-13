@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Alert, Pagination, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Pagination, Snackbar, Typography } from "@mui/material";
 import Link from "@mui/material/Link";
 import {
   APP_NAME,
@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import EmptySearch from "./EmptySearch";
 import { LoadingSearch } from "./LoadingSearch";
 import * as React from "react";
+import "../css/styles.css";
 
 const TEST_CAT_1 = "Test cat 1";
 const TEST_CAT_2 = "Cattest 2";
@@ -190,43 +191,47 @@ export default function Search() {
         <EmptySearch />
       ) : !warning ? (
         <>
-          {" "}
-          <Grid container spacing={2} sx={{ marginTop: 1, marginLeft: 2 }}>
-            {imageUrls.map((image, index) => (
-              <Grid
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                item
-                xs={6}
-                sm={4}
-                md={2.5}
-                key={index}
-                sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
-              >
-                <Link
-                  style={{ color: "white", textDecoration: "none" }}
-                  href={`/details/${image["id"]}`}
+          <Box display="flex" justifyContent="center">
+            <Grid
+              container
+              spacing={2}
+              sx={{ marginTop: 1, marginLeft: 2, maxWidth: "1100px" }}
+            >
+              {imageUrls.map((image, index) => (
+                <Grid
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  item
+                  xs={6}
+                  sm={4}
+                  md={2.5}
+                  key={index}
+                  sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
                 >
-                  <img
-                    src={image["url"]}
-                    width={"200px"}
-                    style={{
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      height: "200px",
-                      borderRadius: "10px",
-                      border: "2px solid white",
-                    }}
-                    alt={image["id"]}
-                  />
-                  <Typography variant="h5" textAlign="center" noWrap>
-                    {image["name"].toLowerCase()}
-                  </Typography>
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
+                  <Link
+                    style={{ color: "white", textDecoration: "none" }}
+                    href={`/details/${image["id"]}`}
+                  >
+                    <img
+                      src={image["url"]}
+                      width={"200px"}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "center",
+                        height: "200px",
+                      }}
+                      class="owned-C"
+                      alt={image["id"]}
+                    />
+                    <Typography variant="h5" textAlign="center" noWrap>
+                      {image["name"].toLowerCase()}
+                    </Typography>
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
           {
             <Pagination
               sx={{
