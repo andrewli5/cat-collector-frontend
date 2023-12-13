@@ -61,10 +61,10 @@ function getShopItems() {
 
 export default function Shop({ setCoins }) {
   const [items, setItems] = useState(getShopItems());
-  
+
   const updateItems = () => {
     setItems(getShopItems());
-  }
+  };
 
   useEffect(() => {
     document.title = "shop | " + APP_NAME;

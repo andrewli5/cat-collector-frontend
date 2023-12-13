@@ -21,7 +21,7 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
     to: { animatedCoins: coins },
   });
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString()
+    Math.round(val).toLocaleString(),
   );
 
   return (
@@ -79,7 +79,8 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
             style={{ marginRight: 12 }}
             color={coinDiff > 0 ? "lightgreen" : "error"}
           >
-            {coinDiff > 0 ? "+" : "-"}{Math.abs(coinDiff).toLocaleString()}
+            {coinDiff > 0 ? "+" : "-"}
+            {Math.abs(coinDiff).toLocaleString()}
           </Typography>
         </Grow>
         <Typography variant="h4" alignItems="center" style={{ marginRight: 5 }}>

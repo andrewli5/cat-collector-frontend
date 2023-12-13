@@ -16,13 +16,17 @@ import _ from "lodash";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Coin from "../assets/coin_icon.png";
+import itemGet from "../assets/sounds/item_get.mp3";
+import superItemGet from "../assets/sounds/super_item_get.mp3";
+import rollSound from "../assets/sounds/roll.mp3";
+import duplicateGet from "../assets/sounds/duplicate_get.mp3";
 
 const IMAGE_SIZE = "40vh";
 
-export default function Roll({ coins, setCoins, setCoinDiff }) {
+export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100
+    getCurrentUser() ? getCurrentUser().rollCost : 100,
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -31,7 +35,7 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var results = null;
@@ -48,6 +52,11 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
       return;
     }
     try {
+      if (sound) {
+        const audio = new Audio(rollSound);
+        audio.volume = 0.4;
+        audio.play();
+      }
       results = await client.rollCatForUser(getCurrentUser()._id);
       const multipliers = await client.getMultipliers();
       const odds = await client.getOdds();
@@ -129,6 +138,22 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
       });
       if (!results["duplicate"]) {
         updateRollCost(results["rollCost"]);
+        if (sound) {
+          if (["E", "L", "M"].includes(results["rarity"])) {
+            const audio = new Audio(superItemGet);
+            audio.currentTime = 0.4;
+            audio.volume = 0.25;
+            audio.play();
+          } else {
+            const audio = new Audio(itemGet);
+            audio.currentTime = 0.4;
+            audio.play();
+          }
+        }
+      } else {
+        if (sound) {
+          new Audio(duplicateGet).play();
+        }
       }
     }, 2000);
   };

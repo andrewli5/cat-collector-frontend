@@ -84,7 +84,7 @@ export default function SignUp() {
   }, []);
 
   return (
-    <Box sx={{width: "100vw"}}>
+    <Box sx={{ width: "100vw" }}>
       <Container component="main" maxWidth="xs">
         <NotificationSnackbar
           open={success}

@@ -94,7 +94,7 @@ export function MyCatsSort({
         "&:active": {
           backgroundColor: alpha(
             theme.palette.secondary.main,
-            theme.palette.action.selectedOpacity
+            theme.palette.action.selectedOpacity,
           ),
         },
       },

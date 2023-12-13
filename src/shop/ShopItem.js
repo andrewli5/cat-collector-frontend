@@ -8,7 +8,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { getCurrentUser, purchaseUpgradeForUser, storeCurrentUser } from "../client";
+import {
+  getCurrentUser,
+  purchaseUpgradeForUser,
+  storeCurrentUser,
+} from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
@@ -35,7 +39,11 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
         setSuccess(true);
         setLoading(false);
         setCoins(getCurrentUser().coins - item.price);
-        storeCurrentUser({...getCurrentUser(), coins: getCurrentUser().coins - item.price, upgrades: [...getCurrentUser().upgrades, item.id]});
+        storeCurrentUser({
+          ...getCurrentUser(),
+          coins: getCurrentUser().coins - item.price,
+          upgrades: [...getCurrentUser().upgrades, item.id],
+        });
         updateItems();
       }, 500);
     } catch (error) {
@@ -116,7 +124,9 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
                         ? { filter: `hue-rotate(${item.filter}deg)` }
                         : {}
                     }
-                    src={"/images/" + (item.icon ? item.icon : MAXED[index].icon)}
+                    src={
+                      "/images/" + (item.icon ? item.icon : MAXED[index].icon)
+                    }
                     width="30"
                     height="30"
                   />
@@ -124,9 +134,7 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
               </TableCell>
               <TableCell align="left">
                 <Typography variant="h5">
-                  {item.title
-                    ? item.title.toLowerCase()
-                    : MAXED[index].title}
+                  {item.title ? item.title.toLowerCase() : MAXED[index].title}
                 </Typography>
               </TableCell>
               <TableCell align="left">
