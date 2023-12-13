@@ -28,6 +28,7 @@ import Footer from "./Footer";
 import * as meows from "../assets/meows";
 import minecraftButton from "../assets/sounds/minecraft_button.mp3";
 import critSound from "../assets/sounds/crit_sound.mp3";
+import NotFound from "./NotFound";
 
 const CRIT_MULTIPLIER = 28.5;
 const BASE_COINS_PER_CLICK = 50;
@@ -275,6 +276,7 @@ export default function Home() {
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/find-users/*" element={<SearchUsers />} />
         <Route path="/forbidden" element={<Forbidden />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
       <Footer />
     </Container>
