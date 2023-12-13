@@ -51,7 +51,7 @@ export default function MyCats({
           return false;
         } else {
           const currentRarity = ALL_CAT_RARITIES.find(
-            (b) => b.breed === currentBreed,
+            (b) => b.breed === currentBreed
           )["rarity"];
           return currentRarity === params.rarity;
         }
@@ -81,16 +81,7 @@ export default function MyCats({
   };
 
   const getIconData = (catIcon, currentBreedId, rarity) => {
-    var [name, src, imageStyle, textColor] = [
-      "",
-      "",
-      {
-        WebkitFilter: "grayscale(100%)",
-        opacity: 0.2,
-        mask: "linear-gradient(-60deg, transparent, #000, transparent)",
-      },
-      "grey",
-    ];
+    var [name, src, imageClass, textColor] = ["", "", "unowned", "grey"];
     if (rarity === "M") {
       src = getIconSrcForMythicCat(catIcon, currentBreedId);
       name = getIconNameForMythicCat(catIcon, currentBreedId);
@@ -99,11 +90,10 @@ export default function MyCats({
       src = allCatIcons[catIcon];
     }
     if (cats.includes(currentBreedId)) {
-      imageStyle.opacity = 1;
-      imageStyle.WebkitFilter = "grayscale(0%)";
+      imageClass = "owned-" + rarity;
       textColor = "white";
     }
-    return [name, src, imageStyle, textColor];
+    return [name, src, imageClass, textColor];
   };
 
   const getHref = (rarity, catIcon) => {
@@ -129,10 +119,10 @@ export default function MyCats({
 
   const resetFunction = () => {
     const icons = importAll(
-      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
     );
     const mythicIcons = importAll(
-      require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/),
+      require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
     );
     const allIcons = Object.assign({}, icons, mythicIcons);
     setAllCatIcons(allIcons);
@@ -260,7 +250,7 @@ export default function MyCats({
               cats.length +
               "/" +
               (Object.keys(allCatIcons).length - 1) +
-              ")",
+              ")"
           );
         }
       }
@@ -338,12 +328,12 @@ export default function MyCats({
                   return null;
                 }
                 const rarity = ALL_CAT_RARITIES.find(
-                  (b) => b.breed === currentBreedId,
+                  (b) => b.breed === currentBreedId
                 )["rarity"];
-                const [name, src, imageStyle, textColor] = getIconData(
+                const [name, src, imageClass, textColor] = getIconData(
                   catIcon,
                   currentBreedId,
-                  rarity,
+                  rarity
                 );
                 return (
                   <Grid
@@ -354,28 +344,35 @@ export default function MyCats({
                     xs={2}
                     key={index}
                     sx={{ marginBottom: 3 }}
-                    className="hover"
                   >
                     <Link
                       textAlign="center"
                       underline="none"
                       color="inherit"
                       href={getHref(rarity, catIcon)}
+                      className="hover"
                     >
                       <img
-                        style={{
-                          ...imageStyle,
-                          borderRadius: "10px",
-                        }}
+                        className={imageClass}
                         src={src}
-                        width={120}
-                        height={120}
+                        width={160}
+                        height={160}
                         alt={catIcon}
                       />
                       <Typography
                         variant="h5"
                         color={textColor}
-                        textAlign="center"
+                        textAlign="left"
+                        position="absolute"
+                        marginTop={name.length < 14 ? "-35px" : "-52px"}
+                        marginLeft="10px"
+                        sx={{
+                          textShadow:
+                            "2px 1px 1px black, 2px 2px 1px black, 50px 50px 50px black",
+                          wordWrap: "break-word",
+                          maxWidth: "120px",
+                          lineHeight: "0.9",
+                        }}
                       >
                         {name}
                       </Typography>
