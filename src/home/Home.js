@@ -31,7 +31,7 @@ import critSound from "../assets/sounds/crit_sound.mp3";
 
 const CRIT_MULTIPLIER = 28.5;
 const BASE_COINS_PER_CLICK = 50;
-const BASE_CRIT_RATE = 0.0025;
+const BASE_CRIT_RATE = 0.005;
 
 export default function Home() {
   const path = useLocation().pathname;
