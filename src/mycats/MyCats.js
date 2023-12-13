@@ -218,8 +218,10 @@ export default function MyCats({
       navigate("/signin");
     } else if (getCurrentUser() && !view) {
       setCats(getCurrentUser().cats);
-    } else if (getCurrentUser() && favorites) {
-      setIsEmptyFavorites(getCurrentUser().favorites.length === 0);
+    }
+    if (getCurrentUser() && favorites) {
+      const favorites = getCurrentUser().favorites;
+      setIsEmptyFavorites(favorites.length === 0);
     } else if (view) {
       getUserCats();
     }
