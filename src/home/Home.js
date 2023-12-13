@@ -276,7 +276,8 @@ export default function Home() {
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/find-users/*" element={<SearchUsers />} />
         <Route path="/forbidden" element={<Forbidden />} />
-        <Route path="/*" element={<NotFound />} />
+        <Route path="/" />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </Container>
