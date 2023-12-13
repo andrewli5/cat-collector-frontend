@@ -77,9 +77,9 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
             variant="h5"
             alignItems="center"
             style={{ marginRight: 12 }}
-            color={coinDiff > 0 ? "lightgreen" : "error"}
+            color={coinDiff >= 0 ? "lightgreen" : "error"}
           >
-            {coinDiff > 0 ? "+" : "-"}
+            {coinDiff >= 0 ? "+" : "-"}
             {Math.abs(coinDiff).toLocaleString()}
           </Typography>
         </Grow>

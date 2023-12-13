@@ -132,9 +132,19 @@ export default function TopBar({ music, setMusic }) {
               <Grid item>
                 <IconButton sx={{ rightPadding: "0", marginRight: "5px" }}>
                   {music ? (
-                    <MusicOn onClick={() => setMusic(false)} />
+                    <MusicOn
+                      onClick={() => {
+                        setMusic(false);
+                        localStorage.setItem("music", false);
+                      }}
+                    />
                   ) : (
-                    <MusicOff onClick={() => setMusic(true)} />
+                    <MusicOff
+                      onClick={() => {
+                        setMusic(true);
+                        localStorage.setItem("music", true);
+                      }}
+                    />
                   )}
                 </IconButton>
                 <Button href="/myprofile" color="primary" variant="contained">
