@@ -15,21 +15,19 @@ export default function RollOdds() {
 
   useEffect(() => {
     const getUserOdds = async () => {
+      var allOdds = await client.getOdds();
+      var odds = allOdds.BASE;
       const user = client.getCurrentUser();
-      if (!user) {
-        // get base roll odds instead
-        return;
+      if (user) {
+        const userData = await client.getUserDataByUserId(
+          client.getCurrentUser()._id
+        );
+        const luckUpgrades = userData["upgrades"].filter((u) =>
+          u.includes("LUCK")
+        );
+        const highestUpgrade = luckUpgrades.sort().reverse()[0];
+        odds = allOdds[highestUpgrade];
       }
-      const userOdds = await client.getOdds();
-      const userData = await client.getUserDataByUserId(
-        client.getCurrentUser()._id
-      );
-
-      const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK")
-      );
-      const highestUpgrade = luckUpgrades.sort().reverse()[0];
-      const odds = userOdds[highestUpgrade];
       setOdds(odds);
       console.log(odds);
     };
@@ -40,7 +38,7 @@ export default function RollOdds() {
   return (
     <TableContainer
       sx={{
-        border: "4px solid",
+        border: "2px solid",
         borderColor: "primary.main",
         borderRadius: 2,
         display: "flex",
@@ -48,7 +46,7 @@ export default function RollOdds() {
         alignContent: "center",
         alignItems: "center",
         flexDirection: "row",
-        backgroundColor: "rgb(25, 18, 31)",
+        backgroundColor: "black",
         width: "auto",
       }}
     >
@@ -56,7 +54,15 @@ export default function RollOdds() {
         <TableHead>
           <TableRow>
             <TableCell colSpan={2}>
-              <Typography variant="h3" textAlign="center">
+              <Typography
+                variant="h4"
+                textAlign="center"
+                sx={{
+                  paddingLeft: 2,
+                  paddingRight: 2,
+                  bgcolor: "primary.main",
+                }}
+              >
                 roll odds
               </Typography>
             </TableCell>
@@ -77,12 +83,11 @@ export default function RollOdds() {
               <TableCell
                 align="left"
                 sx={{
-                  border: "1px solid",
-                  borderColor: "primary.main",
+                  padding: 2,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: color,
+                  color: "white",
                   fontSize: 20,
                   fontWeight: "bold",
                 }}
@@ -92,13 +97,17 @@ export default function RollOdds() {
               <TableCell
                 align="right"
                 sx={{
+                  padding: 2,
+                  color: color,
+
                   fontSize: 20,
                   fontWeight: "bold",
-                  border: "1px solid",
-                  borderColor: "primary.main",
                 }}
               >
-                <Typography variant="h5"> {value * 100}%</Typography>
+                <Typography variant="h5">
+                  {" "}
+                  {(value * 100).toFixed(2)}%
+                </Typography>
               </TableCell>
             </TableRow>
           );
