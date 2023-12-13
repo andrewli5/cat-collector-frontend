@@ -101,7 +101,11 @@ export default function MyCats({
     const currentBreedId = CATICON_TO_BREEDID[catIcon];
     var c = cats;
     if (view) {
-      c = getCurrentUser().cats;
+      if (!getCurrentUser()) {
+        c = [];
+      } else {
+        c = getCurrentUser().cats;
+      }
     }
     return rarity === "M" && !c.includes(currentBreedId)
       ? "/details/???"
