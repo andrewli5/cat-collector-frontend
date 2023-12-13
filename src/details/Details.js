@@ -6,7 +6,7 @@ import {
   CAT_API_KEY,
   CAT_API_URL_BREEDS,
   CAT_API_URL_IMAGES,
-  RARITY_TO_COLOR,
+  RARITY_TO_TEXT_COLOR,
   RARITY_TO_STRING,
 } from "../constants";
 import { Box, Chip, Grid, Typography } from "@mui/material";
@@ -76,7 +76,7 @@ export default function Details() {
         setFavorite(false);
         await client.removeUserFavorites(getCurrentUser()._id, breedId);
         const newFavorites = getCurrentUser().favorites.filter(
-          (e) => e !== breedId,
+          (e) => e !== breedId
         );
         const user = { ...getCurrentUser(), favorites: newFavorites };
         storeCurrentUser(user);
@@ -96,11 +96,11 @@ export default function Details() {
     var images = [];
     if (breedId === "rory") {
       images = importAll(
-        require.context("../assets/rory", false, /\.(png|jpe?g|svg)$/),
+        require.context("../assets/rory", false, /\.(png|jpe?g|svg)$/)
       );
     } else if (breedId === "mimi") {
       images = importAll(
-        require.context("../assets/mimi", false, /\.(png|jpe?g|svg)$/),
+        require.context("../assets/mimi", false, /\.(png|jpe?g|svg)$/)
       );
     }
     return images;
@@ -144,7 +144,7 @@ export default function Details() {
             headers: {
               "x-api-key": CAT_API_KEY,
             },
-          },
+          }
         );
         const data = await response.json();
         for (const datum of data) {
@@ -180,11 +180,7 @@ export default function Details() {
         navigate("/details/???");
       }
       icons = importAll(
-        require.context(
-          "../assets/mythicCatIcons",
-          false,
-          /\.(png|jpe?g|svg)$/,
-        ),
+        require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
       );
       const images = getMythicCatImages();
       const currentBreed = getMythicCatData();
@@ -192,7 +188,7 @@ export default function Details() {
       setBreedData(currentBreed);
     } else {
       icons = importAll(
-        require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+        require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
       );
 
       getImageURLS();
@@ -269,7 +265,7 @@ export default function Details() {
                 objectFit: "cover",
                 objectPosition: "center",
                 borderRadius: "10px",
-                border: `2px solid ${RARITY_TO_COLOR[rarity]}`,
+                border: `2px solid ${RARITY_TO_TEXT_COLOR[rarity]}`,
               }}
               alt={`display`}
             />
@@ -300,14 +296,16 @@ export default function Details() {
             <Chip
               className="hover"
               onClick={handleChipClick}
-              icon={<StarRateRoundedIcon color={RARITY_TO_COLOR[rarity]} />}
+              icon={
+                <StarRateRoundedIcon color={RARITY_TO_TEXT_COLOR[rarity]} />
+              }
               label={
                 <Typography variant="h6">{RARITY_TO_STRING[rarity]}</Typography>
               }
               sx={{
                 fontSize: "16px",
-                color: RARITY_TO_COLOR[rarity],
-                border: `1px solid ${RARITY_TO_COLOR[rarity]}`,
+                color: RARITY_TO_TEXT_COLOR[rarity],
+                border: `1px solid ${RARITY_TO_TEXT_COLOR[rarity]}`,
                 marginLeft: "5px",
               }}
               variant="outlined"

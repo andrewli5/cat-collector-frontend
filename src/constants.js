@@ -86,13 +86,22 @@ for (const [breedId, catIcon] of Object.entries(BREEDID_TO_CATICON)) {
   CATICON_TO_BREEDID[catIcon] = breedId;
 }
 
-export const RARITY_TO_COLOR = {
+export const RARITY_TO_TEXT_COLOR = {
   C: "rgba(255, 255, 255, 1)",
   U: "rgba(0, 128, 0, 1)",
   R: "blue",
   E: "rgba(128, 0, 128, 1)",
   L: "rgba(255, 255, 0, 1)",
   M: "gold",
+};
+
+export const RARITY_TO_BG_COLOR = {
+  C: "rgb(243 243 243)",
+  U: "rgb(181 212 181)",
+  R: "#b8b8ff",
+  E: "rgb(229 188 255)",
+  L: "rgb(255 255 176)",
+  M: "#ffdfa4",
 };
 
 export const RARITY_TO_STRING = {

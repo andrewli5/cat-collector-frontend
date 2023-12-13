@@ -9,7 +9,7 @@ import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";
 import {
   BREEDID_TO_CATICON,
-  RARITY_TO_COLOR,
+  RARITY_TO_TEXT_COLOR,
   RARITY_TO_STRING,
 } from "../constants";
 import _ from "lodash";
@@ -205,14 +205,14 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           variant="h4"
           display="flex"
           justifyContent={"center"}
-          color={RARITY_TO_COLOR[rollResults["rarity"]]}
+          color={RARITY_TO_TEXT_COLOR[rollResults["rarity"]]}
         >
           {RARITY_TO_STRING[rollResults["rarity"]].toLowerCase()}
           <Box>
             {" "}
             <StarRateRoundedIcon
               fontSize="large"
-              sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
+              sx={{ color: RARITY_TO_TEXT_COLOR[rollResults["rarity"]] }}
             />
           </Box>
         </Typography>
@@ -314,7 +314,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
             boxShadow: `0px 0px 90px ${
               isRolling || rollResults["breed"] === undefined
                 ? "rgba(128, 128, 128, 1)"
-                : RARITY_TO_COLOR[rollResults["rarity"]]
+                : RARITY_TO_TEXT_COLOR[rollResults["rarity"]]
             }`,
             borderRadius: "140px",
             transition: "all 0.3s ease",
@@ -342,7 +342,6 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
             justifyContent: "center",
             alignItems: "center",
             marginRight: "10px",
-            marginTop: "20px",
           }}
           onClick={handleRoll}
         >
@@ -373,17 +372,22 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           variant="contained"
           onClick={handleShowOdds}
           sx={{
+            height: "auto",
+            width: "auto",
+            padding: 0,
+            minWidth: "45px",
             display: "flex",
+            alignContent: "right",
             justifyContent: "center",
             alignItems: "center",
-            marginTop: "20px",
-            marginLeft: "10px",
           }}
         >
-          show roll odds
+          {"(?)"}
         </Button>
         <Backdrop
-          sx={{zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+          }}
           open={showOdds}
           onClick={handleHideOdds}
         >

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import * as client from "../client";
-import { RARITY_TO_COLOR, RARITY_TO_STRING } from "../constants";
 import {
+  RARITY_TO_TEXT_COLOR,
+  RARITY_TO_STRING,
+  RARITY_TO_BG_COLOR,
+} from "../constants";
+import {
+  // Box,
   TableBody,
   TableCell,
   TableContainer,
@@ -9,9 +14,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+// import StarRateRounded from "@mui/icons-material/StarRateRounded";
 
 export default function RollOdds() {
   const [odds, setOdds] = useState({});
+  const cellBorderColor = "#363457";
 
   useEffect(() => {
     const getUserOdds = async () => {
@@ -38,39 +45,68 @@ export default function RollOdds() {
   return (
     <TableContainer
       sx={{
-        border: "2px solid",
-        borderColor: "primary.main",
+        border: "4px solid",
+        borderColor: "secondary.main",
         borderRadius: 2,
         display: "flex",
         justifyContent: "center",
         alignContent: "center",
         alignItems: "center",
         flexDirection: "row",
-        backgroundColor: "black",
         width: "auto",
+        bgcolor: "black",
       }}
     >
       <TableBody>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={2}>
+            <TableCell
+              padding="none"
+              sx={{
+                bgcolor: "primary.main",
+                borderBottom: `2px solid ${cellBorderColor}`,
+              }}
+            >
               <Typography
                 variant="h4"
                 textAlign="center"
                 sx={{
                   paddingLeft: 2,
                   paddingRight: 2,
-                  bgcolor: "primary.main",
+                  paddingTop: "5px",
+                  paddingBottom: "5px",
                 }}
               >
-                roll odds
+                rarity
+              </Typography>
+            </TableCell>
+            <TableCell
+              padding="none"
+              sx={{
+                bgcolor: "primary.main",
+                borderBottom: `2px solid ${cellBorderColor}`,
+                borderLeft: `1px solid ${cellBorderColor}`,
+              }}
+            >
+              <Typography
+                variant="h4"
+                textAlign="center"
+                sx={{
+                  paddingLeft: 2,
+                  paddingRight: 2,
+                }}
+              >
+                odds
               </Typography>
             </TableCell>
           </TableRow>
         </TableHead>
-        {Object.keys(odds).map((odd) => {
+        {Object.keys(odds).map((odd, index) => {
+          const evenColor = "quintenary.main";
+          const oddColor = "primary.main";
           const rarity = RARITY_TO_STRING[odd];
-          const color = RARITY_TO_COLOR[odd];
+          const textColor = RARITY_TO_TEXT_COLOR[odd];
+          const bgcolor = RARITY_TO_BG_COLOR[odd];
           const value = odds[odd];
           return (
             <TableRow
@@ -82,24 +118,46 @@ export default function RollOdds() {
             >
               <TableCell
                 align="left"
+                padding="none"
                 sx={{
-                  padding: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "white",
+                  paddingLeft: 2,
+                  paddingRight: 2,
+                  //color: `${index % 2 === 0 ? "black" : "white"}`,
+                  // backgroundColor: `${index % 2 === 0 ? evenColor : oddColor}`,
+                  color: "black",
+                  backgroundColor: bgcolor,
                   fontSize: 20,
                   fontWeight: "bold",
+                  borderTop: `1px solid ${cellBorderColor}`,
+                  borderRight: `1px solid ${cellBorderColor}`,
                 }}
               >
-                <Typography variant="h5"> {rarity}</Typography>
+                <Typography
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="left"
+                  variant="h5"
+                >
+                  {rarity}
+                  {/* <Box>
+                    <StarRateRounded fontSize="small" sx={{ color: textColor }} />
+                  </Box> */}
+                </Typography>
               </TableCell>
               <TableCell
-                align="right"
+                align="center"
+                padding="none"
                 sx={{
-                  padding: 2,
-                  color: color,
-
+                  paddingLeft: 2,
+                  paddingRight: 2,
+                  paddingTop: "5px",
+                  paddingBottom: "5px",
+                  // color: textColor,
+                  //color: `${index % 2 === 0 ? "black" : "white"}`,
+                  // backgroundColor: `${index % 2 === 0 ? evenColor : oddColor}`,
+                  backgroundColor: bgcolor,
+                  color: "black",
+                  borderTop: `1px solid ${cellBorderColor}`,
                   fontSize: 20,
                   fontWeight: "bold",
                 }}

@@ -121,7 +121,7 @@ export default function Search() {
             matches
               .slice(
                 RESULTS_PER_PAGE * page - RESULTS_PER_PAGE,
-                RESULTS_PER_PAGE * page,
+                RESULTS_PER_PAGE * page
               )
               .map(async (match) => {
                 await new Promise((resolve) => setTimeout(resolve, 500));
@@ -145,9 +145,9 @@ export default function Search() {
                         url: data[0]["url"],
                         name: match["name"],
                         id: match["id"],
-                      },
+                      }
                 );
-              }),
+              })
           );
         } catch (error) {
           if (retries > 0) {
@@ -191,18 +191,23 @@ export default function Search() {
       ) : !warning ? (
         <>
           {" "}
-          <Grid container spacing={2} sx={{ marginTop: 1, marginLeft: 2 }}>
+          <Grid
+            container
+            spacing={1}
+            sx={{ justifyContent: "center", marginTop: 1, marginLeft: 2 }}
+          >
             {imageUrls.map((image, index) => (
               <Grid
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
+                justifyContent="center"
                 item
                 xs={6}
                 sm={4}
                 md={2.5}
                 key={index}
-                sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
+                sx={{ marginBottom: 1, marginLeft: 1, paddingLeft: 1 }}
               >
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
@@ -210,11 +215,11 @@ export default function Search() {
                 >
                   <img
                     src={image["url"]}
-                    width={"200px"}
                     style={{
                       objectFit: "cover",
                       objectPosition: "center",
-                      height: "200px",
+                      height: "20vh",
+                      width: "20vh",
                       borderRadius: "10px",
                       border: "2px solid white",
                     }}
@@ -232,7 +237,9 @@ export default function Search() {
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                marginBottom: 3,
+                alignContent: "baseline",
+                marginBottom: { xs: 4, md: 1 },
+                marginTop: 2,
               }}
               size="large"
               count={Math.ceil(matches.length / RESULTS_PER_PAGE)}
@@ -253,7 +260,7 @@ export default function Search() {
             severity="warning"
             sx={{ width: "100%" }}
           >
-            An error occurred during the search. Please try again later.
+            An error occurred during search. Please try again later.
           </Alert>
         </Snackbar>
       )}
