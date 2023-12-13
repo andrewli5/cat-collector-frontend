@@ -132,7 +132,6 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.LUCK1,
     current: "Standard roll odds",
     price: 50000,
-    filter: "270",
   },
   LUCK2: {
     icon: "gambling.png",
@@ -147,7 +146,6 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.LUCK3,
     current: UPGRADE_DESCRIPTIONS.LUCK2,
     price: 5000000,
-    filter: "70",
   },
   CRIT1: {
     icon: "cat_paw.png",
@@ -155,7 +153,6 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.CRIT1,
     current: "Standard critical click odds",
     price: 20000,
-    filter: "70",
   },
   CRIT2: {
     icon: "cat_paw.png",
@@ -163,7 +160,6 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.CRIT2,
     current: UPGRADE_DESCRIPTIONS.CRIT1,
     price: 200000,
-    filter: "70",
   },
   CRIT3: {
     icon: "cat_paw.png",
@@ -171,7 +167,6 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.CRIT3,
     current: UPGRADE_DESCRIPTIONS.CRIT2,
     price: 2000000,
-    filter: "70",
   },
   COST1: {
     icon: "money_bag.png",
@@ -179,7 +174,6 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.COST1,
     current: "Full price rolls",
     price: 50000,
-    filter: "70",
   },
   COST2: {
     icon: "money_bag.png",
@@ -187,7 +181,6 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.COST2,
     current: UPGRADE_DESCRIPTIONS.COST1,
     price: 500000,
-    filter: "70",
   },
   COST3: {
     icon: "money_bag.png",
@@ -195,6 +188,5 @@ export const UPGRADES = {
     description: UPGRADE_DESCRIPTIONS.COST3,
     current: UPGRADE_DESCRIPTIONS.COST2,
     price: 5000000,
-    filter: "70",
   },
 };
