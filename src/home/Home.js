@@ -263,6 +263,7 @@ export default function Home() {
               coins={coins}
               setCoinDiff={setCoinDiff}
               setCoins={setCoinHandler}
+              sound={music}
             />
           }
         />
