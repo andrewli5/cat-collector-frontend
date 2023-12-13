@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import CatSilhouette from "../assets/unknown_cat.png";
@@ -20,25 +20,36 @@ import itemGet from "../assets/sounds/item_get.mp3";
 import superItemGet from "../assets/sounds/super_item_get.mp3";
 import rollSound from "../assets/sounds/roll.mp3";
 import duplicateGet from "../assets/sounds/duplicate_get.mp3";
+import Backdrop from "@mui/material/Backdrop";
+import RollOdds from "./RollOdds";
 
 const IMAGE_SIZE = "40vh";
 
 export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
   const [displayResults, setDisplayResults] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showOdds, setShowOdds] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
+
+  const handleShowOdds = () => {
+    setShowOdds(true);
+  };
+
+  const handleHideOdds = () => {
+    setShowOdds(false);
+  };
 
   const handleRoll = async () => {
     // start rolling animation
@@ -63,7 +74,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK"),
+        u.includes("LUCK")
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds = odds[highestUpgrade];
@@ -79,7 +90,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier,
+            getCurrentUser().coinsPerClick * multiplier
           ),
         };
       }
@@ -310,48 +321,75 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           }}
         />
       </Box>
-      <Button
-        disabled={
-          isRolling ||
-          !getCurrentUser() ||
-          getCurrentUser().coins < getCurrentUser().rollCost
-            ? true
-            : false
-        }
-        variant="contained"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginTop: "20px",
-        }}
-        onClick={handleRoll}
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        textAlign="center"
+        alignContent="center"
       >
-        <img
-          src={Dice}
-          width={30}
-          height={30}
-          style={{ marginRight: "10px" }}
-        />
-        {isRolling ? (
-          "Rolling..."
-        ) : (
-          <>
-            roll |
-            <Typography variant="h5" marginLeft={1}>
-              {rollCost.toLocaleString()}
-            </Typography>
-            <img
-              style={{ marginLeft: "5px" }}
-              src={Coin}
-              width={20}
-              height={20}
-            />
-          </>
-        )}
-      </Button>
+        <Button
+          disabled={
+            isRolling ||
+            !getCurrentUser() ||
+            getCurrentUser().coins < getCurrentUser().rollCost
+              ? true
+              : false
+          }
+          variant="contained"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: "10px",
+            marginTop: "20px",
+          }}
+          onClick={handleRoll}
+        >
+          <img
+            src={Dice}
+            width={30}
+            height={30}
+            style={{ marginRight: "10px" }}
+          />
+          {isRolling ? (
+            "Rolling..."
+          ) : (
+            <>
+              roll |
+              <Typography variant="h5" marginLeft={1}>
+                {rollCost.toLocaleString()}
+              </Typography>
+              <img
+                style={{ marginLeft: "5px" }}
+                src={Coin}
+                width={20}
+                height={20}
+              />
+            </>
+          )}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleShowOdds}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "20px",
+            marginLeft: "10px",
+          }}
+        >
+          show roll odds
+        </Button>
+        <Backdrop
+          sx={{zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={showOdds}
+          onClick={handleHideOdds}
+        >
+          <RollOdds />
+        </Backdrop>
+      </Box>
     </>
   );
 }
