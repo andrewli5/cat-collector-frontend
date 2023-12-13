@@ -160,49 +160,49 @@ export default function Admin() {
           }}
         />
       </Typography>
-      <Grid
-        container
-        rowSpacing={3}
-        alignItems="center"
-        justifyContent="center"
-        sx={{ marginBottom: "30px", paddingLeft: "20px" }}
-      >
-        <UserRowHeaders />
-        <Grid item xs={12}>
-          <Divider flexItem />
+      <Box display="flex" justifyContent="center">
+        <Grid
+          container
+          rowSpacing={3}
+          sx={{ marginBottom: "30px", maxWidth: "1200px" }}
+        >
+          <UserRowHeaders />
+          <Grid item xs={12}>
+            <Divider flexItem />
+          </Grid>
+          {usersLoading ? (
+            <Box
+              sx={{
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <img src={JumpingCat} />
+              <Typography variant="h4" sx={{ marginTop: "10px" }}>
+                Loading...
+              </Typography>
+            </Box>
+          ) : (
+            queriedUsers.map((user) => (
+              <EditableUserRow
+                loading={saveLoading}
+                edit={user._id === userBeingEdited._id}
+                key={user._id}
+                user={user}
+                userBeingEdited={userBeingEdited}
+                setUserBeingEdited={setUserBeingEdited}
+                handleFieldEdited={handleFieldEdited}
+                handleSave={() => handleSave(user._id)}
+                handleCancel={handleCancel}
+                emphasized={user._id === getCurrentUser()._id}
+              />
+            ))
+          )}
         </Grid>
-        {usersLoading ? (
-          <Box
-            sx={{
-              textAlign: "center",
-              alignItems: "center",
-              justifyContent: "center",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <img src={JumpingCat} />
-            <Typography variant="h4" sx={{ marginTop: "10px" }}>
-              Loading...
-            </Typography>
-          </Box>
-        ) : (
-          queriedUsers.map((user) => (
-            <EditableUserRow
-              loading={saveLoading}
-              edit={user._id === userBeingEdited._id}
-              key={user._id}
-              user={user}
-              userBeingEdited={userBeingEdited}
-              setUserBeingEdited={setUserBeingEdited}
-              handleFieldEdited={handleFieldEdited}
-              handleSave={() => handleSave(user._id)}
-              handleCancel={handleCancel}
-              emphasized={user._id === getCurrentUser()._id}
-            />
-          ))
-        )}
-      </Grid>
+      </Box>
     </>
   );
 }
@@ -311,7 +311,7 @@ function EditableUserRow({
           type="number"
         />
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={1.5} textAlign="center">
         {!userBeingEdited._id || userBeingEdited._id !== user._id ? (
           <IconButton
             color="quintenary"
@@ -382,7 +382,7 @@ function UserRowHeaders() {
             coins
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={1.5}>
           <Typography variant="h4" style={{ fontWeight: "bold" }}>
             actions
           </Typography>
