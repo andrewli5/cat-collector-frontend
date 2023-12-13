@@ -150,7 +150,7 @@ export const UPGRADES = {
     filter: "70",
   },
   CRIT1: {
-    icon: "gambling.png",
+    icon: "cat_paw.png",
     title: "Purrfect Clicks I",
     description: UPGRADE_DESCRIPTIONS.CRIT1,
     current: "Standard critical click odds",
@@ -158,7 +158,7 @@ export const UPGRADES = {
     filter: "70",
   },
   CRIT2: {
-    icon: "gambling.png",
+    icon: "cat_paw.png",
     title: "Purrfect Clicks II",
     description: UPGRADE_DESCRIPTIONS.CRIT2,
     current: UPGRADE_DESCRIPTIONS.CRIT1,
@@ -166,7 +166,7 @@ export const UPGRADES = {
     filter: "70",
   },
   CRIT3: {
-    icon: "gambling.png",
+    icon: "cat_paw.png",
     title: "Purrfect Clicks III",
     description: UPGRADE_DESCRIPTIONS.CRIT3,
     current: UPGRADE_DESCRIPTIONS.CRIT2,
@@ -174,7 +174,7 @@ export const UPGRADES = {
     filter: "70",
   },
   COST1: {
-    icon: "gambling.png",
+    icon: "money_bag.png",
     title: "Cost Reduction I",
     description: UPGRADE_DESCRIPTIONS.COST1,
     current: "Full price rolls",
@@ -182,7 +182,7 @@ export const UPGRADES = {
     filter: "70",
   },
   COST2: {
-    icon: "gambling.png",
+    icon: "money_bag.png",
     title: "Cost Reduction II",
     description: UPGRADE_DESCRIPTIONS.COST2,
     current: UPGRADE_DESCRIPTIONS.COST1,
@@ -190,7 +190,7 @@ export const UPGRADES = {
     filter: "70",
   },
   COST3: {
-    icon: "gambling.png",
+    icon: "money_bag.png",
     title: "Cost Reduction III",
     description: UPGRADE_DESCRIPTIONS.COST3,
     current: UPGRADE_DESCRIPTIONS.COST2,
