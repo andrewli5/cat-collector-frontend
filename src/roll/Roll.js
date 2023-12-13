@@ -63,7 +63,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK")
+        u.includes("LUCK"),
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds = odds[highestUpgrade];
@@ -79,7 +79,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier
+            getCurrentUser().coinsPerClick * multiplier,
           ),
         };
       }
