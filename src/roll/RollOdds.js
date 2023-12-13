@@ -65,6 +65,7 @@ export default function RollOdds() {
               sx={{
                 bgcolor: "primary.main",
                 borderBottom: `2px solid ${cellBorderColor}`,
+                borderRight: `1px solid ${cellBorderColor}`,
               }}
             >
               <Typography
@@ -85,7 +86,6 @@ export default function RollOdds() {
               sx={{
                 bgcolor: "primary.main",
                 borderBottom: `2px solid ${cellBorderColor}`,
-                borderLeft: `1px solid ${cellBorderColor}`,
               }}
             >
               <Typography
