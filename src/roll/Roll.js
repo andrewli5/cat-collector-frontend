@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import CatSilhouette from "../assets/unknown_cat.png";
@@ -7,7 +7,11 @@ import { importAll } from "../utils/importAll";
 import { useState } from "react";
 import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";
-import { BREEDID_TO_CATICON, RARITY_TO_COLOR } from "../constants";
+import {
+  BREEDID_TO_CATICON,
+  RARITY_TO_COLOR,
+  RARITY_TO_STRING,
+} from "../constants";
 import _ from "lodash";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
@@ -33,6 +37,7 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
   var results = null;
 
   const handleRoll = async () => {
+    // start rolling animation
     setIsRolling(true);
     if (!getCurrentUser()) {
       setTimeout(() => {
@@ -44,6 +49,31 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
     }
     try {
       results = await client.rollCatForUser(getCurrentUser()._id);
+      const multipliers = await client.getMultipliers();
+      const odds = await client.getOdds();
+      const userData = await client.getUserDataByUserId(getCurrentUser()._id);
+
+      const luckUpgrades = userData["upgrades"].filter((u) =>
+        u.includes("LUCK")
+      );
+      const highestUpgrade = luckUpgrades.sort().reverse()[0];
+      const currentOdds = odds[highestUpgrade];
+      const rarity = results.rarity;
+      const rarityPercentage = currentOdds[rarity] * 100;
+      results = { ...results, odds: rarityPercentage };
+
+      // if user rolls a new cat, show old coins per click -> new coins per click
+      if (!results["duplicate"]) {
+        const multiplier = multipliers[rarity];
+        results = {
+          ...results,
+          multiplier: multiplier,
+          oldCoinsPerClick: getCurrentUser().coinsPerClick,
+          newCoinsPerClick: Math.round(
+            getCurrentUser().coinsPerClick * multiplier
+          ),
+        };
+      }
     } catch (error) {
       if (error.response) {
         setTimeout(() => {
@@ -92,8 +122,11 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
       setDisplayedIcon(catIcons[rolledCatIcon]);
       setDisplayResults(true);
       setCoinDiff(results["addedCoins"]);
-      setCoins(coins - rollCost + results["addedCoins"], true); 
-      client.storeCurrentUser({ ...getCurrentUser(), coins: coins - rollCost + results["addedCoins"] });
+      setCoins(coins - rollCost + results["addedCoins"], true);
+      client.storeCurrentUser({
+        ...getCurrentUser(),
+        coins: coins - rollCost + results["addedCoins"],
+      });
       if (!results["duplicate"]) {
         updateRollCost(results["rollCost"]);
       }
@@ -104,22 +137,43 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
     document.title = "roll | " + APP_NAME;
   }, []);
 
+  const getNewCatUnlockedTitle = () => {
+    const imgSize = 25;
+    return (
+      <>
+        <img
+          src={client.catGif}
+          width={imgSize}
+          height={imgSize}
+          style={{ marginRight: "5px" }}
+        />
+        new cat unlocked!
+        <img src={client.catGif} width={imgSize} height={imgSize} />
+      </>
+    );
+  };
   function getRollResultsMessage() {
     return (
       <>
         <Typography variant="h4" color={"white"} textAlign="center">
-          {rollResults["duplicate"] ? "you rolled:" : "new cat unlocked!"}
+          {rollResults["duplicate"] ? "you rolled:" : getNewCatUnlockedTitle()}
         </Typography>
-        <Typography
-          variant="h4"
-          textAlign="center"
-          color={RARITY_TO_COLOR[rollResults["rarity"]]}
-        >
+        <Typography variant="h3" textAlign="center" color="white">
           <Box alignItems={"center"} display={"flex"} justifyContent={"center"}>
             {BREEDID_TO_CATICON[rollResults["breed"]]
               .replace(".png", "")
               .replace("_", " ")}
-            !{" "}
+          </Box>
+        </Typography>
+        <Typography
+          variant="h4"
+          display="flex"
+          justifyContent={"center"}
+          color={RARITY_TO_COLOR[rollResults["rarity"]]}
+        >
+          {RARITY_TO_STRING[rollResults["rarity"]].toLowerCase()}
+          <Box>
+            {" "}
             <StarRateRoundedIcon
               fontSize="large"
               sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
@@ -127,9 +181,13 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
           </Box>
         </Typography>
         {rollResults["duplicate"] ? (
-          <Box alignItems={"center"} display={"flex"} textAlign="center">
+          <Box
+            alignItems={"center"}
+            display={"flex"}
+            justifyContent="center"
+            textAlign="center"
+          >
             {"duplicate, received:  "}
-
             {rollResults["addedCoins"]}
             <img
               style={{ marginLeft: "5px" }}
@@ -139,7 +197,23 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
             />
           </Box>
         ) : (
-          <></>
+          <Box alignItems="center" display="flex" textAlign="center">
+            coins per click: {rollResults["oldCoinsPerClick"]}
+            <img
+              style={{ marginLeft: "2px", marginRight: "5px" }}
+              src={Coin}
+              width={20}
+              height={20}
+            />
+            ⇒ {rollResults["newCoinsPerClick"]}
+            <img
+              style={{ marginRight: "5px" }}
+              src={Coin}
+              width={20}
+              height={20}
+            />
+            {"  (+" + ((rollResults["multiplier"] - 1) * 100).toFixed(0) + "%)"}
+          </Box>
         )}
       </>
     );
@@ -176,6 +250,7 @@ export default function Roll({ coins, setCoins, setCoinDiff }) {
       />
       {!_.isEmpty(rollResults) ? (
         <NotificationSnackbar
+          icon={false}
           open={displayResults}
           setOpen={setDisplayResults}
           message={getRollResultsMessage()}
