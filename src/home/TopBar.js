@@ -130,8 +130,8 @@ export default function TopBar({ music, setMusic }) {
           <Box>
             <Grid container spacing={1}>
               <Grid item>
-                <IconButton sx={{rightPadding: "0", marginRight: "5px"}}>
-                {music ? (
+                <IconButton sx={{ rightPadding: "0", marginRight: "5px" }}>
+                  {music ? (
                     <MusicOn onClick={() => setMusic(false)} />
                   ) : (
                     <MusicOff onClick={() => setMusic(true)} />

@@ -121,11 +121,11 @@ export default function Home() {
           setCrit(false);
         }, 350);
       } else {
-         if (music) {
-           const audio = new Audio(minecraftButton);
-           audio.currentTime = 0.25; 
-           audio.play();
-         }
+        if (music) {
+          const audio = new Audio(minecraftButton);
+          audio.currentTime = 0.25;
+          audio.play();
+        }
         newCoins += coinsPerClick;
       }
       storeCurrentUser({ ...getCurrentUser(), coins: newCoins });

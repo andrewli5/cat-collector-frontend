@@ -126,7 +126,7 @@ export const getMultipliers = async () => {
 export const getOdds = async () => {
   const response = await REQUEST.get(`${BASE_API_URL}/info/odds`);
   return response.data;
-}
+};
 
 const catGifs = importAll(require.context("./assets/gifs", false, /\.(gif)$/));
 
@@ -146,5 +146,5 @@ export const ALL_CAT_RARITIES = JSON.parse(localStorage.getItem("rarities"));
 export const catGif = getRandomCatGif();
 if (getCurrentUser()) {
   const updatedUser = await getUserDataByUserId(getCurrentUser()._id);
-  storeCurrentUser({...getCurrentUser(), ...updatedUser});
+  storeCurrentUser({ ...getCurrentUser(), ...updatedUser });
 }

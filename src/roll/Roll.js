@@ -22,7 +22,7 @@ const IMAGE_SIZE = "40vh";
 export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100
+    getCurrentUser() ? getCurrentUser().rollCost : 100,
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -31,7 +31,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var results = null;

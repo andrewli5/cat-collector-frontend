@@ -2,7 +2,7 @@ import { TextField, styled } from "@mui/material";
 
 const ExpandingTextField = styled(
   TextField,
-  {}
+  {},
 )(() => ({
   "& .MuiOutlinedInput-root": {
     width: "5%",

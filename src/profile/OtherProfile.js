@@ -13,7 +13,7 @@ export default function OtherProfile() {
 
   const handleViewCats = () => {
     navigate(`/view/${username}`);
-  }
+  };
 
   useEffect(() => {
     document.title = `${username}'s profile | ${APP_NAME}`;
