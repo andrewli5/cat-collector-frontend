@@ -88,61 +88,61 @@
 }
 
 .owned-C {
-  box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, .5);
+  box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
 }
 
 .owned-C:hover {
-  border: 4px solid rgba(255, 255, 255, .9);
-  box-shadow: 0px 0px 30px 10px rgba(255, 255, 255, .9);
+  border: 4px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 30px 10px rgba(255, 255, 255, 0.9);
 }
 
 .owned-U {
-  box-shadow: 0px 0px 10px 2px rgba(0, 128, 0, .5);
+  box-shadow: 0px 0px 10px 2px rgba(0, 128, 0, 0.5);
 }
 
 .owned-U:hover {
-  border: 4px solid rgba(0, 128, 0, .9);
-  box-shadow: 0px 0px 30px 10px rgba(0, 128, 0, .9);
+  border: 4px solid rgba(0, 128, 0, 0.9);
+  box-shadow: 0px 0px 30px 10px rgba(0, 128, 0, 0.9);
 }
 
 .owned-R {
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 255, .5);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 255, 0.5);
 }
 
 .owned-R:hover {
-  border: 4px solid rgba(0, 0, 255, .9);
-  box-shadow: 0px 0px 30px 10px rgba(0, 0, 255, .9);
+  border: 4px solid rgba(0, 0, 255, 0.9);
+  box-shadow: 0px 0px 30px 10px rgba(0, 0, 255, 0.9);
 }
 
 .owned-E {
-  box-shadow: 0px 0px 10px 2px rgba(128, 0, 128, .5);
+  box-shadow: 0px 0px 10px 2px rgba(128, 0, 128, 0.5);
 }
 
 .owned-E:hover {
-  border: 4px solid rgba(128, 0, 128, .9);
-  box-shadow: 0px 0px 30px 10px rgba(128, 0, 128, .9);
+  border: 4px solid rgba(128, 0, 128, 0.9);
+  box-shadow: 0px 0px 30px 10px rgba(128, 0, 128, 0.9);
 }
 
 .owned-L {
-  box-shadow: 0px 0px 10px 2px rgba(255, 255, 0, .5);
+  box-shadow: 0px 0px 10px 2px rgba(255, 255, 0, 0.5);
 }
 
 .owned-L:hover {
-  border: 4px solid rgba(255, 255, 0, .9);
-  box-shadow: 0px 0px 30px 10px rgba(255, 255, 0, .9);
+  border: 4px solid rgba(255, 255, 0, 0.9);
+  box-shadow: 0px 0px 30px 10px rgba(255, 255, 0, 0.9);
 }
 
 .owned-M {
-  box-shadow: 0px 0px 10px 2px rgba(gold, .5);
+  box-shadow: 0px 0px 10px 2px rgba(gold, 0.5);
 }
 
 .owned-M:hover {
-  border: 4px solid rgba(gold, .9);
-  box-shadow: 0px 0px 30px 10px rgba(gold, .9);
+  border: 4px solid rgba(gold, 0.9);
+  box-shadow: 0px 0px 30px 10px rgba(gold, 0.9);
 }
 
 .owned-M:hover {
-  box-shadow: 0px 0px 30px 10px rgba(gold, .9);
+  box-shadow: 0px 0px 30px 10px rgba(gold, 0.9);
 }
 
 .owned-C,

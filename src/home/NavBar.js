@@ -5,8 +5,8 @@ import { useLocation } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 
 const NAV_ITEMS = [
-  { name: "my cats", path: "/mycats" },
   { name: "roll", path: "/roll" },
+  { name: "my cats", path: "/mycats" },
   { name: "shop", path: "/shop" },
   { name: "favorites", path: "/favorites" },
   { name: "my profile", path: "/myprofile" },

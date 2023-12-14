@@ -6,7 +6,7 @@ export default function NotificationSnackbar({
   severity,
   message,
   autoHideDuration,
-  icon = true,
+  icon,
 }) {
   return (
     <Snackbar
@@ -16,7 +16,7 @@ export default function NotificationSnackbar({
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
     >
       <Alert
-        icon={icon}
+        icon={icon || null}
         sx={{ fontSize: 22, alignItems: "center" }}
         severity={severity}
       >

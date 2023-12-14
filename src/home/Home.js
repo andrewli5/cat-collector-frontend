@@ -43,7 +43,11 @@ export default function Home() {
   const [saveTimeoutId, setSaveTimeoutId] = useState(null); // used to debounce save to cloud
   const [effectCount, setEffectCount] = useState(0);
   const [saving, setSaving] = useState(false);
-  const [music, setMusic] = useState(localStorage.getItem("music") ? localStorage.getItem("music") === "true" : true);
+  const [music, setMusic] = useState(
+    localStorage.getItem("music")
+      ? localStorage.getItem("music") === "true"
+      : true,
+  );
   const [crit, setCrit] = useState(false);
 
   const meowFiles = [
@@ -220,7 +224,7 @@ export default function Home() {
             disableRipple
           >
             <img
-              style={{ "-webkit-user-drag": "none" }}
+              style={{ WebkitUserDrag: "none" }}
               src={coinGif}
               width={80}
               height={80}

@@ -27,16 +27,17 @@ export default function RollOdds() {
       const user = client.getCurrentUser();
       if (user) {
         const userData = await client.getUserDataByUserId(
-          client.getCurrentUser()._id
+          client.getCurrentUser()._id,
         );
         const luckUpgrades = userData["upgrades"].filter((u) =>
-          u.includes("LUCK")
+          u.includes("LUCK"),
         );
         const highestUpgrade = luckUpgrades.sort().reverse()[0];
-        odds = allOdds[highestUpgrade];
+        if (highestUpgrade) {
+          odds = allOdds[highestUpgrade];
+        }
       }
       setOdds(odds);
-      console.log(odds);
     };
 
     getUserOdds();
@@ -122,8 +123,6 @@ export default function RollOdds() {
                 sx={{
                   paddingLeft: 2,
                   paddingRight: 2,
-                  //color: `${index % 2 === 0 ? "black" : "white"}`,
-                  // backgroundColor: `${index % 2 === 0 ? evenColor : oddColor}`,
                   color: "black",
                   backgroundColor: bgcolor,
                   fontSize: 20,
@@ -139,9 +138,6 @@ export default function RollOdds() {
                   variant="h5"
                 >
                   {rarity}
-                  {/* <Box>
-                    <StarRateRounded fontSize="small" sx={{ color: textColor }} />
-                  </Box> */}
                 </Typography>
               </TableCell>
               <TableCell
@@ -152,9 +148,6 @@ export default function RollOdds() {
                   paddingRight: 2,
                   paddingTop: "5px",
                   paddingBottom: "5px",
-                  // color: textColor,
-                  //color: `${index % 2 === 0 ? "black" : "white"}`,
-                  // backgroundColor: `${index % 2 === 0 ? evenColor : oddColor}`,
                   backgroundColor: bgcolor,
                   color: "black",
                   borderTop: `1px solid ${cellBorderColor}`,
