@@ -41,8 +41,8 @@ const TEST_URLS = [
 
 const LOADING_STR = "LOADING";
 const RESULTS_PER_PAGE = 8;
-const IMAGE_HEIGHT = "200px";
-const IMAGE_WIDTH = "225px";
+const IMAGE_HEIGHT = "160px";
+const IMAGE_WIDTH = "190px";
 
 export default function Search() {
   const [matches, setMatches] = useState([]);
@@ -175,7 +175,7 @@ export default function Search() {
 
   return (
     <>
-      <Typography variant="h4" textAlign="center">
+      <Typography sx={{ marginTop: "5px" }} variant="h4" textAlign="center">
         results for: {query}
       </Typography>
       {isLoading ? (
@@ -197,7 +197,11 @@ export default function Search() {
             <Grid
               container
               spacing={2}
-              sx={{ marginTop: 1, marginLeft: 2, maxWidth: "1100px" }}
+              sx={{
+                marginTop: "10px",
+                marginLeft: 2,
+                maxWidth: "1100px",
+              }}
             >
               {imageUrls.map((image, index) => (
                 <Grid
@@ -209,7 +213,11 @@ export default function Search() {
                   sm={4}
                   md={2.5}
                   key={index}
-                  sx={{ marginBottom: 3, marginLeft: 3, paddingLeft: 2 }}
+                  sx={{
+                    marginBottom: "1vh",
+                    marginLeft: "4vh",
+                    paddingLeft: "5vh",
+                  }}
                 >
                   <Link
                     style={{ color: "white", textDecoration: "none" }}
@@ -239,7 +247,7 @@ export default function Search() {
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                marginBottom: 3,
+                marginBottom: "5vh",
               }}
               size="large"
               count={Math.ceil(matches.length / RESULTS_PER_PAGE)}
