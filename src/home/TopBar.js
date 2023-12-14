@@ -129,22 +129,14 @@ export default function TopBar({ music, setMusic }) {
         <Box>
           <Grid container spacing={1}>
             <Grid item>
-              <IconButton sx={{ rightPadding: "0", marginRight: "5px" }}>
-                {music ? (
-                  <MusicOn
-                    onClick={() => {
-                      setMusic(false);
-                      localStorage.setItem("music", false);
-                    }}
-                  />
-                ) : (
-                  <MusicOff
-                    onClick={() => {
-                      setMusic(true);
-                      localStorage.setItem("music", true);
-                    }}
-                  />
-                )}
+              <IconButton
+                sx={{ rightPadding: "0", marginRight: "5px" }}
+                onClick={() => {
+                  setMusic(!music);
+                  localStorage.setItem("music", !music);
+                }}
+              >
+                {music ? <MusicOn /> : <MusicOff />}
               </IconButton>
             </Grid>
             {!getCurrentUser() ? (

@@ -148,3 +148,6 @@ if (getCurrentUser()) {
   const updatedUser = await getUserDataByUserId(getCurrentUser()._id);
   storeCurrentUser({ ...getCurrentUser(), ...updatedUser });
 }
+
+export const MULTIPLIERS = await getMultipliers();
+export const ODDS = await getOdds();

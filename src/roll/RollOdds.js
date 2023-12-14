@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import * as client from "../client";
-import {
-  RARITY_TO_TEXT_COLOR,
-  RARITY_TO_STRING,
-  RARITY_TO_BG_COLOR,
-} from "../constants";
+import { RARITY_TO_STRING, RARITY_TO_BG_COLOR } from "../constants";
 import {
   // Box,
   TableBody,
@@ -14,7 +10,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-// import StarRateRounded from "@mui/icons-material/StarRateRounded";
 
 export default function RollOdds() {
   const [odds, setOdds] = useState({});
@@ -103,10 +98,7 @@ export default function RollOdds() {
           </TableRow>
         </TableHead>
         {Object.keys(odds).map((odd, index) => {
-          const evenColor = "quintenary.main";
-          const oddColor = "primary.main";
           const rarity = RARITY_TO_STRING[odd];
-          const textColor = RARITY_TO_TEXT_COLOR[odd];
           const bgcolor = RARITY_TO_BG_COLOR[odd];
           const value = odds[odd];
           return (

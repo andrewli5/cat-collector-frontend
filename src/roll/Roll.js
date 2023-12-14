@@ -70,22 +70,20 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
     try {
       playAudio(rollSound, 0.6);
       results = await client.rollCatForUser(getCurrentUser()._id);
-      const multipliers = await client.getMultipliers();
-      const odds = await client.getOdds();
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
         u.includes("LUCK"),
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
-      const currentOdds = odds[highestUpgrade];
+      const currentOdds = client.ODDS[highestUpgrade];
       const rarity = results.rarity;
       const rarityPercentage = currentOdds[rarity] * 100;
       results = { ...results, odds: rarityPercentage };
 
       // if user rolls a new cat, show old coins per click -> new coins per click
       if (!results["duplicate"]) {
-        const multiplier = multipliers[rarity];
+        const multiplier = client.MULTIPLIERS[rarity];
         results = {
           ...results,
           multiplier: multiplier,
@@ -94,6 +92,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
             getCurrentUser().coinsPerClick * multiplier,
           ),
         };
+        console.log(results);
       }
     } catch (error) {
       if (error.response) {
