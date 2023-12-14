@@ -21,6 +21,7 @@ import ExpandingTextField from "../reusable/ExpandingTextField";
 import MusicOn from "@mui/icons-material/MusicNote";
 import MusicOff from "@mui/icons-material/MusicOff";
 import IconButton from "@mui/material/IconButton";
+import Avatar from "@mui/material/Avatar";
 
 export default function TopBar({ music, setMusic }) {
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
@@ -130,13 +131,24 @@ export default function TopBar({ music, setMusic }) {
           <Grid container spacing={1}>
             <Grid item>
               <IconButton
-                sx={{ rightPadding: "0", marginRight: "5px" }}
                 onClick={() => {
                   setMusic(!music);
                   localStorage.setItem("music", !music);
                 }}
               >
-                {music ? <MusicOn /> : <MusicOff />}
+                <Avatar
+                  color="white"
+                  sx={{
+                    border: "1px solid white",
+                    bgcolor: "primary.main",
+                  }}
+                >
+                  {music ? (
+                    <MusicOn color="white" />
+                  ) : (
+                    <MusicOff color="white" />
+                  )}
+                </Avatar>
               </IconButton>
             </Grid>
             {!getCurrentUser() ? (
