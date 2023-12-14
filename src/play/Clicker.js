@@ -157,7 +157,11 @@ export default function Clicker({
               position="absolute"
               color={coinDiff >= 0 ? "lightgreen" : "error"}
               marginTop={1}
-              backgroundColor="black"
+              backgroundColor="darkgreen"
+              boxShadow="0px 0px 10px darkgreen"
+              paddingLeft={2}
+              paddingRight={2}
+              borderRadius="30px"
             >
               {coinDiff >= 0 ? "+" : "-"}
               {Math.abs(coinDiff).toLocaleString()}
