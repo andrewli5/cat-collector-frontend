@@ -24,7 +24,7 @@ const IMAGE_SIZE = "40vh";
 export default function Roll({ coins, setCoins, setCoinDiff, music }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -34,7 +34,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
   const [showOdds, setShowOdds] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
@@ -69,14 +69,18 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
     }
     try {
       playAudio(rollSound, 0.6);
-      results = await client.rollCatForUser(getCurrentUser()._id);
+      const ans = await client.rollCatForUser(getCurrentUser()._id);
+      results = ans;
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK"),
+        u.includes("LUCK")
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
-      const currentOdds = client.ODDS[highestUpgrade];
+      const currentOdds =
+        highestUpgrade !== undefined
+          ? client.ODDS[highestUpgrade]
+          : client.ODDS["BASE"];
       const rarity = results.rarity;
       const rarityPercentage = currentOdds[rarity] * 100;
       results = { ...results, odds: rarityPercentage };
@@ -89,7 +93,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier,
+            getCurrentUser().coinsPerClick * multiplier
           ),
         };
         console.log(results);
