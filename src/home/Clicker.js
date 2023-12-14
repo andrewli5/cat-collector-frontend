@@ -1,4 +1,4 @@
-import { Box, Button, Grow, Typography } from "@mui/material";
+import { Box, Button, Grow, Tooltip, Typography } from "@mui/material";
 import { APP_NAME } from "../constants";
 import { useEffect, useState } from "react";
 import * as meows from "../assets/meows";
@@ -127,13 +127,15 @@ export default function Clicker({
           {APP_NAME}
         </Typography>
       </Box>
-      <img
-        src={catGif}
-        onClick={playSoundEffect}
-        width={"150px"}
-        height={"150px"}
-        style={{ marginTop: 5 }}
-      />
+      <Tooltip title="click me!" placement="right">
+        <img
+          src={catGif}
+          onClick={playSoundEffect}
+          width={"150px"}
+          height={"150px"}
+          style={{ marginTop: 5 }}
+        />
+      </Tooltip>
       <Typography
         variant="h4"
         color="gray"
@@ -164,7 +166,7 @@ export default function Clicker({
         color="primary"
         onClick={handleCoinClick}
         className="quirkyButton quirkyButtonShadow flash-slide"
-        sx={{ marginTop: 1, width: 100, height: 100 }}
+        sx={{ marginTop: 1, width: 130, height: 130 }}
         disableRipple
       >
         <img
