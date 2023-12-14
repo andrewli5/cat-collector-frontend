@@ -1,10 +1,19 @@
-import { Box, Button, Grow, Tooltip, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  Grow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { APP_NAME } from "../constants";
 import { useEffect, useState } from "react";
 import * as meows from "../assets/meows";
 import minecraftButton from "../assets/sounds/minecraft_button.mp3";
 import critSound from "../assets/sounds/crit_sound.mp3";
 import coinGif from "../assets/coin_spin.gif";
+import coin from "../assets/coin_icon.png";
+
 import {
   catGif,
   getCurrentUser,
@@ -29,6 +38,7 @@ export default function Clicker({
   const [saveTimeoutId, setSaveTimeoutId] = useState(null);
   const [effectCount, setEffectCount] = useState(0);
   const [crit, setCrit] = useState(false);
+  const [helpMsg, setHelpMsg] = useState(false);
 
   const meowFiles = [
     meows.meow,
@@ -161,23 +171,75 @@ export default function Clicker({
             height={"30vh"}
             alt="coin"
           />
-          <Typography variant="h4" color="white" textAlign="center">
-            {coinsPerClick.toLocaleString()}
-          </Typography>
+          <Grow in={saving && coinDiff >= 0}>
+            <Typography
+              variant="h4"
+              alignItems="center"
+              color={coinDiff >= 0 ? "lightgreen" : "error"}
+              marginTop={1}
+            >
+              {coinDiff >= 0 ? "+" : "-"}
+              {Math.abs(coinDiff).toLocaleString()}
+            </Typography>
+          </Grow>
         </Button>
       </Box>
 
-      <Grow in={saving && coinDiff >= 0}>
-        <Typography
-          variant="h4"
-          alignItems="center"
-          color={coinDiff >= 0 ? "lightgreen" : "error"}
-          marginTop={1}
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        textAlign="center"
+        alignContent="center"
+      >
+        <Button
+          onClick={handleCoinClick}
+          variant="contained"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: "10px",
+          }}
         >
-          {coinDiff >= 0 ? "+" : "-"}
-          {Math.abs(coinDiff).toLocaleString()}
-        </Typography>
-      </Grow>
+          {" "}
+          <Typography variant="h5" color="white" textAlign="center">
+            {coinsPerClick.toLocaleString()}
+          </Typography>
+          <img
+            style={{ marginLeft: "5px", marginRight: "5px" }}
+            src={coin}
+            width={20}
+            height={20}
+          />{" "}
+          per click
+        </Button>
+        <Button
+          onClick={() => setHelpMsg(true)}
+          variant="contained"
+          sx={{
+            height: "auto",
+            width: "auto",
+            padding: 0,
+            minWidth: "45px",
+            display: "flex",
+            alignContent: "right",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {"(?)"}
+        </Button>
+        <Backdrop
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+          }}
+          open={helpMsg}
+          onClick={() => setHelpMsg(false)}
+        >
+          help msg goes here
+        </Backdrop>
+      </Box>
       <Grow in={crit}>
         <Typography
           variant="h4"

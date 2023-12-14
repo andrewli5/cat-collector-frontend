@@ -216,23 +216,46 @@ export default function Roll({
           marginTop: "5px",
         }}
       >
-        <Box
-          component="img"
-          alt="cat-display"
-          src={displayedIcon}
+        <Button
+          className="quirkyButton quirkyButtonShadow flash-slide"
+          onClick={handleRoll}
+          disabled={
+            isRolling ||
+            !getCurrentUser() ||
+            getCurrentUser().coins < getCurrentUser().rollCost
+              ? true
+              : false
+          }
           sx={{
-            height: IMAGE_SIZE,
-            width: IMAGE_SIZE,
+            marginTop: "5px",
             margin: "3vh",
-            boxShadow: `0px 0px 90px ${
-              isRolling || rollResults["breed"] === undefined
-                ? "rgba(128, 128, 128, 1)"
-                : RARITY_TO_TEXT_COLOR[rollResults["rarity"]]
-            }`,
+            width: "40vh",
+            height: "40vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             borderRadius: "140px",
             transition: "all 0.3s ease",
           }}
-        />
+          disableRipple
+        >
+          <Box
+            component="img"
+            alt="cat-display"
+            src={displayedIcon}
+            sx={{
+              WebkitUserDrag: "none",
+              height: IMAGE_SIZE,
+              width: IMAGE_SIZE,
+              margin: "3vh",
+              boxShadow: `0px 0px 90px ${
+                isRolling || rollResults["breed"] === undefined
+                  ? "rgba(128, 128, 128, 1)"
+                  : RARITY_TO_TEXT_COLOR[rollResults["rarity"]]
+              }`,
+            }}
+          />
+        </Button>
       </Box>
       <Box
         display="flex"
