@@ -41,6 +41,8 @@ const TEST_URLS = [
 
 const LOADING_STR = "LOADING";
 const RESULTS_PER_PAGE = 8;
+const IMAGE_HEIGHT = "200px";
+const IMAGE_WIDTH = "225px";
 
 export default function Search() {
   const [matches, setMatches] = useState([]);
@@ -122,7 +124,7 @@ export default function Search() {
             matches
               .slice(
                 RESULTS_PER_PAGE * page - RESULTS_PER_PAGE,
-                RESULTS_PER_PAGE * page,
+                RESULTS_PER_PAGE * page
               )
               .map(async (match) => {
                 await new Promise((resolve) => setTimeout(resolve, 500));
@@ -146,9 +148,9 @@ export default function Search() {
                         url: data[0]["url"],
                         name: match["name"],
                         id: match["id"],
-                      },
+                      }
                 );
-              }),
+              })
           );
         } catch (error) {
           if (retries > 0) {
@@ -215,11 +217,11 @@ export default function Search() {
                   >
                     <img
                       src={image["url"]}
-                      width={"200px"}
                       style={{
                         objectFit: "cover",
                         objectPosition: "center",
-                        height: "200px",
+                        height: IMAGE_HEIGHT,
+                        width: IMAGE_WIDTH,
                       }}
                       class="owned-C"
                       alt={image["id"]}
