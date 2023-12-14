@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
 import CatSilhouette from "../assets/unknown_cat.png";
@@ -9,7 +9,7 @@ import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";
 import {
   BREEDID_TO_CATICON,
-  RARITY_TO_COLOR,
+  RARITY_TO_TEXT_COLOR,
   RARITY_TO_STRING,
 } from "../constants";
 import _ from "lodash";
@@ -20,6 +20,8 @@ import itemGet from "../assets/sounds/item_get.mp3";
 import superItemGet from "../assets/sounds/super_item_get.mp3";
 import rollSound from "../assets/sounds/roll.mp3";
 import duplicateGet from "../assets/sounds/duplicate_get.mp3";
+import Backdrop from "@mui/material/Backdrop";
+import RollOdds from "./RollOdds";
 
 const IMAGE_SIZE = "40vh";
 
@@ -33,12 +35,21 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [displayResults, setDisplayResults] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showOdds, setShowOdds] = useState(false);
 
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
+
+  const handleShowOdds = () => {
+    setShowOdds(true);
+  };
+
+  const handleHideOdds = () => {
+    setShowOdds(false);
+  };
 
   const handleRoll = async () => {
     // start rolling animation
@@ -194,14 +205,14 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           variant="h4"
           display="flex"
           justifyContent={"center"}
-          color={RARITY_TO_COLOR[rollResults["rarity"]]}
+          color={RARITY_TO_TEXT_COLOR[rollResults["rarity"]]}
         >
           {RARITY_TO_STRING[rollResults["rarity"]].toLowerCase()}
           <Box>
             {" "}
             <StarRateRoundedIcon
               fontSize="large"
-              sx={{ color: RARITY_TO_COLOR[rollResults["rarity"]] }}
+              sx={{ color: RARITY_TO_TEXT_COLOR[rollResults["rarity"]] }}
             />
           </Box>
         </Typography>
@@ -303,54 +314,86 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
             boxShadow: `0px 0px 90px ${
               isRolling || rollResults["breed"] === undefined
                 ? "rgba(128, 128, 128, 1)"
-                : RARITY_TO_COLOR[rollResults["rarity"]]
+                : RARITY_TO_TEXT_COLOR[rollResults["rarity"]]
             }`,
             borderRadius: "140px",
             transition: "all 0.3s ease",
           }}
         />
       </Box>
-      <Button
-        disabled={
-          isRolling ||
-          !getCurrentUser() ||
-          getCurrentUser().coins < getCurrentUser().rollCost
-            ? true
-            : false
-        }
-        variant="contained"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-        onClick={handleRoll}
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        textAlign="center"
+        alignContent="center"
       >
-        <img
-          src={Dice}
-          width={30}
-          height={30}
-          style={{ marginRight: "10px" }}
-        />
-        {isRolling ? (
-          "Rolling..."
-        ) : (
-          <>
-            roll |
-            <Typography variant="h5" marginLeft={1}>
-              {rollCost.toLocaleString()}
-            </Typography>
-            <img
-              style={{ marginLeft: "5px" }}
-              src={Coin}
-              width={20}
-              height={20}
-            />
-          </>
-        )}
-      </Button>
+        <Button
+          disabled={
+            isRolling ||
+            !getCurrentUser() ||
+            getCurrentUser().coins < getCurrentUser().rollCost
+              ? true
+              : false
+          }
+          variant="contained"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: "10px",
+          }}
+          onClick={handleRoll}
+        >
+          <img
+            src={Dice}
+            width={30}
+            height={30}
+            style={{ marginRight: "10px" }}
+          />
+          {isRolling ? (
+            "Rolling..."
+          ) : (
+            <>
+              roll |
+              <Typography variant="h5" marginLeft={1}>
+                {rollCost.toLocaleString()}
+              </Typography>
+              <img
+                style={{ marginLeft: "5px" }}
+                src={Coin}
+                width={20}
+                height={20}
+              />
+            </>
+          )}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleShowOdds}
+          sx={{
+            height: "auto",
+            width: "auto",
+            padding: 0,
+            minWidth: "45px",
+            display: "flex",
+            alignContent: "right",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {"(?)"}
+        </Button>
+        <Backdrop
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+          }}
+          open={showOdds}
+          onClick={handleHideOdds}
+        >
+          <RollOdds />
+        </Backdrop>
+      </Box>
     </>
   );
 }
