@@ -13,16 +13,17 @@ import {
 } from "../client";
 
 const CRIT_MULTIPLIER = 28.5;
-const BASE_COINS_PER_CLICK = 50;
 const BASE_CRIT_RATE = 0.005;
 
 export default function Clicker({
   coins,
+  coinsPerClick,
   setCoins,
   coinDiff,
   setCoinDiff,
   saving,
   setSaving,
+  setWarning,
   music,
 }) {
   const [saveTimeoutId, setSaveTimeoutId] = useState(null);
@@ -70,10 +71,6 @@ export default function Clicker({
     audio.play();
   };
 
-  var coinsPerClick = BASE_COINS_PER_CLICK;
-  if (getCurrentUser()) {
-    coinsPerClick = getCurrentUser().coinsPerClick;
-  }
   var critRate = BASE_CRIT_RATE;
   if (getCurrentUser()) {
     critRate = getCurrentUser().critChance;
@@ -122,62 +119,40 @@ export default function Clicker({
         flexDirection: "column",
       }}
     >
-      <Box bgcolor="primary.main" sx={{ marginBottom: "10px" }}>
-        <Typography variant="h3" color="white" sx={{ width: "100vw" }}>
-          {APP_NAME}
-        </Typography>
-      </Box>
-      <Tooltip title="click me!" placement="right">
-        <img
-          src={catGif}
-          onClick={playSoundEffect}
-          width={"150px"}
-          height={"150px"}
-          style={{ marginTop: 5 }}
-        />
-      </Tooltip>
-      <Typography
-        variant="h4"
-        color="gray"
-        sx={{ marginTop: 3 }}
-        textAlign="center"
-      >
-        current market rate:
+      <Typography variant="h3" textAlign="center" marginTop={2}>
+        click for coins
       </Typography>
-      <Typography
-        variant="h4"
-        color="lightgreen"
-        fontWeight="bold"
-        alignItems={"center"}
-        justifyContent={"center"}
-        display={"flex"}
-      >
-        <img
-          src={coinGif}
-          width={27}
-          height={27}
-          alt="coin"
-          style={{ marginRight: 3 }}
-        />
-        {coinsPerClick.toLocaleString()} per click
+      <Typography variant="h5" color="white">
+        get more money
       </Typography>
       <Button
         variant="contained"
-        color="primary"
+        color="tertiary"
         onClick={handleCoinClick}
         className="quirkyButton quirkyButtonShadow flash-slide"
-        sx={{ marginTop: 1, width: 130, height: 130 }}
+        sx={{
+          marginTop: 13,
+          width: 250,
+          height: 250,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          borderRadius: "140px",
+        }}
         disableRipple
       >
         <img
           style={{ WebkitUserDrag: "none" }}
           src={coinGif}
-          width={80}
-          height={80}
+          width={150}
+          height={150}
           alt="coin"
         />
+        <Typography variant="h4" color="white" textAlign="center">
+          {coinsPerClick.toLocaleString()}
+        </Typography>
       </Button>
-      <Grow in={saving && coinDiff != 0}>
+      <Grow in={saving && coinDiff >= 0}>
         <Typography
           variant="h4"
           alignItems="center"
@@ -199,6 +174,14 @@ export default function Clicker({
           CRIT! x28.5
         </Typography>
       </Grow>
+      <Tooltip title="click me for a surprise!" placement="right">
+        <img
+          src={catGif}
+          onClick={playSoundEffect}
+          width={"100px"}
+          height={"100px"}
+        />
+      </Tooltip>
     </div>
   );
 }

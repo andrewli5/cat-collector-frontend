@@ -1,12 +1,11 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import MyCats from "../mycats/MyCats";
 import Search from "../search/Search";
 import EmptySearch from "../search/EmptySearch";
 import NavBar from "./NavBar";
-import Roll from "../roll/Roll";
 import Shop from "../shop/Shop";
 import Admin from "../admin/Admin";
 import { getCurrentUser } from "../client";
@@ -19,12 +18,13 @@ import Forbidden from "../admin/Forbidden";
 import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import Footer from "./Footer";
 import NotFound from "./NotFound";
-import Clicker from "./Clicker";
+import Play from "../play/Play";
 
 export default function Home() {
   const [warning, setWarning] = useState(false);
   const [coins, setCoins] = useState(0); // used to force rerender of NavBar
   const [coinDiff, setCoinDiff] = useState(0); // used to show change in coins
+  const [coinsPerClick, setCoinsPerClick] = useState(50);
   const [saving, setSaving] = useState(false);
   const [music, setMusic] = useState(
     localStorage.getItem("music")
@@ -42,6 +42,7 @@ export default function Home() {
   useEffect(() => {
     if (getCurrentUser()) {
       setCoins(getCurrentUser().coins);
+      setCoinsPerClick(getCurrentUser().coinsPerClick);
     }
   }, []);
 
@@ -59,19 +60,25 @@ export default function Home() {
         autoHideDuration={3000}
       />
       <TopBar music={music} setMusic={setMusic} />
-      <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
+      <Box display="flex" justifyContent="center" width="100vw">
+        <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
+      </Box>
       <Routes>
+        <Route path="/" element={<Navigate to="/play" />} />
         <Route
-          path="/"
+          path="/play"
           element={
-            <Clicker
+            <Play
               coins={coins}
+              coinsPerClick={coinsPerClick}
+              setCoinsPerClick={setCoinsPerClick}
               coinDiff={coinDiff}
               setCoinDiff={setCoinDiff}
               setCoins={setCoinHandler}
               saving={saving}
               setSaving={setSaving}
               music={music}
+              setWarning={setWarning}
             />
           }
         />
@@ -80,17 +87,6 @@ export default function Home() {
         <Route path="/rarities/:rarity" element={<MyCats rarity={true} />} />
         <Route path="/search" element={<EmptySearch />} />
         <Route path="/search/:query" element={<Search />} />
-        <Route
-          path="/roll"
-          element={
-            <Roll
-              coins={coins}
-              setCoinDiff={setCoinDiff}
-              setCoins={setCoinHandler}
-              music={music}
-            />
-          }
-        />
         <Route path="/shop" element={<Shop setCoins={setCoinHandler} />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />

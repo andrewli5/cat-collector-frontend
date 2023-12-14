@@ -72,7 +72,16 @@ export default function MyProfile() {
         message={errorMessage.toLowerCase()}
         autoHideDuration={3000}
       />
-      <Typography variant="h3">my profile</Typography>
+      <Box bgcolor="primary.main" sx={{ marginBottom: 5 }}>
+        <Typography
+          variant="h3"
+          color={"white"}
+          textAlign="center"
+          sx={{ width: "100vw", overflowX: "hidden" }}
+        >
+          my profile
+        </Typography>
+      </Box>
       <Box
         alignItems="center"
         textAlign="center"

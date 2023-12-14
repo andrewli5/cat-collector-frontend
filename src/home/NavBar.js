@@ -1,18 +1,19 @@
-import { Toolbar, Button, Typography, Grow } from "@mui/material";
+import { Button, Typography, Grow, Box } from "@mui/material";
 import { getCurrentUser } from "../client";
 import coinGif from "../assets/coin_spin.gif";
 import { useLocation } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
+import { useLayoutEffect } from "react";
 
 const NAV_ITEMS = [
-  { name: "roll", path: "/roll" },
+  { name: "play", path: "/play" },
   { name: "my cats", path: "/mycats" },
   { name: "shop", path: "/shop" },
   { name: "favorites", path: "/favorites" },
   { name: "my profile", path: "/myprofile" },
   { name: "find users", path: "/find-users" },
-  { name: "admin tools", path: "/admin" },
 ];
+
 export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
   const pathName = useLocation().pathname;
 
@@ -24,29 +25,36 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
     Math.round(val).toLocaleString(),
   );
 
+  useLayoutEffect(() => {
+    if (
+      getCurrentUser() &&
+      getCurrentUser().role === "ADMIN" &&
+      !NAV_ITEMS.find(({ name }) => name === "admin tools")
+    ) {
+      NAV_ITEMS.push({ name: "admin tools", path: "/admin" });
+    }
+  }, []);
+
   return (
-    <Toolbar>
-      <Button
-        color={pathName === "/" ? "quintenary" : "white"}
-        href="/"
-        variant="text"
-      >
-        <Typography noWrap variant="h5">
-          home
-        </Typography>
-      </Button>
-      {NAV_ITEMS.map(({ name, path }) => {
-        if (
-          name === "admin tools" &&
-          (!getCurrentUser() || getCurrentUser().role !== "ADMIN")
-        ) {
-          return null;
-        }
+    <div
+      style={{
+        height: "55px",
+        borderBottom: "1px solid #735290",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
+      {NAV_ITEMS.map(({ name, path }, index) => {
         return (
-          <>
-            <Typography variant="h4" noWrap>
-              {"|"}
-            </Typography>
+          <Box
+            key={name}
+            justifyContent="center"
+            borderRight={
+              index !== NAV_ITEMS.length - 1 ? "1px solid #735290" : ""
+            }
+          >
             <Button
               color={
                 pathName.includes(path.substring(1, path.length))
@@ -55,12 +63,13 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
               }
               href={path}
               variant="text"
+              sx={{ marginLeft: "10px", marginRight: "10px" }}
             >
               <Typography variant="h5" noWrap>
                 {name}
               </Typography>
             </Button>
-          </>
+          </Box>
         );
       })}
 
@@ -88,6 +97,6 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
         </Typography>
         <img src={coinGif} style={{ marginLeft: 5, height: 40, width: 40 }} />
       </div>
-    </Toolbar>
+    </div>
   );
 }

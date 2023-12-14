@@ -60,7 +60,7 @@ export default function RollResultsMessage({ rollResults }) {
           textAlign="center"
         >
           {"duplicate, received:  "}
-          {rollResults["addedCoins"]}
+          {rollResults["addedCoins"].toLocaleString()}
           <img
             style={{ marginLeft: "5px" }}
             src={coin}

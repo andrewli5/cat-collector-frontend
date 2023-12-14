@@ -21,10 +21,16 @@ import RollResultsMessage from "./RollResultsMessage";
 
 const IMAGE_SIZE = "40vh";
 
-export default function Roll({ coins, setCoins, setCoinDiff, music }) {
+export default function Roll({
+  coins,
+  setCoins,
+  setCoinDiff,
+  setCoinsPerClick,
+  music,
+}) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100
+    getCurrentUser() ? getCurrentUser().rollCost : 100,
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -34,7 +40,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
   const [showOdds, setShowOdds] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var results = null;
@@ -74,7 +80,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK")
+        u.includes("LUCK"),
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds =
@@ -93,10 +99,9 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier
+            getCurrentUser().coinsPerClick * multiplier,
           ),
         };
-         storeCurrentUser({ ...getCurrentUser(), coinsPerClick: results.newCoinsPerClick});
       }
     } catch (error) {
       if (error.response) {
@@ -147,18 +152,25 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
       setDisplayResults(true);
       setCoinDiff(results["addedCoins"]);
       setCoins(coins - rollCost + results["addedCoins"], true);
-      client.storeCurrentUser({
-        ...getCurrentUser(),
-        coins: coins - rollCost + results["addedCoins"],
-      });
+
       if (!results["duplicate"]) {
         updateRollCost(results["rollCost"]);
+        setCoinsPerClick(results["newCoinsPerClick"]);
+        client.storeCurrentUser({
+          ...getCurrentUser(),
+          coins: coins - rollCost + results["addedCoins"],
+          coinsPerClick: results["newCoinsPerClick"],
+        });
         if (["E", "L", "M"].includes(results["rarity"])) {
           playAudio(superItemGet, 0.25, 0.4);
         } else {
           playAudio(itemGet, 0.25, 0.4);
         }
       } else {
+        client.storeCurrentUser({
+          ...getCurrentUser(),
+          coins: coins - rollCost + results["addedCoins"],
+        });
         playAudio(duplicateGet);
       }
     }, 2000);
@@ -170,24 +182,12 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
 
   return (
     <>
-      <Box
-        component="div"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h3">roll for cats!</Typography>
-      </Box>
-      <Box
-        component="div"
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h5">
-          Discover new cats & receive coins for rolling owned cats
+      <Box display="flex" flexDirection="column">
+        <Typography variant="h3" textAlign="center" marginTop={2}>
+          roll for cats
+        </Typography>
+        <Typography variant="h5" textAlign="center">
+          discover new cats and boost your income
         </Typography>
       </Box>
       <NotificationSnackbar

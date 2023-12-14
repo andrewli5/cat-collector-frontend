@@ -72,9 +72,16 @@ export default function Shop({ setCoins }) {
 
   return (
     <>
-      <Typography variant="h3" textAlign="center" marginBottom={3}>
-        shop
-      </Typography>
+      <Box bgcolor="primary.main" sx={{ marginBottom: 5 }}>
+        <Typography
+          variant="h3"
+          color={"white"}
+          textAlign="center"
+          sx={{ width: "100vw", overflowX: "hidden" }}
+        >
+          shop
+        </Typography>
+      </Box>
       <Box display="flex" justifyContent="center">
         <Grid
           className="shopContainer"

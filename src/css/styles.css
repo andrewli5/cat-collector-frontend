@@ -45,14 +45,22 @@
 }
 
 .quirkyButton {
-  width: 180px;
-  transition: all 0.2s ease;
   -webkit-user-drag: none;
+  box-shadow: 0px 0px 70px rgba(128, 128, 128, 1);
+  border: "0px solid rgba(255, 255, 255, 0.9)";
 }
 
 .quirkyButton:active {
+  transition: all 0.2s ease;
   transform: scale(0.9);
   box-shadow: #363457 0px 0px 20px 7px;
+}
+
+.quirkyButton:hover {
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+  border: 5px solid rgba(207, 207, 207, 0.9);
+  box-shadow: 0px 0px 30px 10px rgba(255, 255, 255, 0.9);
 }
 
 .flash-slide {
@@ -74,16 +82,16 @@
 .flash-slide::before {
   content: "";
   position: absolute;
-  top: -30px;
-  left: -120px;
-  height: 300px;
+  top: -70px;
+  left: -350px;
+  height: 1500px;
   width: 70px;
   background: rgba(255, 255, 255, 0.3);
   transform: rotate(20deg);
 }
 
 .flash-slide:hover::before {
-  left: 190px;
+  left: 400px;
   transition: all 0.5s ease 0s;
 }
 
