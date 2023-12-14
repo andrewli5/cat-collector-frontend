@@ -16,7 +16,7 @@ export default function NotificationSnackbar({
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
     >
       <Alert
-        icon={icon || null}
+        icon={icon === false || null}
         sx={{ fontSize: 22, alignItems: "center" }}
         severity={severity}
       >

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, Grid, TextField, Button } from "@mui/material";
-import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { Typography, Box, Button } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 import { getUserByUsername } from "../client";
 import { APP_NAME } from "../constants";
-import MyCats from "../mycats/MyCats";
 
 export default function OtherProfile() {
   const [firstName, setFirstName] = useState("");
