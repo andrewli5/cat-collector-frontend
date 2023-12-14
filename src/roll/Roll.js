@@ -96,7 +96,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
             getCurrentUser().coinsPerClick * multiplier
           ),
         };
-        console.log(results);
+         storeCurrentUser({ ...getCurrentUser(), coinsPerClick: results.newCoinsPerClick});
       }
     } catch (error) {
       if (error.response) {
