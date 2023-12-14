@@ -140,24 +140,24 @@ export default function Clicker({
         sx={{ marginTop: 3 }}
         textAlign="center"
       >
-        current coin rate:
-        <Typography
-          variant="h4"
-          color="lightgreen"
-          fontWeight="bold"
-          alignItems={"center"}
-          justifyContent={"center"}
-          display={"flex"}
-        >
-          <img
-            src={coinGif}
-            width={27}
-            height={27}
-            alt="coin"
-            style={{ marginRight: 3 }}
-          />
-          {coinsPerClick.toLocaleString()} per click
-        </Typography>
+        current market rate:
+      </Typography>
+      <Typography
+        variant="h4"
+        color="lightgreen"
+        fontWeight="bold"
+        alignItems={"center"}
+        justifyContent={"center"}
+        display={"flex"}
+      >
+        <img
+          src={coinGif}
+          width={27}
+          height={27}
+          alt="coin"
+          style={{ marginRight: 3 }}
+        />
+        {coinsPerClick.toLocaleString()} per click
       </Typography>
       <Button
         variant="contained"
