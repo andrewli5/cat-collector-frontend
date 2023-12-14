@@ -16,6 +16,7 @@ import "../css/styles.css";
 import { useState } from "react";
 import InfoIcon from "@mui/icons-material/Info";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import catWelcomeIcon from "../assets/cat_welcome_icon.png";
 
 export default function Info({ music }) {
   const [expanded, setExpanded] = useState("panel0");
@@ -49,11 +50,19 @@ export default function Info({ music }) {
   return (
     <Box display="flex" justifyContent="center" flexDirection="column">
       <Grow in={true} style={{ transformOrigin: "0 0 0" }}>
-        <Typography variant="h1" textAlign={"left"} marginLeft="3vh">
+        <Typography variant="h1" textAlign={"center"} marginLeft="3vh">
           welcome to cat collector!
         </Typography>
       </Grow>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          flexDirection: "column",
+        }}
+      >
         <Grow in={true} timeout={800} style={{ transformOrigin: "0 0 0" }}>
           <Tooltip title="meow" placement="right">
             <Box
@@ -85,6 +94,12 @@ export default function Info({ music }) {
                 id="panel0d-header"
               >
                 <Typography variant="h4">welcome!</Typography>
+                <img
+                  style={{ paddingTop: "5px", paddingLeft: "2px" }}
+                  src={catWelcomeIcon}
+                  width={30}
+                  height={35}
+                />
               </AccordionSummary>
               <AccordionDetails>
                 <Typography variant="h5">
@@ -173,34 +188,40 @@ export default function Info({ music }) {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            marginBottom: "6vh",
             marginLeft: 15,
           }}
         >
-          <Grow in={true} timeout={1800} style={{ transformOrigin: "0 0 0" }}>
+          <Grow
+            in={true}
+            timeout={1800}
+            style={{ marginTop: "1vh", transformOrigin: "0 0 0" }}
+          >
             <Typography variant="h5">play now!</Typography>
           </Grow>
           {getCurrentUser() && (
-          <Grow
-            in={getCurrentUser()}
-            timeout={1800}
-            style={{ transformOrigin: "0 0 0" }}
-          >
-            <Button
-              variant="contained"
-              size="small"
-              color="white"
-              className="flash-slide"
-              href="/play"
-              sx={{
-                marginTop: 2,
-                maxWidth: "250px",
-                maxHeight: "50px",
-                borderRadius: "40px",
-              }}
+            <Grow
+              in={getCurrentUser()}
+              timeout={1800}
+              style={{ transformOrigin: "0 0 0" }}
             >
-              <Typography variant="h5">play!</Typography>
-            </Button>
-          </Grow>)}
+              <Button
+                variant="contained"
+                size="small"
+                color="white"
+                className="flash-slide"
+                href="/play"
+                sx={{
+                  marginTop: 2,
+                  maxWidth: "250px",
+                  maxHeight: "50px",
+                  borderRadius: "40px",
+                }}
+              >
+                <Typography variant="h5">play!</Typography>
+              </Button>
+            </Grow>
+          )}
           <Grow
             in={!getCurrentUser()}
             timeout={1800}
