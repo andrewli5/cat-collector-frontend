@@ -125,33 +125,48 @@ export default function Clicker({
       <Typography variant="h5" color="white">
         get more money
       </Typography>
-      <Button
-        variant="contained"
-        color="tertiary"
-        onClick={handleCoinClick}
-        className="quirkyButton quirkyButtonShadow flash-slide"
+
+      <Box
+        component="div"
         sx={{
-          marginTop: 13,
-          width: 250,
-          height: 250,
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
-          borderRadius: "140px",
+          marginTop: "5px",
         }}
-        disableRipple
       >
-        <img
-          style={{ WebkitUserDrag: "none" }}
-          src={coinGif}
-          width={150}
-          height={150}
-          alt="coin"
-        />
-        <Typography variant="h4" color="white" textAlign="center">
-          {coinsPerClick.toLocaleString()}
-        </Typography>
-      </Button>
+        <Button
+          variant="contained"
+          color="tertiary"
+          onClick={handleCoinClick}
+          className="quirkyButton quirkyButtonShadow flash-slide"
+          sx={{
+            marginTop: "5px",
+            margin: "3vh",
+            width: "40vh",
+            height: "40vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            borderRadius: "140px",
+            transition: "all 0.3s ease",
+          }}
+          disableRipple
+        >
+          <Box
+            component="img"
+            sx={{ WebkitUserDrag: "none" }}
+            src={coinGif}
+            width={"30vh"}
+            height={"30vh"}
+            alt="coin"
+          />
+          <Typography variant="h4" color="white" textAlign="center">
+            {coinsPerClick.toLocaleString()}
+          </Typography>
+        </Button>
+      </Box>
+
       <Grow in={saving && coinDiff >= 0}>
         <Typography
           variant="h4"
@@ -175,11 +190,12 @@ export default function Clicker({
         </Typography>
       </Grow>
       <Tooltip title="click me for a surprise!" placement="right">
-        <img
+        <Box
+          component="img"
           src={catGif}
           onClick={playSoundEffect}
-          width={"100px"}
-          height={"100px"}
+          width={"8vh"}
+          height={"8vh"}
         />
       </Tooltip>
     </div>

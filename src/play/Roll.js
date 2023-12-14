@@ -30,7 +30,7 @@ export default function Roll({
 }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -40,7 +40,7 @@ export default function Roll({
   const [showOdds, setShowOdds] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
@@ -80,7 +80,7 @@ export default function Roll({
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK"),
+        u.includes("LUCK")
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds =
@@ -99,7 +99,7 @@ export default function Roll({
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier,
+            getCurrentUser().coinsPerClick * multiplier
           ),
         };
       }
@@ -223,7 +223,7 @@ export default function Roll({
           sx={{
             height: IMAGE_SIZE,
             width: IMAGE_SIZE,
-            margin: "40px",
+            margin: "3vh",
             boxShadow: `0px 0px 90px ${
               isRolling || rollResults["breed"] === undefined
                 ? "rgba(128, 128, 128, 1)"
