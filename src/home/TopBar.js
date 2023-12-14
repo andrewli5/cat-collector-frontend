@@ -155,7 +155,7 @@ export default function TopBar({ music, setMusic }) {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button href="/signup" color="secondary" variant="contained">
+                  <Button href="/signup" color="tertiary" variant="contained">
                     sign up
                   </Button>
                 </Grid>
@@ -164,7 +164,7 @@ export default function TopBar({ music, setMusic }) {
               <>
                 {" "}
                 <Grid item>
-                  <Button href="/myprofile" color="primary" variant="contained">
+                  <Button href="/myprofile" color="white" variant="outlined">
                     {"hi, " + getCurrentUser().firstName + "!"}
                   </Button>
                 </Grid>
