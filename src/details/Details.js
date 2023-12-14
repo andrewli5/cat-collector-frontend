@@ -23,7 +23,8 @@ import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import JumpingCat from "../assets/gifs/jumping_cat.gif";
 
-const IMAGE_SIZE = 400;
+const IMAGE_HEIGHT = 400;
+const IMAGE_WIDTH = IMAGE_HEIGHT * 1.2;
 
 export default function Details() {
   const [breedData, setBreedData] = useState("");
@@ -242,8 +243,8 @@ export default function Details() {
           {imageUrls.length === 0 ? (
             <Box
               sx={{
-                width: IMAGE_SIZE,
-                height: IMAGE_SIZE,
+                width: IMAGE_WIDTH,
+                height: IMAGE_HEIGHT,
                 textAlign: "center",
                 alignItems: "center",
                 justifyContent: "center",
@@ -259,8 +260,8 @@ export default function Details() {
           ) : (
             <img
               src={imageUrls[imageIdx]}
-              width={IMAGE_SIZE * 1.2}
-              height={IMAGE_SIZE}
+              width={IMAGE_WIDTH}
+              height={IMAGE_HEIGHT}
               style={{
                 objectFit: "cover",
                 objectPosition: "center",
@@ -271,7 +272,7 @@ export default function Details() {
             />
           )}
           <Grid
-            width={IMAGE_SIZE}
+            width={IMAGE_HEIGHT * 1.2}
             justifyContent={"center"}
             container
             spacing={1}
