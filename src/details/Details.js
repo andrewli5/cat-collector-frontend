@@ -265,8 +265,9 @@ export default function Details() {
               style={{
                 objectFit: "cover",
                 objectPosition: "center",
-                borderRadius: "10px",
-                border: `2px solid ${RARITY_TO_TEXT_COLOR[rarity]}`,
+                borderRadius: "15px",
+                boxShadow: `0px 0px 50px ${RARITY_TO_TEXT_COLOR[rarity]}`,
+                border: `5px solid ${RARITY_TO_TEXT_COLOR[rarity]}`,
               }}
               alt={`display`}
             />
