@@ -158,6 +158,7 @@ export default function Clicker({
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+
             borderRadius: "140px",
             transition: "all 0.3s ease",
           }}
@@ -165,7 +166,7 @@ export default function Clicker({
         >
           <Box
             component="img"
-            sx={{ WebkitUserDrag: "none" }}
+            sx={{ WebkitUserDrag: "none", marginTop: "5vh"}}
             src={coinGif}
             width={"30vh"}
             height={"30vh"}
