@@ -218,7 +218,9 @@ export default function Clicker({
           open={helpMsg}
           onClick={() => setHelpMsg(false)}
         >
-          help msg goes here
+          your income goes up as you get more cats!
+          <br></br>
+          higher rarity cats give you a higher income boost.
         </Backdrop>
       </Box>
       <Grow in={crit}>
