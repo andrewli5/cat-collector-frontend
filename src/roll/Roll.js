@@ -213,7 +213,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "20px",
+          marginTop: "5px",
         }}
       >
         <Box
