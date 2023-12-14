@@ -7,28 +7,24 @@ import { importAll } from "../utils/importAll";
 import { useState } from "react";
 import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";
-import {
-  BREEDID_TO_CATICON,
-  RARITY_TO_TEXT_COLOR,
-  RARITY_TO_STRING,
-} from "../constants";
+import { BREEDID_TO_CATICON, RARITY_TO_TEXT_COLOR } from "../constants";
 import _ from "lodash";
-import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
-import Coin from "../assets/coin_icon.png";
+import coin from "../assets/coin_icon.png";
 import itemGet from "../assets/sounds/item_get_boosted.mp3";
 import superItemGet from "../assets/sounds/super_item_get.mp3";
 import rollSound from "../assets/sounds/roll.mp3";
 import duplicateGet from "../assets/sounds/duplicate_get.mp3";
 import Backdrop from "@mui/material/Backdrop";
 import RollOdds from "./RollOdds";
+import RollResultsMessage from "./RollResultsMessage";
 
 const IMAGE_SIZE = "40vh";
 
 export default function Roll({ coins, setCoins, setCoinDiff, music }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100
+    getCurrentUser() ? getCurrentUser().rollCost : 100,
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -38,7 +34,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
   const [showOdds, setShowOdds] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   var results = null;
@@ -79,7 +75,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK")
+        u.includes("LUCK"),
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds = odds[highestUpgrade];
@@ -95,7 +91,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier
+            getCurrentUser().coinsPerClick * multiplier,
           ),
         };
       }
@@ -169,88 +165,6 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
     document.title = "roll | " + APP_NAME;
   }, []);
 
-  const getNewCatUnlockedTitle = () => {
-    const imgSize = 25;
-    return (
-      <>
-        <img
-          src={client.catGif}
-          width={imgSize}
-          height={imgSize}
-          style={{ marginRight: "5px" }}
-        />
-        new cat unlocked!
-        <img src={client.catGif} width={imgSize} height={imgSize} />
-      </>
-    );
-  };
-  function getRollResultsMessage() {
-    return (
-      <>
-        <Typography variant="h4" color={"white"} textAlign="center">
-          {rollResults["duplicate"] ? "you rolled:" : getNewCatUnlockedTitle()}
-        </Typography>
-        <Typography variant="h3" textAlign="center" color="white">
-          <Box alignItems={"center"} display={"flex"} justifyContent={"center"}>
-            {BREEDID_TO_CATICON[rollResults["breed"]]
-              .replace(".png", "")
-              .replace("_", " ")}
-          </Box>
-        </Typography>
-        <Typography
-          variant="h4"
-          display="flex"
-          justifyContent={"center"}
-          color={RARITY_TO_TEXT_COLOR[rollResults["rarity"]]}
-        >
-          {RARITY_TO_STRING[rollResults["rarity"]].toLowerCase()}
-          <Box>
-            {" "}
-            <StarRateRoundedIcon
-              fontSize="large"
-              sx={{ color: RARITY_TO_TEXT_COLOR[rollResults["rarity"]] }}
-            />
-          </Box>
-        </Typography>
-        {rollResults["duplicate"] ? (
-          <Box
-            alignItems={"center"}
-            display={"flex"}
-            justifyContent="center"
-            textAlign="center"
-          >
-            {"duplicate, received:  "}
-            {rollResults["addedCoins"]}
-            <img
-              style={{ marginLeft: "5px" }}
-              src={Coin}
-              width={20}
-              height={20}
-            />
-          </Box>
-        ) : (
-          <Box alignItems="center" display="flex" textAlign="center">
-            coins per click: {rollResults["oldCoinsPerClick"]}
-            <img
-              style={{ marginLeft: "2px", marginRight: "5px" }}
-              src={Coin}
-              width={20}
-              height={20}
-            />
-            ⇒ {rollResults["newCoinsPerClick"]}
-            <img
-              style={{ marginRight: "5px" }}
-              src={Coin}
-              width={20}
-              height={20}
-            />
-            {"  (+" + ((rollResults["multiplier"] - 1) * 100).toFixed(0) + "%)"}
-          </Box>
-        )}
-      </>
-    );
-  }
-
   return (
     <>
       <Box
@@ -285,7 +199,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
           icon={false}
           open={displayResults}
           setOpen={setDisplayResults}
-          message={getRollResultsMessage()}
+          message={<RollResultsMessage rollResults={rollResults} />}
         />
       ) : (
         <></>
@@ -357,7 +271,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, music }) {
               </Typography>
               <img
                 style={{ marginLeft: "5px" }}
-                src={Coin}
+                src={coin}
                 width={20}
                 height={20}
               />
