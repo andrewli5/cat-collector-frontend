@@ -101,7 +101,11 @@ export default function MyCats({
     const currentBreedId = CATICON_TO_BREEDID[catIcon];
     var c = cats;
     if (view) {
-      c = getCurrentUser().cats;
+      if (!getCurrentUser()) {
+        c = [];
+      } else {
+        c = getCurrentUser().cats;
+      }
     }
     return rarity === "M" && !c.includes(currentBreedId)
       ? "/details/???"
@@ -218,8 +222,10 @@ export default function MyCats({
       navigate("/signin");
     } else if (getCurrentUser() && !view) {
       setCats(getCurrentUser().cats);
-    } else if (getCurrentUser() && favorites) {
-      setIsEmptyFavorites(getCurrentUser().favorites.length === 0);
+    }
+    if (getCurrentUser() && favorites) {
+      const favorites = getCurrentUser().favorites;
+      setIsEmptyFavorites(favorites.length === 0);
     } else if (view) {
       getUserCats();
     }

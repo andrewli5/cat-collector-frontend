@@ -48,7 +48,7 @@ export default function TopBar({ music, setMusic }) {
   };
 
   return (
-    <Box bgcolor="primary.main" sx={{ marginTop: "5px" }}>
+    <Box bgcolor="primary.main">
       <Toolbar>
         <img
           src={Logo}
@@ -126,58 +126,61 @@ export default function TopBar({ music, setMusic }) {
             </Button>
           </div>
         </Dialog>
-        {getCurrentUser() ? (
-          <Box>
-            <Grid container spacing={1}>
-              <Grid item>
-                <IconButton sx={{ rightPadding: "0", marginRight: "5px" }}>
-                  {music ? (
-                    <MusicOn
-                      onClick={() => {
-                        setMusic(false);
-                        localStorage.setItem("music", false);
-                      }}
-                    />
-                  ) : (
-                    <MusicOff
-                      onClick={() => {
-                        setMusic(true);
-                        localStorage.setItem("music", true);
-                      }}
-                    />
-                  )}
-                </IconButton>
-                <Button href="/myprofile" color="primary" variant="contained">
-                  {"hi, " + getCurrentUser().firstName + "!"}
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="tertiary"
-                  onClick={() => setIsLogoutDialogOpen(true)}
-                >
-                  log out
-                </Button>
-              </Grid>
+        <Box>
+          <Grid container spacing={1}>
+            <Grid item>
+              <IconButton sx={{ rightPadding: "0", marginRight: "5px" }}>
+                {music ? (
+                  <MusicOn
+                    onClick={() => {
+                      setMusic(false);
+                      localStorage.setItem("music", false);
+                    }}
+                  />
+                ) : (
+                  <MusicOff
+                    onClick={() => {
+                      setMusic(true);
+                      localStorage.setItem("music", true);
+                    }}
+                  />
+                )}
+              </IconButton>
             </Grid>
-          </Box>
-        ) : (
-          <Box>
-            <Grid container spacing={1}>
-              <Grid item>
-                <Button href="/signin" color="white">
-                  sign in
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button href="/signup" variant="contained">
-                  sign up
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
-        )}
+            {!getCurrentUser() ? (
+              <>
+                <Grid item>
+                  <Button href="/signin" color="white" variant="outlined">
+                    sign in
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button href="/signup" color="secondary" variant="contained">
+                    sign up
+                  </Button>
+                </Grid>
+              </>
+            ) : (
+              <>
+                {" "}
+                <Grid item>
+                  <Button href="/myprofile" color="primary" variant="contained">
+                    {"hi, " + getCurrentUser().firstName + "!"}
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="tertiary"
+                    onClick={() => setIsLogoutDialogOpen(true)}
+                  >
+                    log out
+                  </Button>
+                </Grid>
+              </>
+            )}
+          </Grid>
+        </Box>
       </Toolbar>
     </Box>
   );
