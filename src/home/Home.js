@@ -19,6 +19,7 @@ import UnknownMythicCatDetails from "../details/UnknownMythicCatDetails";
 import Footer from "./Footer";
 import NotFound from "./NotFound";
 import Play from "../play/Play";
+import Info from "./Info";
 
 export default function Home() {
   const [warning, setWarning] = useState(false);
@@ -64,7 +65,8 @@ export default function Home() {
         <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
       </Box>
       <Routes>
-        <Route path="/" element={<Navigate to="/play" />} />
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<Info music={music} />} />
         <Route
           path="/play"
           element={

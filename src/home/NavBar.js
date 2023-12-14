@@ -6,6 +6,7 @@ import { useSpring, animated } from "react-spring";
 import { useLayoutEffect } from "react";
 
 const NAV_ITEMS = [
+  { name: "home", path: "/home" },
   { name: "play", path: "/play" },
   { name: "my cats", path: "/mycats" },
   { name: "shop", path: "/shop" },

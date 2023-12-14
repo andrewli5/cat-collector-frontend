@@ -8,14 +8,12 @@ import {
 } from "@mui/material";
 import { APP_NAME } from "../constants";
 import { useEffect, useState } from "react";
-import * as meows from "../assets/meows";
 import minecraftButton from "../assets/sounds/minecraft_button.mp3";
 import critSound from "../assets/sounds/crit_sound.mp3";
 import coinGif from "../assets/coin_spin.gif";
 import coin from "../assets/coin_icon.png";
 
 import {
-  catGif,
   getCurrentUser,
   storeCurrentUser,
   updateUserCoinsByUserId,
@@ -40,17 +38,6 @@ export default function Clicker({
   const [crit, setCrit] = useState(false);
   const [helpMsg, setHelpMsg] = useState(false);
 
-  const meowFiles = [
-    meows.meow,
-    meows.meow1,
-    meows.meow2,
-    meows.meow3,
-    meows.meow4,
-    meows.meow5,
-    meows.meow6,
-    meows.meow7,
-  ];
-
   useEffect(() => {
     if (effectCount < 2) {
       setEffectCount(effectCount + 1);
@@ -71,15 +58,6 @@ export default function Clicker({
     }, 500);
     setSaveTimeoutId(newTimeoutId);
   }, [coins]);
-
-  const playSoundEffect = () => {
-    if (!music) {
-      return;
-    }
-    const randomIndex = Math.floor(Math.random() * meowFiles.length);
-    const audio = new Audio(meowFiles[randomIndex]);
-    audio.play();
-  };
 
   var critRate = BASE_CRIT_RATE;
   if (getCurrentUser()) {
@@ -166,7 +144,7 @@ export default function Clicker({
         >
           <Box
             component="img"
-            sx={{ WebkitUserDrag: "none", marginTop: "5vh"}}
+            sx={{ WebkitUserDrag: "none" }}
             src={coinGif}
             width={"30vh"}
             height={"30vh"}
@@ -176,8 +154,10 @@ export default function Clicker({
             <Typography
               variant="h4"
               alignItems="center"
+              position="absolute"
               color={coinDiff >= 0 ? "lightgreen" : "error"}
               marginTop={1}
+              backgroundColor="black"
             >
               {coinDiff >= 0 ? "+" : "-"}
               {Math.abs(coinDiff).toLocaleString()}
@@ -252,15 +232,6 @@ export default function Clicker({
           CRIT! x28.5
         </Typography>
       </Grow>
-      <Tooltip title="click me for a surprise!" placement="right">
-        <Box
-          component="img"
-          src={catGif}
-          onClick={playSoundEffect}
-          width={"8vh"}
-          height={"8vh"}
-        />
-      </Tooltip>
     </div>
   );
 }

@@ -16,7 +16,7 @@ import superItemGet from "../assets/sounds/super_item_get.mp3";
 import rollSound from "../assets/sounds/roll.mp3";
 import duplicateGet from "../assets/sounds/duplicate_get.mp3";
 import Backdrop from "@mui/material/Backdrop";
-import RollOdds from "./RollOdds";
+import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
 
 const IMAGE_SIZE = "40vh";
