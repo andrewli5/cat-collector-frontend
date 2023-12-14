@@ -16,7 +16,7 @@ import _ from "lodash";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Coin from "../assets/coin_icon.png";
-import itemGet from "../assets/sounds/item_get.mp3";
+import itemGet from "../assets/sounds/item_get_boosted.mp3";
 import superItemGet from "../assets/sounds/super_item_get.mp3";
 import rollSound from "../assets/sounds/roll.mp3";
 import duplicateGet from "../assets/sounds/duplicate_get.mp3";
@@ -25,10 +25,10 @@ import RollOdds from "./RollOdds";
 
 const IMAGE_SIZE = "40vh";
 
-export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
+export default function Roll({ coins, setCoins, setCoinDiff, music }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -38,7 +38,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [showOdds, setShowOdds] = useState(false);
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
@@ -49,6 +49,15 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
 
   const handleHideOdds = () => {
     setShowOdds(false);
+  };
+
+  const playAudio = (audioFile, volume, currentTime) => {
+    if (music) {
+      const audio = new Audio(audioFile);
+      audio.currentTime = currentTime || 0;
+      audio.volume = volume || 1.0;
+      audio.play();
+    }
   };
 
   const handleRoll = async () => {
@@ -63,18 +72,14 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
       return;
     }
     try {
-      if (sound) {
-        const audio = new Audio(rollSound);
-        audio.volume = 0.4;
-        audio.play();
-      }
+      playAudio(rollSound, 0.6);
       results = await client.rollCatForUser(getCurrentUser()._id);
       const multipliers = await client.getMultipliers();
       const odds = await client.getOdds();
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK"),
+        u.includes("LUCK")
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds = odds[highestUpgrade];
@@ -90,7 +95,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier,
+            getCurrentUser().coinsPerClick * multiplier
           ),
         };
       }
@@ -149,22 +154,13 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
       });
       if (!results["duplicate"]) {
         updateRollCost(results["rollCost"]);
-        if (sound) {
-          if (["E", "L", "M"].includes(results["rarity"])) {
-            const audio = new Audio(superItemGet);
-            audio.currentTime = 0.4;
-            audio.volume = 0.25;
-            audio.play();
-          } else {
-            const audio = new Audio(itemGet);
-            audio.currentTime = 0.4;
-            audio.play();
-          }
+        if (["E", "L", "M"].includes(results["rarity"])) {
+          playAudio(superItemGet, 0.25, 0.4);
+        } else {
+          playAudio(itemGet, 0.25, 0.4);
         }
       } else {
-        if (sound) {
-          new Audio(duplicateGet).play();
-        }
+        playAudio(duplicateGet);
       }
     }, 2000);
   };
