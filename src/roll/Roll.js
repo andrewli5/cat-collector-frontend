@@ -26,7 +26,7 @@ const IMAGE_SIZE = "40vh";
 export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
   const [rollResults, setRollResults] = useState({});
@@ -35,7 +35,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
@@ -63,7 +63,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK"),
+        u.includes("LUCK")
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds = odds[highestUpgrade];
@@ -79,7 +79,7 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier,
+            getCurrentUser().coinsPerClick * multiplier
           ),
         };
       }
@@ -325,7 +325,6 @@ export default function Roll({ coins, setCoins, setCoinDiff, sound }) {
           alignItems: "center",
           marginLeft: "auto",
           marginRight: "auto",
-          marginTop: "20px",
         }}
         onClick={handleRoll}
       >
