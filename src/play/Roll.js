@@ -18,8 +18,39 @@ import duplicateGet from "../assets/sounds/duplicate_get.mp3";
 import Backdrop from "@mui/material/Backdrop";
 import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
+import { styled } from "@mui/material/styles";
 
 const IMAGE_SIZE = "40vh";
+
+const useStyles = styled((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    sx: {
+      marginTop: "5px",
+      margin: "3vh",
+      width: "40vh",
+      height: "40vh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      borderRadius: "140px",
+      transition: "all 0.3s ease",
+    },
+    [theme.breakpoints.down("sm")]: {
+      minWidth: 32,
+      paddingLeft: 8,
+      paddingRight: 8,
+      "& .MuiButton-startIcon": {
+        margin: 0,
+      },
+    },
+  },
+  buttonText: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+}));
 
 export default function Roll({
   coins,
@@ -38,6 +69,8 @@ export default function Roll({
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showOdds, setShowOdds] = useState(false);
+
+  const classes = useStyles();
 
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
@@ -181,7 +214,15 @@ export default function Roll({
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        textAlign: "center",
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {" "}
       <Box display="flex" flexDirection="column">
         <Typography variant="h3" textAlign="center" marginTop={2}>
           roll for cats
@@ -217,7 +258,9 @@ export default function Roll({
         }}
       >
         <Button
-          className="quirkyButton quirkyButtonShadow flash-slide"
+          className={
+            ("quirkyButton quirkyButtonShadow flash-slide", classes.button)
+          }
           onClick={handleRoll}
           disabled={
             isRolling ||
@@ -226,17 +269,7 @@ export default function Roll({
               ? true
               : false
           }
-          sx={{
-            marginTop: "5px",
-            margin: "3vh",
-            width: "40vh",
-            height: "40vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            borderRadius: "140px",
-            transition: "all 0.3s ease",
-          }}
+          sx={{}}
           disableRipple
         >
           <Box
@@ -330,6 +363,6 @@ export default function Roll({
           <RollOdds />
         </Backdrop>
       </Box>
-    </>
+    </div>
   );
 }
