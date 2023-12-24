@@ -7,11 +7,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <Box bgcolor="primary.main">
-        <Typography
-          variant="h6"
-          color="white"
-          textAlign="right"
-        >
+        <Typography variant="h6" color="white" textAlign="right">
           © 2023 {APP_NAME}.
         </Typography>
       </Box>

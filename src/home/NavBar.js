@@ -23,7 +23,7 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
     to: { animatedCoins: coins },
   });
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString()
+    Math.round(val).toLocaleString(),
   );
 
   useLayoutEffect(() => {
@@ -56,22 +56,22 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
               index !== NAV_ITEMS.length - 1 ? "1px solid #735290" : ""
             }
           >
-              <Link
-                typography="h5"
-                style={{
-                  textDecoration: "none",
-                  padding: "0 20px",
-                }}
-                noWrap
-                color={
-                  pathName.includes(path.substring(1, path.length))
-                    ? "quintenary.main"
-                    : "white.main"
-                }
-                href={path}
-              >
-                {name}
-              </Link>
+            <Link
+              typography="h5"
+              style={{
+                textDecoration: "none",
+                padding: "0 20px",
+              }}
+              noWrap
+              color={
+                pathName.includes(path.substring(1, path.length))
+                  ? "quintenary.main"
+                  : "white.main"
+              }
+              href={path}
+            >
+              {name}
+            </Link>
           </Box>
         );
       })}

@@ -1,33 +1,13 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Fade,
-  Grid,
-  Grow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Fade, Grid, Typography } from "@mui/material";
 import { catGif, getCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
 import { useEffect } from "react";
 import * as meows from "../assets/meows";
 import "../css/styles.css";
-import { useState } from "react";
-import InfoIcon from "@mui/icons-material/Info";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import catWelcomeIcon from "../assets/cat_welcome_icon.png";
 
 export default function Info({ music }) {
-  const [expanded, setExpanded] = useState("panel0");
-
   const getAnimationDelay = (index) => {
     return { transitionDelay: index * 100 };
-  };
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
   };
   const meowFiles = [
     meows.meow,
@@ -73,9 +53,11 @@ export default function Info({ music }) {
           </Fade>
         </Grid>
         <Grid item xs={9}>
-          <Typography variant="h5" color="grey" textAlign="left">
-            {"<-- click me!"}
-          </Typography>
+          <Fade style={getAnimationDelay(0)} in timeout={1000}>
+            <Typography variant="h5" color="grey" textAlign="left">
+              {"<-- click me!"}
+            </Typography>
+          </Fade>
         </Grid>
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(1)} in timeout={1000}>
