@@ -40,8 +40,8 @@ export default function Info({ music }) {
       alignItems="center"
       marginTop={5}
     >
-      <Grid container maxWidth="800px" alignItems="center">
-        <Grid item xs={3} alignItems="center">
+      <Grid container maxWidth="1000px" alignItems="center">
+        <Grid item xs={12}>
           <Fade style={getAnimationDelay(0)} in timeout={1000}>
             <Box
               component="img"
@@ -52,23 +52,16 @@ export default function Info({ music }) {
             />
           </Fade>
         </Grid>
-        <Grid item xs={9}>
-          <Fade style={getAnimationDelay(0)} in timeout={1000}>
-            <Typography variant="h5" color="grey" textAlign="left">
-              {"<-- click me!"}
-            </Typography>
-          </Fade>
-        </Grid>
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(1)} in timeout={1000}>
-            <Typography variant="h1" textAlign="left">
+            <Typography variant="super" textAlign="left">
               let's collect cats.
             </Typography>
           </Fade>
         </Grid>
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(2)} in timeout={1000}>
-            <Typography variant="body1" textAlign="left">
+            <Typography variant="h5" textAlign="left" color="grey">
               learn about cats. earn coins. roll for cats. collect them all.
             </Typography>
           </Fade>
