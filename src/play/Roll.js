@@ -21,8 +21,6 @@ import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
 import { styled } from "@mui/material/styles";
 
-const IMAGE_SIZE = "40vh";
-
 const useStyles = styled((theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -62,7 +60,7 @@ export default function Roll({
 }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(diceSpin);
   const [rollResults, setRollResults] = useState({});
@@ -74,7 +72,11 @@ export default function Roll({
   const classes = useStyles();
 
   const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+  );
+
+  const mythicCatIcons = importAll(
+    require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
   );
 
   var results = null;
@@ -114,7 +116,7 @@ export default function Roll({
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK"),
+        u.includes("LUCK")
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds =
@@ -133,7 +135,7 @@ export default function Roll({
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier,
+            getCurrentUser().coinsPerClick * multiplier
           ),
         };
       }
@@ -180,9 +182,10 @@ export default function Roll({
     }, 100);
 
     setTimeout(() => {
+      const allCatIcons = Object.assign(catIcons, mythicCatIcons);
       clearInterval(interval);
       setIsRolling(false);
-      setDisplayedIcon(catIcons[rolledCatIcon]);
+      setDisplayedIcon(allCatIcons[rolledCatIcon]);
       setDisplayResults(true);
       setCoinDiff(results["addedCoins"]);
       setCoins(coins - rollCost + results["addedCoins"], true);
@@ -302,8 +305,22 @@ export default function Roll({
             alt="cat-display"
             src={displayedIcon}
             sx={{
-              width: { xs: "15vh", sm: "30vh", md: "40vh" },
-              height: { xs: "15vh", sm: "30vh", md: "40vh" },
+              width:
+                displayedIcon === diceSpin
+                  ? {
+                      xs: "25vh",
+                      sm: "50vh",
+                      md: "80vh",
+                    }
+                  : { xs: "15vh", sm: "30vh", md: "40vh" },
+              height:
+                displayedIcon === diceSpin
+                  ? {
+                      xs: "25vh",
+                      sm: "50vh",
+                      md: "80vh",
+                    }
+                  : { xs: "15vh", sm: "30vh", md: "40vh" },
               WebkitUserDrag: "none",
               margin: "3vh",
             }}

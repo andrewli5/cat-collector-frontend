@@ -34,6 +34,7 @@ export default function RollResultsMessage({ rollResults }) {
         <Box alignItems={"center"} display={"flex"} justifyContent={"center"}>
           {BREEDID_TO_CATICON[rollResults["breed"]]
             .replace(".png", "")
+            .replace(".jpg", "")
             .replace("_", " ")}
         </Box>
       </Typography>
