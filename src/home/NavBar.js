@@ -23,7 +23,7 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
     to: { animatedCoins: coins },
   });
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString()
+    Math.round(val).toLocaleString(),
   );
 
   useLayoutEffect(() => {
