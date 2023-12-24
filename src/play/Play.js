@@ -23,7 +23,7 @@ export default function Play({
       alignItems={"center"}
       height="100%"
     >
-      <Grid container maxWidth="1100px" maxHeight="30vh">
+      <Grid display="flex" container maxWidth="1100px" maxHeight="30vh">
         <Grid item xs={6}>
           <Clicker
             coins={coins}

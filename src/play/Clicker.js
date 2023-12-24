@@ -129,10 +129,10 @@ export default function Clicker({
           onClick={handleCoinClick}
           className="quirkyButton quirkyButtonShadow flash-slide"
           sx={{
+            width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+            height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
             marginTop: "5px",
             margin: "3vh",
-            width: "40vh",
-            height: "40vh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -144,10 +144,12 @@ export default function Clicker({
         >
           <Box
             component="img"
-            sx={{ WebkitUserDrag: "none" }}
+            sx={{
+              width: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
+              height: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
+              WebkitUserDrag: "none",
+            }}
             src={coinGif}
-            width={"30vh"}
-            height={"30vh"}
             alt="coin"
           />
           <Grow in={saving && coinDiff >= 0}>

@@ -28,8 +28,8 @@ const useStyles = styled((theme) => ({
     sx: {
       marginTop: "5px",
       margin: "3vh",
-      width: "40vh",
-      height: "40vh",
+      width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+      height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -258,9 +258,7 @@ export default function Roll({
         }}
       >
         <Button
-          className={
-            ("quirkyButton quirkyButtonShadow flash-slide", classes.button)
-          }
+          className="quirkyButton quirkyButtonShadow flash-slide"
           onClick={handleRoll}
           disabled={
             isRolling ||
@@ -269,7 +267,17 @@ export default function Roll({
               ? true
               : false
           }
-          sx={{}}
+          sx={{
+            marginTop: "5px",
+            margin: "3vh",
+            width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+            height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            borderRadius: "140px",
+            transition: "all 0.3s ease",
+          }}
           disableRipple
         >
           <Box
@@ -277,15 +285,10 @@ export default function Roll({
             alt="cat-display"
             src={displayedIcon}
             sx={{
+              width: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
+              height: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
               WebkitUserDrag: "none",
-              height: IMAGE_SIZE,
-              width: IMAGE_SIZE,
               margin: "3vh",
-              boxShadow: `0px 0px 90px ${
-                isRolling || rollResults["breed"] === undefined
-                  ? "rgba(128, 128, 128, 1)"
-                  : RARITY_TO_TEXT_COLOR[rollResults["rarity"]]
-              }`,
             }}
           />
         </Button>
