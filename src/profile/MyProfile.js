@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField } from "@mui/material";
+import { Typography, Box, TextField, Button, Backdrop } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { getCurrentUser, storeCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import DefaultIcon from "../assets/cat_face_silhouette.png";
+import SelectProfilePhoto from "./SelectProfilePhoto";
 
 export default function MyProfile() {
   const [success, setSuccess] = useState(false);
@@ -15,8 +17,14 @@ export default function MyProfile() {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null); // TODO: [1] add profile picture
+  const [profilePictureMenu, setProfilePictureMenu] = useState(false);
   const navigate = useNavigate();
   const user = getCurrentUser();
+
+  const handleProfilePictureClick = () => {
+    setProfilePictureMenu(true);
+  };
 
   const handleSave = async () => {
     const updatedFields = { username, firstName, lastName };
@@ -88,6 +96,26 @@ export default function MyProfile() {
         marginTop={1}
         marginBottom={2}
       >
+        <Box component="div" marginBottom={2}>
+          <Button
+            onClick={handleProfilePictureClick}
+            sx={{
+              alignItems: "center",
+              borderRadius: "160px",
+              transition: "all 0.3s ease",
+              border: "2px solid rgba(255, 255, 255, 0.9)",
+            }}
+          >
+            <Box
+              component="img"
+              src={DefaultIcon}
+              sx={{
+                width: { xs: 100, sm: 150, md: 180, lg: 200 },
+                height: { xs: 100, sm: 150, md: 180, lg: 200 },
+              }}
+            ></Box>
+          </Button>
+        </Box>
         <TextField
           size="small"
           label="username"
@@ -121,6 +149,15 @@ export default function MyProfile() {
       >
         save changes
       </LoadingButton>
+      <Backdrop
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={profilePictureMenu}
+        onClick={() => setProfilePictureMenu(false)}
+      >
+        <SelectProfilePhoto />
+      </Backdrop>
     </Box>
   );
 }
