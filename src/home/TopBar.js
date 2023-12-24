@@ -49,7 +49,10 @@ export default function TopBar({ music, setMusic }) {
   };
 
   return (
-    <Box bgcolor="primary.main" sx={{ position: "sticky", top: 0, width: "100%" }}>
+    <Box
+      bgcolor="primary.main"
+      sx={{ position: "sticky", top: 0, width: "100%" }}
+    >
       <Toolbar>
         <img
           src={Logo}

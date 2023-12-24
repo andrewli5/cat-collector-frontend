@@ -23,10 +23,10 @@ export default function RollOdds() {
       const user = client.getCurrentUser();
       if (user) {
         const userData = await client.getUserDataByUserId(
-          client.getCurrentUser()._id
+          client.getCurrentUser()._id,
         );
         const luckUpgrades = userData["upgrades"].filter((u) =>
-          u.includes("LUCK")
+          u.includes("LUCK"),
         );
         const highestUpgrade = luckUpgrades.sort().reverse()[0];
         if (highestUpgrade) {

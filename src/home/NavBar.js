@@ -56,26 +56,25 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
               index !== NAV_ITEMS.length - 1 ? "1px solid #735290" : ""
             }
           >
-              <Link
-                typography="h5"
-                style={{
-                  textDecoration: "none",
-                  padding: "0 20px",
-                }}
-                noWrap
-                color={
-                  pathName.includes(path.substring(1, path.length))
-                    ? "quintenary.main"
-                    : "white.main"
-                }
-                href={path}
-              >
-                {name}
-              </Link>
+            <Link
+              typography="h5"
+              style={{
+                textDecoration: "none",
+                padding: "0 20px",
+              }}
+              noWrap
+              color={
+                pathName.includes(path.substring(1, path.length))
+                  ? "quintenary.main"
+                  : "white.main"
+              }
+              href={path}
+            >
+              {name}
+            </Link>
           </Box>
         );
       })}
-
       <div
         style={{
           marginLeft: "auto",
@@ -84,26 +83,33 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
           alignItems: "center",
         }}
       >
-        <Grow in={coinDiffVisible && coinDiff != 0}>
-          <Typography
-            variant="h5"
-            alignItems="center"
-            style={{ marginRight: 12 }}
-            color={coinDiff >= 0 ? "lightgreen" : "error"}
-          >
-            {coinDiff >= 0 ? "+" : "-"}
-            {Math.abs(coinDiff).toLocaleString()}
-          </Typography>
-        </Grow>
-        <Typography
-          variant="h4"
-          alignItems="center"
-          style={{ marginRight: 5 }}
-          noWrap
-        >
-          <animated.span>{formattedAnimatedCoins}</animated.span>
-        </Typography>
-        <img src={coinGif} style={{ marginLeft: 5, height: 40, width: 40 }} />
+        {getCurrentUser() && (
+          <>
+            <Grow in={coinDiffVisible && coinDiff != 0}>
+              <Typography
+                variant="h5"
+                alignItems="center"
+                style={{ marginRight: 12 }}
+                color={coinDiff >= 0 ? "lightgreen" : "error"}
+              >
+                {coinDiff >= 0 ? "+" : "-"}
+                {Math.abs(coinDiff).toLocaleString()}
+              </Typography>
+            </Grow>
+            <Typography
+              variant="h4"
+              alignItems="center"
+              style={{ marginRight: 5 }}
+              noWrap
+            >
+              <animated.span>{formattedAnimatedCoins}</animated.span>
+            </Typography>
+            <img
+              src={coinGif}
+              style={{ marginLeft: 5, height: 40, width: 40 }}
+            />
+          </>
+        )}
       </div>
     </div>
   );

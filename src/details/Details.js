@@ -77,7 +77,7 @@ export default function Details() {
         setFavorite(false);
         await client.removeUserFavorites(getCurrentUser()._id, breedId);
         const newFavorites = getCurrentUser().favorites.filter(
-          (e) => e !== breedId
+          (e) => e !== breedId,
         );
         const user = { ...getCurrentUser(), favorites: newFavorites };
         storeCurrentUser(user);
@@ -97,11 +97,11 @@ export default function Details() {
     var images = [];
     if (breedId === "rory") {
       images = importAll(
-        require.context("../assets/rory", false, /\.(png|jpe?g|svg)$/)
+        require.context("../assets/rory", false, /\.(png|jpe?g|svg)$/),
       );
     } else if (breedId === "mimi") {
       images = importAll(
-        require.context("../assets/mimi", false, /\.(png|jpe?g|svg)$/)
+        require.context("../assets/mimi", false, /\.(png|jpe?g|svg)$/),
       );
     }
     return images;
@@ -145,7 +145,7 @@ export default function Details() {
             headers: {
               "x-api-key": CAT_API_KEY,
             },
-          }
+          },
         );
         const data = await response.json();
         for (const datum of data) {
@@ -181,7 +181,11 @@ export default function Details() {
         navigate("/details/???");
       }
       icons = importAll(
-        require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
+        require.context(
+          "../assets/mythicCatIcons",
+          false,
+          /\.(png|jpe?g|svg)$/,
+        ),
       );
       const images = getMythicCatImages();
       const currentBreed = getMythicCatData();
@@ -189,7 +193,7 @@ export default function Details() {
       setBreedData(currentBreed);
     } else {
       icons = importAll(
-        require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+        require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
       );
 
       getImageURLS();

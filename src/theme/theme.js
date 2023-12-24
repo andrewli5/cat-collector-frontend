@@ -45,6 +45,10 @@ export const THEME = createTheme({
       fontSize: "1.3rem",
       textTransform: "none",
     },
+    super: {
+      fontSize: "7.2rem",
+      lineHeight: "1",
+    },
     h1: {
       fontSize: "5rem",
     },
