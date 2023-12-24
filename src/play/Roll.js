@@ -11,6 +11,7 @@ import { BREEDID_TO_CATICON, RARITY_TO_TEXT_COLOR } from "../constants";
 import _ from "lodash";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import coin from "../assets/coin_icon.png";
+import diceSpin from "../assets/dice_spin.gif";
 import itemGet from "../assets/sounds/item_get_boosted.mp3";
 import superItemGet from "../assets/sounds/super_item_get.mp3";
 import rollSound from "../assets/sounds/roll.mp3";
@@ -63,7 +64,7 @@ export default function Roll({
   const [rollCost, setRollCost] = useState(
     getCurrentUser() ? getCurrentUser().rollCost : 100
   );
-  const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
+  const [displayedIcon, setDisplayedIcon] = useState(diceSpin);
   const [rollResults, setRollResults] = useState({});
   const [displayResults, setDisplayResults] = useState(false);
   const [error, setError] = useState(false);
@@ -224,10 +225,26 @@ export default function Roll({
     >
       {" "}
       <Box display="flex" flexDirection="column">
-        <Typography variant="h3" textAlign="center" marginTop={2}>
+        <Typography
+          variant="h3"
+          sx={{
+            fontSize: { xs: "1.5rem", sm: "3rem", lg: "4rem" },
+            textAlign: "center",
+            marginTop: 2,
+            maxWidth: "80vw",
+            padding: "0 22px",
+          }}
+        >
           roll for cats
         </Typography>
-        <Typography variant="h5" textAlign="center">
+        <Typography
+          variant="h5"
+          textAlign="center"
+          textOverflow="clip"
+          sx={{
+            display: { xs: "none", md: "block" },
+          }}
+        >
           discover new cats and boost your income
         </Typography>
       </Box>
@@ -270,8 +287,8 @@ export default function Roll({
           sx={{
             marginTop: "5px",
             margin: "3vh",
-            width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
-            height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+            width: { xs: "15vh", sm: "30vh", md: "40vh" },
+            height: { xs: "15vh", sm: "30vh", md: "40vh" },
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -285,8 +302,8 @@ export default function Roll({
             alt="cat-display"
             src={displayedIcon}
             sx={{
-              width: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
-              height: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
+              width: { xs: "15vh", sm: "30vh", md: "40vh" },
+              height: { xs: "15vh", sm: "30vh", md: "40vh" },
               WebkitUserDrag: "none",
               margin: "3vh",
             }}
@@ -317,26 +334,44 @@ export default function Roll({
           }}
           onClick={handleRoll}
         >
-          <img
+          <Box
+            component="img"
+            alt="dice"
             src={Dice}
             width={30}
             height={30}
-            style={{ marginRight: "10px" }}
+            sx={{
+              marginRight: "10px",
+              display: { xs: "none", sm: "block" },
+            }}
           />
           {isRolling ? (
-            "Rolling..."
+            <Typography variant="h5">...</Typography>
           ) : (
             <>
-              roll |
-              <Typography variant="h5" marginLeft={1}>
+              <Typography
+                variant="h5"
+                marginRight={1}
+                className={classes.buttonText}
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                roll |
+              </Typography>
+
+              <Typography variant="h5">
+                {"-"}
                 {rollCost.toLocaleString()}
               </Typography>
-              <img
-                style={{ marginLeft: "5px" }}
+              <Box
+                component="img"
+                alt="coin"
                 src={coin}
-                width={20}
-                height={20}
-              />
+                sx={{
+                  width: 20,
+                  height: 20,
+                  marginLeft: "5px",
+                }}
+              ></Box>
             </>
           )}
         </Button>

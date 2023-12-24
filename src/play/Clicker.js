@@ -107,10 +107,21 @@ export default function Clicker({
         flexDirection: "column",
       }}
     >
-      <Typography variant="h3" textAlign="center" marginTop={2}>
+      <Typography
+        variant="h3"
+        textAlign="center"
+        marginTop={2}
+        fontSize={{ xs: "1.5rem", sm: "3rem", lg: "4rem" }}
+      >
         click for coins
       </Typography>
-      <Typography variant="h5" color="white">
+      <Typography
+        variant="h5"
+        color="white"
+        sx={{
+          display: { xs: "none", md: "block" },
+        }}
+      >
         get more money
       </Typography>
 
@@ -164,6 +175,7 @@ export default function Clicker({
               paddingLeft={2}
               paddingRight={2}
               borderRadius="30px"
+              sx={{ fontSize: { xs: "1rem", sm: "2rem", lg: "3rem" } }}
             >
               {coinDiff >= 0 ? "+" : "-"}
               {Math.abs(coinDiff).toLocaleString()}
@@ -191,15 +203,24 @@ export default function Clicker({
         >
           {" "}
           <Typography variant="h5" color="white" textAlign="center">
+            {"+"}
             {coinsPerClick.toLocaleString()}
           </Typography>
           <img
-            style={{ marginLeft: "5px", marginRight: "5px" }}
+            style={{ marginLeft: "5px" }}
             src={coin}
             width={20}
             height={20}
           />{" "}
-          per click
+          <Typography
+            sx={{
+              paddingLeft: "5px",
+              display: { xs: "none", sm: "block" },
+            }}
+          >
+            {" "}
+            per click
+          </Typography>
         </Button>
         <Button
           onClick={() => setHelpMsg(true)}
