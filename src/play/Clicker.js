@@ -213,6 +213,7 @@ export default function Clicker({
             height={20}
           />{" "}
           <Typography
+            variant="h5"
             sx={{
               paddingLeft: "5px",
               display: { xs: "none", sm: "block" },
