@@ -16,8 +16,14 @@ export default function Play({
 }) {
   return (
     <Box display="flex" justifyContent="center" height="100%">
-      <Grid container maxWidth="1100px" height="100%">
-        <Grid item xs={6} height="39vw">
+      <Grid
+        container
+        maxWidth="1100px"
+        height="100%"
+        display="flex"
+        flexDirection="row"
+      >
+        <Grid item xs={6} maxHeight="39vw">
           <Clicker
             coins={coins}
             coinsPerClick={coinsPerClick}
@@ -30,7 +36,7 @@ export default function Play({
             music={music}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} maxHeight="39vw">
           <Roll
             coins={coins}
             setCoinDiff={setCoinDiff}

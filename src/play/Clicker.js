@@ -107,10 +107,21 @@ export default function Clicker({
         flexDirection: "column",
       }}
     >
-      <Typography variant="h3" textAlign="center" marginTop={2}>
+      <Typography
+        variant="h3"
+        textAlign="center"
+        marginTop={2}
+        fontSize={{ xs: "1.5rem", sm: "3rem", lg: "4rem" }}
+      >
         click for coins
       </Typography>
-      <Typography variant="h5" color="white">
+      <Typography
+        variant="h5"
+        color="white"
+        sx={{
+          display: { xs: "none", md: "block" },
+        }}
+      >
         get more money
       </Typography>
 
@@ -129,10 +140,10 @@ export default function Clicker({
           onClick={handleCoinClick}
           className="quirkyButton quirkyButtonShadow flash-slide"
           sx={{
+            width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+            height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
             marginTop: "5px",
             margin: "3vh",
-            width: "40vh",
-            height: "40vh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -144,10 +155,12 @@ export default function Clicker({
         >
           <Box
             component="img"
-            sx={{ WebkitUserDrag: "none" }}
+            sx={{
+              width: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
+              height: { xs: "10vh", sm: "18vh", md: "25vh", lg: "30vh" },
+              WebkitUserDrag: "none",
+            }}
             src={coinGif}
-            width={"30vh"}
-            height={"30vh"}
             alt="coin"
           />
           <Grow in={saving && coinDiff >= 0}>
@@ -162,6 +175,7 @@ export default function Clicker({
               paddingLeft={2}
               paddingRight={2}
               borderRadius="30px"
+              sx={{ fontSize: { xs: "1rem", sm: "2rem", lg: "3rem" } }}
             >
               {coinDiff >= 0 ? "+" : "-"}
               {Math.abs(coinDiff).toLocaleString()}
@@ -189,15 +203,24 @@ export default function Clicker({
         >
           {" "}
           <Typography variant="h5" color="white" textAlign="center">
+            {"+"}
             {coinsPerClick.toLocaleString()}
           </Typography>
           <img
-            style={{ marginLeft: "5px", marginRight: "5px" }}
+            style={{ marginLeft: "5px" }}
             src={coin}
             width={20}
             height={20}
           />{" "}
-          per click
+          <Typography
+            sx={{
+              paddingLeft: "5px",
+              display: { xs: "none", sm: "block" },
+            }}
+          >
+            {" "}
+            per click
+          </Typography>
         </Button>
         <Button
           onClick={() => setHelpMsg(true)}

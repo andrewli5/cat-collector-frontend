@@ -11,6 +11,7 @@ import { BREEDID_TO_CATICON, RARITY_TO_TEXT_COLOR } from "../constants";
 import _ from "lodash";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import coin from "../assets/coin_icon.png";
+import diceSpin from "../assets/dice_spin.gif";
 import itemGet from "../assets/sounds/item_get_boosted.mp3";
 import superItemGet from "../assets/sounds/super_item_get.mp3";
 import rollSound from "../assets/sounds/roll.mp3";
@@ -18,8 +19,39 @@ import duplicateGet from "../assets/sounds/duplicate_get.mp3";
 import Backdrop from "@mui/material/Backdrop";
 import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
+import { styled } from "@mui/material/styles";
 
 const IMAGE_SIZE = "40vh";
+
+const useStyles = styled((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    sx: {
+      marginTop: "5px",
+      margin: "3vh",
+      width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+      height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      borderRadius: "140px",
+      transition: "all 0.3s ease",
+    },
+    [theme.breakpoints.down("sm")]: {
+      minWidth: 32,
+      paddingLeft: 8,
+      paddingRight: 8,
+      "& .MuiButton-startIcon": {
+        margin: 0,
+      },
+    },
+  },
+  buttonText: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+}));
 
 export default function Roll({
   coins,
@@ -32,12 +64,14 @@ export default function Roll({
   const [rollCost, setRollCost] = useState(
     getCurrentUser() ? getCurrentUser().rollCost : 100,
   );
-  const [displayedIcon, setDisplayedIcon] = useState(CatSilhouette);
+  const [displayedIcon, setDisplayedIcon] = useState(diceSpin);
   const [rollResults, setRollResults] = useState({});
   const [displayResults, setDisplayResults] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showOdds, setShowOdds] = useState(false);
+
+  const classes = useStyles();
 
   const catIcons = importAll(
     require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
@@ -181,12 +215,36 @@ export default function Roll({
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        textAlign: "center",
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {" "}
       <Box display="flex" flexDirection="column">
-        <Typography variant="h3" textAlign="center" marginTop={2}>
+        <Typography
+          variant="h3"
+          sx={{
+            fontSize: { xs: "1.5rem", sm: "3rem", lg: "4rem" },
+            textAlign: "center",
+            marginTop: 2,
+            maxWidth: "80vw",
+            padding: "0 22px",
+          }}
+        >
           roll for cats
         </Typography>
-        <Typography variant="h5" textAlign="center">
+        <Typography
+          variant="h5"
+          textAlign="center"
+          textOverflow="clip"
+          sx={{
+            display: { xs: "none", md: "block" },
+          }}
+        >
           discover new cats and boost your income
         </Typography>
       </Box>
@@ -229,8 +287,8 @@ export default function Roll({
           sx={{
             marginTop: "5px",
             margin: "3vh",
-            width: "40vh",
-            height: "40vh",
+            width: { xs: "15vh", sm: "30vh", md: "40vh" },
+            height: { xs: "15vh", sm: "30vh", md: "40vh" },
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -244,15 +302,10 @@ export default function Roll({
             alt="cat-display"
             src={displayedIcon}
             sx={{
+              width: { xs: "15vh", sm: "30vh", md: "40vh" },
+              height: { xs: "15vh", sm: "30vh", md: "40vh" },
               WebkitUserDrag: "none",
-              height: IMAGE_SIZE,
-              width: IMAGE_SIZE,
               margin: "3vh",
-              boxShadow: `0px 0px 90px ${
-                isRolling || rollResults["breed"] === undefined
-                  ? "rgba(128, 128, 128, 1)"
-                  : RARITY_TO_TEXT_COLOR[rollResults["rarity"]]
-              }`,
             }}
           />
         </Button>
@@ -281,26 +334,40 @@ export default function Roll({
           }}
           onClick={handleRoll}
         >
-          <img
+          <Box
+            component="img"
+            alt="dice"
             src={Dice}
             width={30}
             height={30}
-            style={{ marginRight: "10px" }}
+            sx={{
+              marginRight: "10px",
+              display: { xs: "none", sm: "block" },
+            }}
           />
           {isRolling ? (
-            "Rolling..."
+            <Typography variant="h5">...</Typography>
           ) : (
             <>
-              roll |
-              <Typography variant="h5" marginLeft={1}>
-                {rollCost.toLocaleString()}
+              <Typography
+                variant="h5"
+                marginRight={1}
+                className={classes.buttonText}
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                roll |
               </Typography>
-              <img
-                style={{ marginLeft: "5px" }}
+              <Typography variant="h5">{rollCost.toLocaleString()}</Typography>
+              <Box
+                component="img"
+                alt="coin"
                 src={coin}
-                width={20}
-                height={20}
-              />
+                sx={{
+                  width: 20,
+                  height: 20,
+                  marginLeft: "5px",
+                }}
+              ></Box>
             </>
           )}
         </Button>
@@ -330,6 +397,6 @@ export default function Roll({
           <RollOdds />
         </Backdrop>
       </Box>
-    </>
+    </div>
   );
 }
