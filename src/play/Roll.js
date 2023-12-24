@@ -357,9 +357,7 @@ export default function Roll({
               >
                 roll |
               </Typography>
-
               <Typography variant="h5">
-                {"-"}
                 {rollCost.toLocaleString()}
               </Typography>
               <Box
