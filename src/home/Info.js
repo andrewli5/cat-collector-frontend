@@ -1,14 +1,19 @@
-import { Box, Button, Fade, Grid, Typography } from "@mui/material";
+import { Box, Button, Fade, Grid, Typography, useMediaQuery } from "@mui/material";
 import { catGif, getCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
 import { useEffect } from "react";
 import * as meows from "../assets/meows";
 import "../css/styles.css";
+import { useTheme } from "@emotion/react";
 
 export default function Info({ music }) {
   const getAnimationDelay = (index) => {
     return { transitionDelay: index * 100 };
   };
+  
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.up('md'));
+
   const meowFiles = [
     meows.meow,
     meows.meow1,
@@ -40,7 +45,7 @@ export default function Info({ music }) {
       alignItems="center"
       marginTop={5}
     >
-      <Grid container maxWidth="1000px" alignItems="center">
+      <Grid container maxWidth="1000px" alignItems="center" marginLeft={3}>
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(0)} in timeout={1000}>
             <Box
@@ -54,14 +59,14 @@ export default function Info({ music }) {
         </Grid>
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(1)} in timeout={1000}>
-            <Typography variant="super" textAlign="left">
+            <Typography variant={isMdScreen ? "super" : "h1"} textAlign="left">
               let's collect cats.
             </Typography>
           </Fade>
         </Grid>
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(2)} in timeout={1000}>
-            <Typography variant="h5" textAlign="left" color="grey">
+            <Typography variant={isMdScreen ? "h5" : "body1"} textAlign="left" color="grey">
               learn about cats. earn coins. roll for cats. collect them all.
             </Typography>
           </Fade>
