@@ -15,16 +15,9 @@ export default function Play({
   setWarning,
 }) {
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      justifyContent="center"
-      alignContent={"center"}
-      alignItems={"center"}
-      height="100%"
-    >
-      <Grid display="flex" container maxWidth="1100px" maxHeight="30vh">
-        <Grid item xs={6}>
+    <Box display="flex" justifyContent="center" height="100%">
+      <Grid container maxWidth="1100px" height="100%">
+        <Grid item xs={6} height="39vw">
           <Clicker
             coins={coins}
             coinsPerClick={coinsPerClick}
