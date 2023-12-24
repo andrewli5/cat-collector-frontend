@@ -1,4 +1,4 @@
-import { Button, Typography, Grow, Box } from "@mui/material";
+import { Typography, Grow, Box, Link } from "@mui/material";
 import { getCurrentUser } from "../client";
 import coinGif from "../assets/coin_spin.gif";
 import { useLocation } from "react-router-dom";
@@ -23,7 +23,7 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
     to: { animatedCoins: coins },
   });
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString(),
+    Math.round(val).toLocaleString()
   );
 
   useLayoutEffect(() => {
@@ -56,20 +56,22 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
               index !== NAV_ITEMS.length - 1 ? "1px solid #735290" : ""
             }
           >
-            <Button
-              color={
-                pathName.includes(path.substring(1, path.length))
-                  ? "quintenary"
-                  : "white"
-              }
-              href={path}
-              variant="text"
-              sx={{ marginLeft: "10px", marginRight: "10px" }}
-            >
-              <Typography variant="h5" noWrap>
+              <Link
+                typography="h5"
+                style={{
+                  textDecoration: "none",
+                  padding: "0 20px",
+                }}
+                noWrap
+                color={
+                  pathName.includes(path.substring(1, path.length))
+                    ? "quintenary.main"
+                    : "white.main"
+                }
+                href={path}
+              >
                 {name}
-              </Typography>
-            </Button>
+              </Link>
           </Box>
         );
       })}
@@ -93,7 +95,12 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
             {Math.abs(coinDiff).toLocaleString()}
           </Typography>
         </Grow>
-        <Typography variant="h4" alignItems="center" style={{ marginRight: 5 }}>
+        <Typography
+          variant="h4"
+          alignItems="center"
+          style={{ marginRight: 5 }}
+          noWrap
+        >
           <animated.span>{formattedAnimatedCoins}</animated.span>
         </Typography>
         <img src={coinGif} style={{ marginLeft: 5, height: 40, width: 40 }} />

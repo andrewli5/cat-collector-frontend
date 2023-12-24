@@ -48,11 +48,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Container
-      component="main"
-      style={{ paddingLeft: 0, paddingRight: 0 }}
-      sx={{ minWidth: "100vw" }}
-    >
+    <>
       <NotificationSnackbar
         open={warning}
         setOpen={setWarning}
@@ -61,7 +57,7 @@ export default function Home() {
         autoHideDuration={3000}
       />
       <TopBar music={music} setMusic={setMusic} />
-      <Box display="flex" justifyContent="center" width="100vw">
+      <Box display="flex" justifyContent="center" width="100%">
         <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
       </Box>
       <Routes>
@@ -100,6 +96,6 @@ export default function Home() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-    </Container>
+    </>
   );
 }

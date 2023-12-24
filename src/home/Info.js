@@ -4,6 +4,8 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Fade,
+  Grid,
   Grow,
   Tooltip,
   Typography,
@@ -21,6 +23,9 @@ import catWelcomeIcon from "../assets/cat_welcome_icon.png";
 export default function Info({ music }) {
   const [expanded, setExpanded] = useState("panel0");
 
+  const getAnimationDelay = (index) => {
+    return { transitionDelay: index * 100 };
+  };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -48,223 +53,105 @@ export default function Info({ music }) {
     document.title = "home | " + APP_NAME;
   }, []);
   return (
-    <Box display="flex" justifyContent="center" flexDirection="column">
-      <Grow in={true} style={{ transformOrigin: "0 0 0" }}>
-        <Typography variant="h1" textAlign={"center"} marginLeft="3vh">
-          welcome to cat collector!
-        </Typography>
-      </Grow>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          flexDirection: "column",
-        }}
-      >
-        <Grow in={true} timeout={800} style={{ transformOrigin: "0 0 0" }}>
-          <Tooltip title="meow" placement="right">
+    <Box
+      component="div"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      marginTop={5}
+    >
+      <Grid container maxWidth="800px" alignItems="center">
+        <Grid item xs={3} alignItems="center">
+          <Fade style={getAnimationDelay(0)} in timeout={1000}>
             <Box
               component="img"
               src={catGif}
               onClick={playSoundEffect}
               width={"20vh"}
               height={"20vh"}
-              marginLeft={"3vh"}
             />
-          </Tooltip>
-        </Grow>
-        <Grow in={true} timeout={1400}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              maxWidth: "600px",
-              marginLeft: 15,
-            }}
-          >
-            <Accordion
-              expanded={expanded === "panel0"}
-              onChange={handleChange("panel0")}
-            >
-              <AccordionSummary
-                expandIcon={<KeyboardArrowDownIcon />}
-                aria-controls="panel0d-content"
-                id="panel0d-header"
-              >
-                <Typography variant="h4">welcome!</Typography>
-                <img
-                  style={{ paddingTop: "5px", paddingLeft: "2px" }}
-                  src={catWelcomeIcon}
-                  width={30}
-                  height={35}
-                />
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="h5">
-                  cat collector is a game about collecting cats.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel1"}
-              onChange={handleChange("panel1")}
-            >
-              <AccordionSummary
-                expandIcon={<KeyboardArrowDownIcon />}
-                aria-controls="panel1d-content"
-                id="panel1d-header"
-              >
-                <Typography variant="h4">earn coins</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="h5">
-                  click the coin button to get coins based on your current
-                  income!
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel2"}
-              onChange={handleChange("panel2")}
-            >
-              <AccordionSummary
-                expandIcon={<KeyboardArrowDownIcon />}
-                aria-controls="panel2d-content"
-                id="panel2d-header"
-              >
-                <Typography variant="h4">
-                  roll for cats and collect them all
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="h5">
-                  every new cat boosts your income! rarer cats give you a higher
-                  income boost. each new cat you get increases your roll cost by
-                  30%.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleChange("panel3")}
-            >
-              <AccordionSummary
-                expandIcon={<KeyboardArrowDownIcon />}
-                aria-controls="panel3d-content"
-                id="panel3d-header"
-              >
-                <Typography variant="h4">learn about cats</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="h5">
-                  use the search bar to search cat breeds and learn more about
-                  cats!
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel4"}
-              onChange={handleChange("panel4")}
-            >
-              <AccordionSummary
-                expandIcon={<KeyboardArrowDownIcon />}
-                aria-controls="panel4d-content"
-                id="panel4d-header"
-              >
-                <Typography variant="h4">get exciting upgrades</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="h5">
-                  buy upgrades to increase your luck, critical rate, and more!
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </Grow>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginBottom: "6vh",
-            marginLeft: 15,
-          }}
-        >
-          <Grow
-            in={true}
-            timeout={1800}
-            style={{ marginTop: "1vh", transformOrigin: "0 0 0" }}
-          >
-            <Typography variant="h5">play now!</Typography>
-          </Grow>
+          </Fade>
+        </Grid>
+        <Grid item xs={9}>
+          <Typography variant="h5" color="grey" textAlign="left">
+            {"<-- click me!"}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Fade style={getAnimationDelay(1)} in timeout={1000}>
+            <Typography variant="h1" textAlign="left">
+              let's collect cats.
+            </Typography>
+          </Fade>
+        </Grid>
+        <Grid item xs={12}>
+          <Fade style={getAnimationDelay(2)} in timeout={1000}>
+            <Typography variant="body1" textAlign="left">
+              learn about cats. earn coins. roll for cats. collect them all.
+            </Typography>
+          </Fade>
+        </Grid>
+        <Grid item xs={2} marginTop={3}>
           {getCurrentUser() && (
-            <Grow
-              in={getCurrentUser()}
-              timeout={1800}
-              style={{ transformOrigin: "0 0 0" }}
+            <Fade
+              style={getAnimationDelay(3)}
+              in={getCurrentUser() !== null}
+              timeout={1000}
             >
               <Button
                 variant="contained"
-                size="small"
                 color="white"
                 className="flash-slide"
                 href="/play"
                 sx={{
-                  marginTop: 2,
-                  maxWidth: "250px",
-                  maxHeight: "50px",
-                  borderRadius: "40px",
+                  borderRadius: "30px",
                 }}
               >
-                <Typography variant="h5">play!</Typography>
+                <Typography variant="h4">play now!</Typography>
               </Button>
-            </Grow>
+            </Fade>
           )}
-          <Grow
-            in={!getCurrentUser()}
-            timeout={1800}
-            style={{ transformOrigin: "0 0 0" }}
+          <div
+            style={{ display: "flex", flexDirection: "row", width: "500px" }}
           >
-            <Button
-              variant="outlined"
-              size="small"
-              className="flash-slide"
-              color="white"
-              href="/signin"
-              sx={{
-                marginTop: 2,
-                maxWidth: "250px",
-                maxHeight: "50px",
-                borderRadius: "40px",
-              }}
+            <Fade
+              in={!getCurrentUser()}
+              timeout={1800}
+              style={getAnimationDelay(3)}
             >
-              <Typography variant="h5"> sign in</Typography>
-            </Button>
-          </Grow>
-          <Grow
-            in={!getCurrentUser()}
-            timeout={1800}
-            style={{ transformOrigin: "0 0 0" }}
-          >
-            <Button
-              variant="contained"
-              size="small"
-              className="flash-slide"
-              href="/signin"
-              sx={{
-                marginTop: 2,
-                maxWidth: "250px",
-                maxHeight: "50px",
-                borderRadius: "40px",
-              }}
+              <Button
+                variant="outlined"
+                size="small"
+                className="flash-slide"
+                color="white"
+                href="/signin"
+                sx={{
+                  borderRadius: "30px",
+                }}
+              >
+                <Typography variant="h4"> sign in</Typography>
+              </Button>
+            </Fade>
+            <Fade
+              in={!getCurrentUser()}
+              timeout={1800}
+              style={getAnimationDelay(3)}
             >
-              <Typography variant="h5"> sign up</Typography>
-            </Button>
-          </Grow>
-        </div>
-      </div>
+              <Button
+                variant="contained"
+                className="flash-slide"
+                href="/signin"
+                sx={{
+                  marginLeft: 2,
+                  borderRadius: "30px",
+                }}
+              >
+                <Typography variant="h4"> sign up</Typography>
+              </Button>
+            </Fade>
+          </div>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
