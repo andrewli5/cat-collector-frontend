@@ -23,7 +23,7 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
     to: { animatedCoins: coins },
   });
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString(),
+    Math.round(val).toLocaleString()
   );
 
   useLayoutEffect(() => {
@@ -75,7 +75,6 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
           </Box>
         );
       })}
-
       <div
         style={{
           marginLeft: "auto",
@@ -84,26 +83,33 @@ export default function NavBar({ coins, coinDiff, coinDiffVisible }) {
           alignItems: "center",
         }}
       >
-        <Grow in={coinDiffVisible && coinDiff != 0}>
-          <Typography
-            variant="h5"
-            alignItems="center"
-            style={{ marginRight: 12 }}
-            color={coinDiff >= 0 ? "lightgreen" : "error"}
-          >
-            {coinDiff >= 0 ? "+" : "-"}
-            {Math.abs(coinDiff).toLocaleString()}
-          </Typography>
-        </Grow>
-        <Typography
-          variant="h4"
-          alignItems="center"
-          style={{ marginRight: 5 }}
-          noWrap
-        >
-          <animated.span>{formattedAnimatedCoins}</animated.span>
-        </Typography>
-        <img src={coinGif} style={{ marginLeft: 5, height: 40, width: 40 }} />
+        {getCurrentUser() && (
+          <>
+            <Grow in={coinDiffVisible && coinDiff != 0}>
+              <Typography
+                variant="h5"
+                alignItems="center"
+                style={{ marginRight: 12 }}
+                color={coinDiff >= 0 ? "lightgreen" : "error"}
+              >
+                {coinDiff >= 0 ? "+" : "-"}
+                {Math.abs(coinDiff).toLocaleString()}
+              </Typography>
+            </Grow>
+            <Typography
+              variant="h4"
+              alignItems="center"
+              style={{ marginRight: 5 }}
+              noWrap
+            >
+              <animated.span>{formattedAnimatedCoins}</animated.span>
+            </Typography>
+            <img
+              src={coinGif}
+              style={{ marginLeft: 5, height: 40, width: 40 }}
+            />
+          </>
+        )}
       </div>
     </div>
   );
