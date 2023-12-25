@@ -7,6 +7,9 @@ import {
   InputAdornment,
   Dialog,
   DialogTitle,
+  useMediaQuery,
+  SwipeableDrawer,
+  TextField,
 } from "@mui/material";
 import { APP_NAME } from "../constants";
 import { clearBrowserStorage, getCurrentUser } from "../client";
@@ -17,13 +20,14 @@ import Link from "@mui/material/Link";
 import { useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
 import Logo from "../assets/main_icon.png";
-import ExpandingTextField from "../reusable/ExpandingTextField";
-import MusicOn from "@mui/icons-material/MusicNote";
-import MusicOff from "@mui/icons-material/MusicOff";
 import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
+import PersonIcon from "@mui/icons-material/Person";
+import { useTheme } from "@emotion/react";
 
-export default function TopBar({ music, setMusic }) {
+export default function TopBar() {
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const [drawer, setDrawer] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -48,32 +52,73 @@ export default function TopBar({ music, setMusic }) {
     }
   };
 
-  return (
-    <Box
-      bgcolor="primary.main"
-      sx={{ position: "sticky", top: 0, width: "100%" }}
-    >
-      <Toolbar>
-        <img
-          src={Logo}
-          alt="logo"
+  const LogoutDialog = () => {
+    return (
+      <Dialog
+        onClose={() => setIsLogoutDialogOpen(false)}
+        open={isLogoutDialogOpen}
+        aria-labelledby="alert-dialog-title"
+      >
+        <DialogTitle id="alert-dialog-title" variant="h3">
+          {"Log out?"}
+        </DialogTitle>
+        <Box textAlign={"center"}>
+          <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
+        </Box>
+        <div
           style={{
-            width: 40,
-            height: 40,
-            marginRight: "10px",
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 10,
           }}
-        />
-        <Typography variant="h3" noWrap>
-          <Link style={{ color: "white", textDecoration: "none" }} href="/">
-            {APP_NAME + "."}
-          </Link>
-        </Typography>
+        >
+          <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
+            <Typography variant="h4" textAlign="center">
+              No
+            </Typography>
+          </Button>
+          <Button color="error" onClick={handleLogout}>
+            <Typography variant="h4" textAlign="center">
+              Yes
+            </Typography>
+          </Button>
+        </div>
+      </Dialog>
+    );
+  };
+
+  return (
+    <Box bgcolor="primary.main" sx={{ width: "100%", alignItems: "center" }}>
+      <Toolbar>
+        <a href="/">
+          <img
+            src={Logo}
+            alt="logo"
+            style={{
+              width: 40,
+              height: 40,
+              marginRight: 10,
+              marginBottom: -6,
+            }}
+          />
+        </a>
+        {isMdScreen && (
+          <Typography variant="h3" noWrap>
+            <Link
+              noWrap
+              style={{ color: "white", textDecoration: "none" }}
+              href="/"
+              marginRight={3}
+            >
+              {APP_NAME + "."}
+            </Link>
+          </Typography>
+        )}
         <Box
           sx={{
-            marginLeft: 5,
-            flexGrow: 1,
             height: 80,
-            display: { xs: "none", md: "flex", alignItems: "center" },
+            alignItems: "center",
+            display: "flex",
           }}
         >
           <Box
@@ -81,9 +126,8 @@ export default function TopBar({ music, setMusic }) {
             action="search"
             onSubmit={handleSearch}
             noValidate
-            sx={{ width: "100%" }}
           >
-            <ExpandingTextField
+            <TextField
               size="small"
               id="search"
               label="search cats..."
@@ -100,90 +144,83 @@ export default function TopBar({ music, setMusic }) {
             />
           </Box>
         </Box>
-        <Dialog
-          onClose={() => setIsLogoutDialogOpen(false)}
-          open={isLogoutDialogOpen}
-          aria-labelledby="alert-dialog-title"
-        >
-          <DialogTitle id="alert-dialog-title" variant="h3">
-            {"Log out?"}
-          </DialogTitle>
-          <Box textAlign={"center"}>
-            <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
-          </Box>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: 10,
-            }}
-          >
-            <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
-              <Typography variant="h4" textAlign="center">
-                No
-              </Typography>
-            </Button>
-            <Button color="error" onClick={handleLogout}>
-              <Typography variant="h4" textAlign="center">
-                Yes
-              </Typography>
-            </Button>
-          </div>
-        </Dialog>
-        <Box>
-          <Grid container spacing={1}>
-            <Grid item>
-              <IconButton
-                onClick={() => {
-                  setMusic(!music);
-                  localStorage.setItem("music", !music);
-                }}
-              >
-                <Avatar
-                  color="white"
-                  sx={{
-                    border: "1px solid white",
-                    bgcolor: "primary.main",
-                  }}
-                >
-                  {music ? (
-                    <MusicOn color="white" />
-                  ) : (
-                    <MusicOff color="white" />
-                  )}
-                </Avatar>
-              </IconButton>
-            </Grid>
+        <LogoutDialog />
+        <Box marginLeft="auto">
+          <Grid container alignItems="center" wrap="nowrap">
             {!getCurrentUser() ? (
               <>
                 <Grid item>
-                  <Button href="/signin" color="white" variant="outlined">
+                  <Button href="/signin" color="white" sx={{ minWidth: 95 }}>
                     sign in
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button href="/signup" color="tertiary" variant="contained">
+                  <Button
+                    href="/signup"
+                    color="tertiary"
+                    variant="contained"
+                    sx={{ minWidth: 95 }}
+                  >
                     sign up
                   </Button>
                 </Grid>
               </>
             ) : (
               <>
-                {" "}
                 <Grid item>
-                  <Button href="/myprofile" color="white" variant="outlined">
-                    {"hi, " + getCurrentUser().firstName + "!"}
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    color="tertiary"
-                    onClick={() => setIsLogoutDialogOpen(true)}
+                  <IconButton
+                    onClick={() => setDrawer(true)}
+                    color="white"
+                    sx={{
+                      bgcolor: "tertiary.main",
+                      "&:hover": {
+                        bgcolor: "tertiary.main",
+                      },
+                      marginLeft: 1,
+                    }}
                   >
-                    log out
-                  </Button>
+                    <PersonIcon />
+                  </IconButton>
                 </Grid>
+                <SwipeableDrawer
+                  anchor="right"
+                  open={drawer}
+                  onClose={() => setDrawer(false)}
+                  onOpen={() => setDrawer(true)}
+                >
+                  <Box
+                    sx={{
+                      width: 250,
+                      height: "100%",
+                      bgcolor: "primary.main",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      padding: 2,
+                    }}
+                  >
+                    <Typography variant="h5" color="white">
+                      logged in as: {getCurrentUser().username}
+                    </Typography>
+                    <Button
+                      href="/myprofile"
+                      variant="outlined"
+                      color="white"
+                      fullWidth
+                      onClick={() => setIsLogoutDialogOpen(true)}
+                      sx={{ marginTop: 2 }}
+                    >
+                      my profile
+                    </Button>
+                    <Button
+                      color="white"
+                      onClick={() => setIsLogoutDialogOpen(true)}
+                      sx={{ marginTop: 2 }}
+                    >
+                      log out
+                    </Button>
+                  </Box>
+                </SwipeableDrawer>
               </>
             )}
           </Grid>
