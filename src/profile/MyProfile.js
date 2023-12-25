@@ -154,9 +154,9 @@ export default function MyProfile() {
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
         open={profilePictureMenu}
-        onClick={() => setProfilePictureMenu(false)}
+        // onClick={() => setProfilePictureMenu(false)}
       >
-        <SelectProfilePhoto />
+        <SelectProfilePhoto setProfilePictureMenu={setProfilePictureMenu} icon={1}/>
       </Backdrop>
     </Box>
   );
