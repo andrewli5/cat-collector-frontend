@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import TopBar from "./TopBar";
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -56,9 +56,15 @@ export default function Home() {
         message="please sign in to do that!"
         autoHideDuration={3000}
       />
-      <TopBar music={music} setMusic={setMusic} />
+      <TopBar />
       <Box display="flex" justifyContent="center" width="100%">
-        <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} />
+        <NavBar
+          coins={coins}
+          coinDiff={coinDiff}
+          coinDiffVisible={saving}
+          music={music}
+          setMusic={setMusic}
+        />
       </Box>
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />

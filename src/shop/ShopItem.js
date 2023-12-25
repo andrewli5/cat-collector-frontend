@@ -1,4 +1,4 @@
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, useMediaQuery } from "@mui/material";
 import "../css/styles.css";
 import Coin from "../assets/coin_icon.png";
 import * as React from "react";
@@ -17,14 +17,17 @@ import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { UPGRADES } from "../constants";
+import { useTheme } from "@emotion/react";
 
 const MAXED = [UPGRADES.LUCK3, UPGRADES.CRIT3, UPGRADES.COST3];
 
-export default function ShopItem({ title, items, setCoins, updateItems }) {
+export default function ShopItem({ items, setCoins, updateItems }) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const handlePurchase = async (item) => {
     if (!getCurrentUser()) {
@@ -76,18 +79,6 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
       />
       <Table stickyHeader style={{ backgroundColor: "rgb(25, 18, 31)" }}>
         <TableHead>
-          <TableRow>
-            <TableCell colSpan={6}>
-              <Typography
-                className="shopTitle"
-                variant="h4"
-                color="white"
-                textAlign="center"
-              >
-                {title.toLowerCase()}
-              </Typography>{" "}
-            </TableCell>
-          </TableRow>
           <TableRow>
             <TableCell colSpan={1}></TableCell>
             <TableCell colSpan={1}>
@@ -162,10 +153,13 @@ export default function ShopItem({ title, items, setCoins, updateItems }) {
                     }
                     onClick={() => handlePurchase(item)}
                     loading={loading}
+                    sx={{ minWidth: "max-content", whiteSpace: "nowrap" }}
                   >
-                    <Typography variant="h5" color="white" marginRight={1}>
-                      buy |
-                    </Typography>
+                    {isMdScreen && (
+                      <Typography variant="h5" color="white" marginRight={1}>
+                        buy |
+                      </Typography>
+                    )}
                     <Typography variant="h5" color="white" marginRight={0.7}>
                       {item.price ? item.price.toLocaleString() : "BOUGHT"}
                     </Typography>

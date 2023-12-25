@@ -15,7 +15,7 @@ export const THEME = createTheme({
     white: createColor("#FFFFFF"),
     red: createColor("#FF0000"),
   },
-  shadows: [createColor("#363457")],
+  shadows: Array(25).fill("none"),
   components: {
     MuiTextField: {
       styleOverrides: {
@@ -37,6 +37,14 @@ export const THEME = createTheme({
           fontSize: "1.3rem",
         },
       },
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 760,
+      md: 960,
+      lg: 1280,
     },
   },
   typography: {

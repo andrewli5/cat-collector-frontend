@@ -37,7 +37,7 @@ export default function OtherProfile() {
       textAlign={"center"}
       display="flex"
       flexDirection="column"
-      sx={{ marginLeft: "70px", width: "30vw", padding: 2 }}
+      sx={{ width: 300, padding: 2 }}
     >
       <Typography variant="h3">{`${username}'s profile`}</Typography>
       <Typography variant="h5" color="grey">
