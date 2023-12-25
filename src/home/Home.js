@@ -58,7 +58,13 @@ export default function Home() {
       />
       <TopBar />
       <Box display="flex" justifyContent="center" width="100%">
-        <NavBar coins={coins} coinDiff={coinDiff} coinDiffVisible={saving} music={music} setMusic={setMusic} />
+        <NavBar
+          coins={coins}
+          coinDiff={coinDiff}
+          coinDiffVisible={saving}
+          music={music}
+          setMusic={setMusic}
+        />
       </Box>
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />

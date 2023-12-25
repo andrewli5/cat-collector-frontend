@@ -49,18 +49,6 @@ export default function NavBar({
   const navigate = useNavigate();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [anchorEl, setAnchorEl] = useState(null);
-  const menuOpen = Boolean(anchorEl);
-
-  const handleMenuClick = (event) => {
-    if (!menuOpen) {
-      setAnchorEl(event.currentTarget);
-    }
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   const { animatedCoins } = useSpring({
     from: { animatedCoins: 0 },
@@ -68,24 +56,18 @@ export default function NavBar({
   });
 
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString()
+    Math.round(val).toLocaleString(),
   );
 
   const NavItem = ({ name, path }) => {
     return (
-      <Box
-        key={name}
-        justifyContent="center"
-        borderRight="1px solid #735290"
-        onClick={() => {
-          setDrawer(false);
-        }}
-      >
+      <Box key={name} justifyContent="center" borderRight="1px solid #735290">
         <Link
           typography="h5"
           style={{
             textDecoration: "none",
-            padding: "0 20px",
+            marginLeft: 15,
+            marginRight: 15,
           }}
           noWrap
           color={
@@ -102,9 +84,22 @@ export default function NavBar({
   };
 
   const NavItemMenuButton = ({ items }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const menuOpen = Boolean(anchorEl);
+
+    const handleMenuClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+    };
+
     return (
       <>
-        <Button onClick={handleMenuClick}>...</Button>
+        <Button onClick={handleMenuClick} color="white">
+          {">"}
+        </Button>
         <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleMenuClose}>
           {items.map(({ name, path }, index) => (
             <MenuItem
@@ -142,7 +137,6 @@ export default function NavBar({
         </>
       );
     } else {
-      setAnchorEl(null);
       return NAV_ITEMS.map(({ name, path }, index) => (
         <NavItem name={name} path={path} key={index} />
       ));
@@ -158,7 +152,6 @@ export default function NavBar({
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        marginLeft: "10px",
       }}
     >
       <ResponsiveNavItems />
@@ -167,7 +160,6 @@ export default function NavBar({
           setMusic(!music);
           localStorage.setItem("music", !music);
         }}
-        sx={{ marginLeft: 2 }}
       >
         {music ? (
           <VolumeUpIcon color="white" />
@@ -204,10 +196,7 @@ export default function NavBar({
             >
               <animated.span>{formattedAnimatedCoins}</animated.span>
             </Typography>
-            <img
-              src={coinGif}
-              style={{ marginLeft: 5, height: 40, width: 40 }}
-            />
+            <img src={coinGif} style={{ height: 40, width: 40 }} />
           </>
         )}
       </div>

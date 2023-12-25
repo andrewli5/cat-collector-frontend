@@ -1,4 +1,11 @@
-import { Box, Button, Fade, Grid, Typography, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Button,
+  Fade,
+  Grid,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { catGif, getCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
 import { useEffect } from "react";
@@ -10,9 +17,9 @@ export default function Info({ music }) {
   const getAnimationDelay = (index) => {
     return { transitionDelay: index * 100 };
   };
-  
+
   const theme = useTheme();
-  const isMdScreen = useMediaQuery(theme.breakpoints.up('md'));
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const meowFiles = [
     meows.meow,
@@ -45,7 +52,7 @@ export default function Info({ music }) {
       alignItems="center"
       marginTop={5}
     >
-      <Grid container maxWidth="1000px" alignItems="center" marginLeft={3}>
+      <Grid container maxWidth="1000px" alignItems="center">
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(0)} in timeout={1000}>
             <Box
@@ -66,7 +73,11 @@ export default function Info({ music }) {
         </Grid>
         <Grid item xs={12}>
           <Fade style={getAnimationDelay(2)} in timeout={1000}>
-            <Typography variant={isMdScreen ? "h5" : "body1"} textAlign="left" color="grey">
+            <Typography
+              variant={isMdScreen ? "h5" : "body1"}
+              textAlign="left"
+              color="grey"
+            >
               learn about cats. earn coins. roll for cats. collect them all.
             </Typography>
           </Fade>
@@ -92,7 +103,12 @@ export default function Info({ music }) {
             </Fade>
           )}
           <div
-            style={{ display: "flex", flexDirection: "row", width: "500px" }}
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "400px",
+              marginBottom: "15vh",
+            }}
           >
             <Fade
               in={!getCurrentUser()}

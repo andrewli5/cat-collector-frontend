@@ -52,11 +52,43 @@ export default function TopBar() {
     }
   };
 
+  const LogoutDialog = () => {
+    return (
+      <Dialog
+        onClose={() => setIsLogoutDialogOpen(false)}
+        open={isLogoutDialogOpen}
+        aria-labelledby="alert-dialog-title"
+      >
+        <DialogTitle id="alert-dialog-title" variant="h3">
+          {"Log out?"}
+        </DialogTitle>
+        <Box textAlign={"center"}>
+          <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
+        </Box>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 10,
+          }}
+        >
+          <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
+            <Typography variant="h4" textAlign="center">
+              No
+            </Typography>
+          </Button>
+          <Button color="error" onClick={handleLogout}>
+            <Typography variant="h4" textAlign="center">
+              Yes
+            </Typography>
+          </Button>
+        </div>
+      </Dialog>
+    );
+  };
+
   return (
-    <Box
-      bgcolor="primary.main"
-      sx={{ position: "sticky", top: 0, width: "100%", alignItems: "center" }}
-    >
+    <Box bgcolor="primary.main" sx={{ width: "100%", alignItems: "center" }}>
       <Toolbar>
         <a href="/">
           <img
@@ -66,7 +98,7 @@ export default function TopBar() {
               width: 40,
               height: 40,
               marginRight: 10,
-              marginBottom: -6
+              marginBottom: -6,
             }}
           />
         </a>
@@ -76,7 +108,7 @@ export default function TopBar() {
               noWrap
               style={{ color: "white", textDecoration: "none" }}
               href="/"
-              marginRight={10}
+              marginRight={3}
             >
               {APP_NAME + "."}
             </Link>
@@ -112,36 +144,7 @@ export default function TopBar() {
             />
           </Box>
         </Box>
-        <Dialog
-          onClose={() => setIsLogoutDialogOpen(false)}
-          open={isLogoutDialogOpen}
-          aria-labelledby="alert-dialog-title"
-        >
-          <DialogTitle id="alert-dialog-title" variant="h3">
-            {"Log out?"}
-          </DialogTitle>
-          <Box textAlign={"center"}>
-            <img src={SadCat} alt="sad cat" style={{ width: 40, height: 40 }} />
-          </Box>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginBottom: 10,
-            }}
-          >
-            <Button color="white" onClick={() => setIsLogoutDialogOpen(false)}>
-              <Typography variant="h4" textAlign="center">
-                No
-              </Typography>
-            </Button>
-            <Button color="error" onClick={handleLogout}>
-              <Typography variant="h4" textAlign="center">
-                Yes
-              </Typography>
-            </Button>
-          </div>
-        </Dialog>
+        <LogoutDialog />
         <Box marginLeft="auto">
           <Grid container alignItems="center" wrap="nowrap">
             {!getCurrentUser() ? (
