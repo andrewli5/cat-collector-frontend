@@ -13,6 +13,10 @@ const REQUEST = axios.create({
 
 // LOCAL FUNCTIONS
 export const getCurrentUser = () => {
+  const user = localStorage.getItem("user");
+  if (!user) {
+    return null;
+  }
   return JSON.parse(localStorage.getItem("user"));
 };
 
@@ -136,18 +140,16 @@ const getRandomCatGif = () => {
   return catGifs[randomKey];
 };
 
-// update the following on every page load
-if (!localStorage.getItem("rarities")) {
-  await REQUEST.get(`${CATS_API}/rarities`).then((response) => {
-    localStorage.setItem("rarities", JSON.stringify(response.data));
-  });
+const getRarities = async () => {
+  const response = await REQUEST.get(`${CATS_API}/rarities`);
+  return response.data;
 }
-export const ALL_CAT_RARITIES = JSON.parse(localStorage.getItem("rarities"));
+
 export const catGif = getRandomCatGif();
 if (getCurrentUser()) {
   const updatedUser = await getUserDataByUserId(getCurrentUser()._id);
   storeCurrentUser({ ...getCurrentUser(), ...updatedUser });
 }
-
+export const ALL_CAT_RARITIES = await getRarities();
 export const MULTIPLIERS = await getMultipliers();
 export const ODDS = await getOdds();
