@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField, Button, Backdrop } from "@mui/material";
+import {
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Backdrop,
+  Tooltip,
+  CircularProgress,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { getCurrentUser, storeCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
-import DefaultIcon from "../assets/cat_face_silhouette.png";
+import DefaultIcon from "../assets/profileIcons/A1.png";
 import SelectProfilePhoto from "./SelectProfilePhoto";
 
 export default function MyProfile() {
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [profilePicture, setProfilePicture] = useState(null); // TODO: [1] add profile picture
+  const [profilePicture, setProfilePicture] = useState("");
   const [profilePictureMenu, setProfilePictureMenu] = useState(false);
   const navigate = useNavigate();
   const user = getCurrentUser();
@@ -57,7 +65,12 @@ export default function MyProfile() {
       setUsername(getCurrentUser().username);
       setFirstName(getCurrentUser().firstName);
       setLastName(getCurrentUser().lastName);
-      setProfilePicture(getCurrentUser().profilePicture);
+      setProfilePicture(
+        getCurrentUser().profilePicture
+          ? getCurrentUser().profilePicture
+          : DefaultIcon
+      );
+      setLoading(false);
     }
   }, []);
 
@@ -98,25 +111,38 @@ export default function MyProfile() {
         marginBottom={2}
       >
         <Box component="div" marginBottom={2}>
-          <Button
-            onClick={handleProfilePictureClick}
-            sx={{
-              alignItems: "center",
-              borderRadius: "160px",
-              transition: "all 0.3s ease",
-              border: "2px solid rgba(255, 255, 255, 0.9)",
-            }}
-          >
-            <Box
-              component="img"
-              src={profilePicture}
-              sx={{
-                width: { xs: 100, sm: 150, md: 180, lg: 200 },
-                height: { xs: 100, sm: 150, md: 180, lg: 200 },
-                borderRadius: "160px",
-              }}
-            ></Box>
-          </Button>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Tooltip
+              title="change profile picture"
+              placement="top"
+              marginTop={2}
+            >
+              <Button
+                onClick={handleProfilePictureClick}
+                sx={{
+                  alignItems: "center",
+                  borderRadius: "160px",
+                  transition: "all 0.3s ease",
+                  bgcolor: "secondary.main",
+                  "&:hover": {
+                    bgcolor: "secondary.dark",
+                  },
+                }}
+              >
+                <Box
+                  component="img"
+                  src={profilePicture}
+                  sx={{
+                    width: { xs: 100, sm: 150, md: 180, lg: 200 },
+                    height: { xs: 100, sm: 150, md: 180, lg: 200 },
+                    borderRadius: "160px",
+                  }}
+                ></Box>
+              </Button>
+            </Tooltip>
+          )}
         </Box>
         <TextField
           size="small"
@@ -147,7 +173,7 @@ export default function MyProfile() {
         color="primary"
         variant="contained"
         onClick={handleSave}
-        sx={{ marginTop: 3 }}
+        sx={{ marginTop: 2, marginBottom: 1 }}
       >
         save changes
       </LoadingButton>
@@ -160,7 +186,7 @@ export default function MyProfile() {
         <SelectProfilePhoto
           setProfilePictureMenu={setProfilePictureMenu}
           setProfilePicture={setProfilePicture}
-          icon={1}
+          currentProfilePicture={profilePicture}
         />
       </Backdrop>
     </Box>

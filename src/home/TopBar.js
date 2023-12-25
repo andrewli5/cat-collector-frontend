@@ -21,9 +21,8 @@ import { useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
 import Logo from "../assets/main_icon.png";
 import IconButton from "@mui/material/IconButton";
-import PersonIcon from "@mui/icons-material/Person";
+import DefaultIcon from "../assets/profileIcons/A1.png";
 import { useTheme } from "@emotion/react";
-import { importAll } from "../utils/importAll";
 
 export default function TopBar() {
   const theme = useTheme();
@@ -31,19 +30,6 @@ export default function TopBar() {
   const [drawer, setDrawer] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
-
-  const profileIcons = importAll(
-    require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/)
-  );
-  const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
-  );
-  const mythicCatIcons = importAll(
-    require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
-  );
-  const allCatIcons = Object.assign(catIcons, mythicCatIcons);
-
-  const availableIcons = Object.assign(profileIcons, allCatIcons);
 
   const handleSearch = (event) => {
     const query = event.currentTarget.search.value;
@@ -186,22 +172,24 @@ export default function TopBar() {
                     onClick={() => setDrawer(true)}
                     color="white"
                     sx={{
-                      bgcolor: "tertiary.main",
+                      bgcolor: "secondary.main",
                       "&:hover": {
-                        bgcolor: "tertiary.main",
+                        bgcolor: "secondary.dark",
                       },
                       marginLeft: 1,
                     }}
                   >
-                    {console.log(
-                      "current profile pic: " + getCurrentUser().profilePicture
-                    )}
                     <Box
                       component="img"
-                      src={getCurrentUser().profilePicture}
-                      // TODO: width and height for icon
+                      src={
+                        getCurrentUser().profilePicture
+                          ? getCurrentUser().profilePicture
+                          : DefaultIcon
+                      }
                       sx={{
                         borderRadius: "160px",
+                        width: 50,
+                        height: 50,
                       }}
                     />
                   </IconButton>
@@ -223,6 +211,21 @@ export default function TopBar() {
                       padding: 2,
                     }}
                   >
+                    <Box
+                      component="img"
+                      src={
+                        getCurrentUser().profilePicture
+                          ? getCurrentUser().profilePicture
+                          : DefaultIcon
+                      }
+                      sx={{
+                        borderRadius: "160px",
+                        bgcolor: "secondary.main",
+                        width: 60,
+                        height: 60,
+                        marginBottom: 1,
+                      }}
+                    />
                     <Typography variant="h5" color="white">
                       logged in as: {getCurrentUser().username}
                     </Typography>

@@ -1,44 +1,33 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
 import { importAll } from "../utils/importAll";
-import { getCurrentUser, storeCurrentUser } from "../client";
-import { BREEDID_TO_CATICON } from "../constants";
-const user = getCurrentUser();
+import { getCurrentUser } from "../client";
+import DefaultIcon from "../assets/profileIcons/A1.png";
+import HelpOutline from "@mui/icons-material/HelpOutline";
 
 export default function SelectProfilePhoto({
   setProfilePictureMenu,
   setProfilePicture,
-  defaultIcon,
+  currentProfilePicture,
 }) {
-  const user = getCurrentUser();
-  const [selected, setSelected] = useState(defaultIcon);
+  const [selectedPicture, setSelectedPicture] = useState("");
   const [availableIcons, setAvailableIcons] = useState([]);
 
-  // Available icons are the user's unlocked cats + default icons
-  // TODO: ADD TO DEFAULT ICONS LIST
   const profileIcons = importAll(
     require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/)
   );
-  const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
-  );
-  const mythicCatIcons = importAll(
-    require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
-  );
-  const allCatIcons = Object.assign(catIcons, mythicCatIcons);
 
   const handleIconClick = (icon) => {
-    setSelected(icon);
+    setSelectedPicture(availableIcons[icon]);
   };
 
   const handleSave = async () => {
-    const selectedIcon = availableIcons[selected];
-    setProfilePicture(selectedIcon);
+    setProfilePicture(selectedPicture);
     setProfilePictureMenu(false);
-    // TODO: update profile picture in backend
   };
 
   const handleCancel = () => {
+    setSelectedPicture(currentProfilePicture);
     setProfilePictureMenu(false);
   };
 
@@ -46,14 +35,14 @@ export default function SelectProfilePhoto({
     if (!getCurrentUser()) {
       navigate("/signin");
     } else {
-      var ownedCatIcons = [];
-      const cats = getCurrentUser().cats;
-      cats.map((cat) => {
-        ownedCatIcons.push(allCatIcons[BREEDID_TO_CATICON[cat]]);
-      });
-      setAvailableIcons(Object.assign(profileIcons, ownedCatIcons));
+      setAvailableIcons(profileIcons);
+      setSelectedPicture(
+        getCurrentUser().profilePicture
+          ? getCurrentUser().profilePicture
+          : DefaultIcon
+      );
     }
-  }, [selected]);
+  }, []);
 
   return (
     <Box
@@ -66,7 +55,14 @@ export default function SelectProfilePhoto({
       }}
     >
       <Box component="div" justifyContent="center" display="flex">
-        <Typography variant="h4" sx={{ width: "39vh" }}>
+        <Typography
+          variant="h4"
+          sx={{
+            marginTop: 2,
+            fontSize: { xs: "1.8em", sm: "2em" },
+            width: "39vh",
+          }}
+        >
           Select Profile Picture
         </Typography>
       </Box>
@@ -86,17 +82,21 @@ export default function SelectProfilePhoto({
             <Button
               onClick={() => handleIconClick(icon)}
               sx={{
-                borderRadius: "10vh",
                 width: "13vh",
                 height: "13vh",
+                borderRadius: "10vh",
               }}
             >
               <Box
                 component="img"
                 src={availableIcons[icon]}
                 sx={{
-                  border: icon === selected ? "1px solid white" : "",
+                  border:
+                    availableIcons[icon] === selectedPicture
+                      ? "2px solid white"
+                      : "",
                   borderRadius: "10vh",
+                  bgcolor: "secondary.main",
                   width: "13vh",
                   height: "13vh",
                 }}
@@ -106,12 +106,44 @@ export default function SelectProfilePhoto({
         ))}
       </Grid>
       <Box sx={{ margin: 1, display: "flex", justifyContent: "left" }}>
-        <Button onClick={handleSave} variant="outlined" color="white">
-          Save
+        <Button
+          onClick={handleSave}
+          variant="contained"
+          color="secondary"
+          sx={{
+            outlineWidth: 1,
+            marginRight: 1,
+            marginTop: "1px",
+            height: "25%",
+            padding: "0px 16px",
+          }}
+        >
+          Confirm
         </Button>
-        <Button onClick={handleCancel} variant="contained" color="secondary">
+        <Button
+          onClick={handleCancel}
+          variant="outlined"
+          color="white"
+          sx={{
+            height: "25%",
+            padding: "0px 16px",
+          }}
+        >
           Close
         </Button>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+            width: "100%",
+            marginTop: 1,
+          }}
+        >
+          <Tooltip title="Unlock more profile icons by discovering new cats!">
+            <HelpOutline />
+          </Tooltip>
+        </Box>
       </Box>
     </Box>
   );

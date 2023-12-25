@@ -51,7 +51,7 @@ export default function SearchUsers() {
       alignItems="center"
       display="flex"
       sx={{ minHeight: "50vh" }}
-      flexDirection={isMdScreen ? "column" : "row"}
+      flexDirection="column"
     >
       <NotificationSnackbar
         open={error}
