@@ -193,9 +193,16 @@ export default function TopBar() {
                       marginLeft: 1,
                     }}
                   >
+                    {console.log(
+                      "current profile pic: " + getCurrentUser().profilePicture
+                    )}
                     <Box
                       component="img"
-                      src={availableIcons[getCurrentUser().icon]}
+                      src={getCurrentUser().profilePicture}
+                      // TODO: width and height for icon
+                      sx={{
+                        borderRadius: "160px",
+                      }}
                     />
                   </IconButton>
                 </Grid>

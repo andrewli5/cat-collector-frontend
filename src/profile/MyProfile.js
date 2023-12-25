@@ -27,7 +27,7 @@ export default function MyProfile() {
   };
 
   const handleSave = async () => {
-    const updatedFields = { username, firstName, lastName };
+    const updatedFields = { username, firstName, lastName, profilePicture };
     const updatedUser = { ...user, ...updatedFields };
     try {
       setLoading(true);
