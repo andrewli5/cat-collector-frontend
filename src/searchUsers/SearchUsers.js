@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Box, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  InputAdornment,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { getUserByUsername } from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import OtherProfile from "../profile/OtherProfile";
 import { APP_NAME } from "../constants";
+import { useTheme } from "@emotion/react";
 
 export default function SearchUsers() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,7 +46,13 @@ export default function SearchUsers() {
   };
 
   return (
-    <Box justifyContent={"center"} display={"flex"} sx={{ minHeight: "50vh" }}>
+    <Box
+      justifyContent="center"
+      alignItems="center"
+      display="flex"
+      sx={{ minHeight: "50vh" }}
+      flexDirection={isMdScreen ? "column" : "row"}
+    >
       <NotificationSnackbar
         open={error}
         setOpen={setError}
@@ -46,15 +61,13 @@ export default function SearchUsers() {
         autoHideDuration={3000}
       />
       <Box
-        justifyContent={"center"}
-        display={"flex"}
-        flexDirection={"column"}
         sx={{
-          width: "25vw",
-          padding: 2,
+          width: 300,
         }}
       >
-        <Typography variant="h3">find users</Typography>
+        <Typography variant="h3" textAlign={"center"}>
+          find users
+        </Typography>
         <TextField
           size="small"
           label="find user..."
@@ -62,7 +75,6 @@ export default function SearchUsers() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           onKeyDown={handleSubmit}
-          margin="dense"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
