@@ -5,12 +5,17 @@ import { getCurrentUser, storeCurrentUser } from "../client";
 import { BREEDID_TO_CATICON } from "../constants";
 const user = getCurrentUser();
 
-export default function SelectProfilePhoto({ setProfilePictureMenu, icon }) {
+export default function SelectProfilePhoto({
+  setProfilePictureMenu,
+  setProfilePicture,
+  defaultIcon,
+}) {
   const user = getCurrentUser();
-  const [selected, setSelected] = useState(icon);
+  const [selected, setSelected] = useState(defaultIcon);
   const [availableIcons, setAvailableIcons] = useState([]);
 
   // Available icons are the user's unlocked cats + default icons
+  // TODO: ADD TO DEFAULT ICONS LIST
   const profileIcons = importAll(
     require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/)
   );
@@ -24,14 +29,13 @@ export default function SelectProfilePhoto({ setProfilePictureMenu, icon }) {
 
   const handleIconClick = (icon) => {
     setSelected(icon);
-    console.log("Icon: ", icon);
-    //const updatedUser = { ...user, icon };
-    // storeCurrentUser(updatedUser);
   };
 
   const handleSave = async () => {
+    const selectedIcon = availableIcons[selected];
+    setProfilePicture(selectedIcon);
     setProfilePictureMenu(false);
-    // TODO: update profile picture
+    // TODO: update profile picture in backend
   };
 
   const handleCancel = () => {
@@ -49,7 +53,7 @@ export default function SelectProfilePhoto({ setProfilePictureMenu, icon }) {
       });
       setAvailableIcons(Object.assign(profileIcons, ownedCatIcons));
     }
-  }, []);
+  }, [selected]);
 
   return (
     <Box

@@ -57,6 +57,7 @@ export default function MyProfile() {
       setUsername(getCurrentUser().username);
       setFirstName(getCurrentUser().firstName);
       setLastName(getCurrentUser().lastName);
+      setProfilePicture(getCurrentUser().profilePicture);
     }
   }, []);
 
@@ -108,10 +109,11 @@ export default function MyProfile() {
           >
             <Box
               component="img"
-              src={DefaultIcon}
+              src={profilePicture}
               sx={{
                 width: { xs: 100, sm: 150, md: 180, lg: 200 },
                 height: { xs: 100, sm: 150, md: 180, lg: 200 },
+                borderRadius: "160px",
               }}
             ></Box>
           </Button>
@@ -154,9 +156,12 @@ export default function MyProfile() {
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
         open={profilePictureMenu}
-        // onClick={() => setProfilePictureMenu(false)}
       >
-        <SelectProfilePhoto setProfilePictureMenu={setProfilePictureMenu} icon={1}/>
+        <SelectProfilePhoto
+          setProfilePictureMenu={setProfilePictureMenu}
+          setProfilePicture={setProfilePicture}
+          icon={1}
+        />
       </Backdrop>
     </Box>
   );

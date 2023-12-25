@@ -23,6 +23,7 @@ import Logo from "../assets/main_icon.png";
 import IconButton from "@mui/material/IconButton";
 import PersonIcon from "@mui/icons-material/Person";
 import { useTheme } from "@emotion/react";
+import { importAll } from "../utils/importAll";
 
 export default function TopBar() {
   const theme = useTheme();
@@ -30,6 +31,19 @@ export default function TopBar() {
   const [drawer, setDrawer] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
+
+  const profileIcons = importAll(
+    require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/)
+  );
+  const catIcons = importAll(
+    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+  );
+  const mythicCatIcons = importAll(
+    require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
+  );
+  const allCatIcons = Object.assign(catIcons, mythicCatIcons);
+
+  const availableIcons = Object.assign(profileIcons, allCatIcons);
 
   const handleSearch = (event) => {
     const query = event.currentTarget.search.value;
@@ -179,7 +193,10 @@ export default function TopBar() {
                       marginLeft: 1,
                     }}
                   >
-                    <PersonIcon />
+                    <Box
+                      component="img"
+                      src={availableIcons[getCurrentUser().icon]}
+                    />
                   </IconButton>
                 </Grid>
                 <SwipeableDrawer
