@@ -77,7 +77,7 @@ export default function Shop({ setCoins }) {
           variant="h3"
           color={"white"}
           textAlign="center"
-          sx={{ width: "100vw", overflowX: "hidden" }}
+          sx={{ width: "100%", overflowX: "hidden" }}
         >
           shop
         </Typography>
