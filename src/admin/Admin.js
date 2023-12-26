@@ -9,7 +9,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { APP_NAME } from "../constants";
+import { APP_NAME, ERRORS } from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate } from "react-router-dom";
 import * as client from "../client";
@@ -91,6 +91,7 @@ export default function Admin() {
         setError(true);
         setErrorMessage(error.response.data.message);
       }
+      setSaveLoading(false);
     }
   };
 

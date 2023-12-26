@@ -1,7 +1,6 @@
 import axios from "axios";
 import { LOCAL_API_URL } from "./constants";
-import { importAll } from "./utils/importAll";
-import { useLocation } from "react-router-dom";
+import { importAll } from "./utils/utils";
 
 export const BASE_API_URL = process.env.REACT_APP_API_URL || LOCAL_API_URL;
 export const USERS_API = `${BASE_API_URL}/users`;
@@ -32,7 +31,7 @@ export const clearBrowserStorage = () => {
 export const updateUserCoinsByUserId = async (
   userId,
   coins,
-  completionHandler,
+  completionHandler
 ) => {
   const response = await REQUEST.put(`${USERS_API}/${userId}/coins`, {
     coins: coins,
@@ -111,7 +110,7 @@ export const addUserFavorites = async (userId, breed) => {
 
 export const removeUserFavorites = async (userId, breed) => {
   const response = await REQUEST.delete(
-    `${CATS_API}/favorites/${userId}/${breed}`,
+    `${CATS_API}/favorites/${userId}/${breed}`
   );
   return response.data;
 };
@@ -143,7 +142,7 @@ const getRandomCatGif = () => {
 const getRarities = async () => {
   const response = await REQUEST.get(`${CATS_API}/rarities`);
   return response.data;
-}
+};
 
 export const catGif = getRandomCatGif();
 if (getCurrentUser()) {
