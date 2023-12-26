@@ -7,18 +7,22 @@ import {
   Divider,
   TextField,
   InputAdornment,
+  useMediaQuery,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { APP_NAME } from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
 import * as client from "../client";
 import EditIcon from "@mui/icons-material/Edit";
+import Backdrop from "@mui/material/Backdrop";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import EditableText from "../reusable/EditableText";
 import { LoadingButton } from "@mui/lab";
 import SearchIcon from "@mui/icons-material/Search";
 import JumpingCat from "../assets/gifs/jumping_cat.gif";
+import Coin from "../assets/coin_icon.png";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -30,6 +34,7 @@ export default function Admin() {
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
   const [userBeingEdited, setUserBeingEdited] = useState({});
+  const [mobileUserBeingEdited, setMobileUserBeingEdited] = useState({});
   const [query, setQuery] = useState("");
 
   useEffect(() => {
@@ -57,19 +62,24 @@ export default function Admin() {
     }
   }, []);
 
-  const handleFieldEdited = (field, value) => {
+  const handleFieldEdited = (field, value, mobile = false) => {
     if (field === "coins") {
       value = parseInt(value);
     }
-
-    setUserBeingEdited({ ...userBeingEdited, [field]: value });
+    if (mobile) {
+      setMobileUserBeingEdited({ ...mobileUserBeingEdited, [field]: value });
+    } else {
+      setUserBeingEdited({ ...userBeingEdited, [field]: value });
+    }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (mobile = false) => {
     // user shouldn't be able to edit their own role
     if (
-      getCurrentUser()._id === userBeingEdited._id &&
-      getCurrentUser().role !== userBeingEdited.role
+      (getCurrentUser()._id === userBeingEdited._id &&
+        getCurrentUser().role !== userBeingEdited.role) ||
+      (getCurrentUser()._id === mobileUserBeingEdited._id &&
+        getCurrentUser().role !== mobileUserBeingEdited.role)
     ) {
       setError(true);
       setErrorMessage("cannot edit your own role.");
@@ -78,9 +88,17 @@ export default function Admin() {
 
     try {
       setSaveLoading(true);
-      const _ = await client.updateUserByUserId(userBeingEdited._id, {
-        ...userBeingEdited,
-      });
+      var _ = null;
+      if (mobile) {
+        _ = await client.updateUserByUserId(mobileUserBeingEdited._id, {
+          ...mobileUserBeingEdited,
+        });
+      } else {
+        _ = await client.updateUserByUserId(userBeingEdited._id, {
+          ...userBeingEdited,
+        });
+      }
+
       setSuccess(true);
       setTimeout(() => {
         setSaveLoading(false);
@@ -94,8 +112,12 @@ export default function Admin() {
     }
   };
 
-  const handleCancel = () => {
-    setUserBeingEdited({});
+  const handleCancel = (mobile = false) => {
+    if (mobile) {
+      setMobileUserBeingEdited({});
+    } else {
+      setUserBeingEdited({});
+    }
   };
 
   const fetchAllUsers = async () => {
@@ -194,6 +216,8 @@ export default function Admin() {
                 user={user}
                 userBeingEdited={userBeingEdited}
                 setUserBeingEdited={setUserBeingEdited}
+                mobileUserBeingEdited={mobileUserBeingEdited}
+                setMobileUserBeingEdited={setMobileUserBeingEdited}
                 handleFieldEdited={handleFieldEdited}
                 handleSave={() => handleSave(user._id)}
                 handleCancel={handleCancel}
@@ -213,11 +237,17 @@ function EditableUserRow({
   user,
   userBeingEdited,
   setUserBeingEdited,
+  mobileUserBeingEdited,
+  setMobileUserBeingEdited,
   handleFieldEdited,
   handleSave,
   handleCancel,
   emphasized,
 }) {
+  const theme = useTheme();
+  const isMobileScreen = useMediaQuery(theme.breakpoints.up("xs"));
+  const [openMobileMenu, setOpenMobileMenu] = useState(false);
+
   return (
     <Grid container columnSpacing={3} item key={user._id} xs={12}>
       <Grid item xs={2}>
@@ -316,7 +346,12 @@ function EditableUserRow({
           <IconButton
             color="quintenary"
             onClick={() => {
-              setUserBeingEdited({ ...user });
+              if (isMobileScreen) {
+                setOpenMobileMenu(true);
+                setMobileUserBeingEdited({ ...user });
+              } else {
+                setUserBeingEdited({ ...user });
+              }
             }}
           >
             <EditIcon />
@@ -342,6 +377,107 @@ function EditableUserRow({
           </Box>
         )}
       </Grid>
+      <Backdrop
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={openMobileMenu}
+      >
+        {
+          //TODO fix handleFieldEdited for mobile
+        }
+        <Box
+          item
+          key={user._id}
+          xs={12}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            border: "1px solid white",
+            borderRadius: "10px",
+            backgroundColor: "secondary.main",
+            marginLeft: 2,
+            marginRight: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Edit User
+          </Typography>
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            fullWidth
+            small
+            label="username"
+            value={mobileUserBeingEdited.username}
+            onChange={(event) => {
+              handleFieldEdited("username", event.target.value);
+            }}
+          />
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            fullWidth
+            small
+            label="first name"
+            value={mobileUserBeingEdited.firstName}
+            onChange={(event) => {
+              handleFieldEdited("firstName", event.target.value);
+            }}
+          />
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            fullWidth
+            small
+            label="last name"
+            value={mobileUserBeingEdited.lastName}
+            onChange={(event) => {
+              handleFieldEdited("lastName", event.target.value);
+            }}
+          />
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            small
+            select
+            fullWidth
+            value={mobileUserBeingEdited.role}
+            label="role"
+            menuItems={[
+              { value: "ADMIN", text: "admin" },
+              { value: "USER", text: "user" },
+            ]}
+            onChange={(event) => {
+              handleFieldEdited("role", event.target.value);
+            }}
+          />
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            small
+            fullWidth
+            label="coins"
+            value={user.coins}
+            onChange={(event) => {
+              handleFieldEdited("coins", event.target.value);
+            }}
+            type="number"
+          />
+          <Button onClick={handleSave}> save </Button>
+          <Button
+            onClick={() => {
+              setOpenMobileMenu(false);
+            }}
+          >
+            cancel
+          </Button>
+        </Box>
+      </Backdrop>
     </Grid>
   );
 }
@@ -357,33 +493,77 @@ function UserRowHeaders() {
         alignItems="center"
         justifyContent="center"
       >
-        <Grid item xs={2}>
-          <Typography variant="h4" style={{ fontWeight: "bold" }}>
+        <Grid item>
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold" }}
+            sx={{
+              fontSize: { xs: "1em", sm: "2em" },
+            }}
+            xs={2}
+          >
             username
           </Typography>
         </Grid>
         <Grid item xs={2.5}>
-          <Typography variant="h4" style={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold" }}
+            sx={{
+              fontSize: { xs: "1em", sm: "2em" },
+            }}
+          >
             first name
           </Typography>
         </Grid>
         <Grid item xs={2.5}>
-          <Typography variant="h4" style={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold" }}
+            sx={{
+              fontSize: { xs: "1em", sm: "2em" },
+            }}
+          >
             last name
           </Typography>
         </Grid>
         <Grid item xs={1.5}>
-          <Typography variant="h4" style={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold" }}
+            sx={{
+              fontSize: { xs: "1em", sm: "2em" },
+            }}
+          >
             role
           </Typography>
         </Grid>
         <Grid item xs={1.5}>
           <Typography variant="h4" style={{ fontWeight: "bold" }}>
-            coins
+            <Box
+              component="img"
+              src={Coin}
+              sx={{
+                width: {
+                  xs: "18px",
+                  sm: "30px",
+                },
+                height: {
+                  xs: "18px",
+                  sm: "30px",
+                },
+              }}
+            />
           </Typography>
         </Grid>
         <Grid item xs={1.5}>
-          <Typography variant="h4" style={{ fontWeight: "bold" }}>
+          <Typography
+            variant="h4"
+            style={{ fontWeight: "bold" }}
+            sx={{
+              fontSize: { xs: 0, sm: "2em" },
+            }}
+          >
             actions
           </Typography>
         </Grid>
