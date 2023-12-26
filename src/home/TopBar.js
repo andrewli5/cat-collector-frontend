@@ -247,7 +247,6 @@ export default function TopBar() {
                       variant="outlined"
                       color="white"
                       fullWidth
-                      onClick={() => setIsLogoutDialogOpen(true)}
                       sx={{ marginTop: 2 }}
                     >
                       my profile
