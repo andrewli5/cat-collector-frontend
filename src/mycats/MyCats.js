@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Typography, Link, Box } from "@mui/material";
+import { Typography, Link, Box, useMediaQuery } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
 import {
@@ -20,6 +20,7 @@ import { MyCatsSort } from "./MyCatsSort";
 import UnknownCat from "../assets/unknown_cat.png";
 import Heart from "../assets/heart_icon.png";
 import CatchingHeart from "../assets//gifs/cat_catching_heart.gif";
+import { useTheme } from "@mui/material";
 
 export default function MyCats({
   favorites = false,
@@ -33,8 +34,12 @@ export default function MyCats({
   const [allCatIcons, setAllCatIcons] = useState([]);
   const [mythicCatIcons, setMythicCatIcons] = useState([]);
   const [cats, setCats] = useState([]);
+  const theme = useTheme();
   const navigate = useNavigate();
   const params = useParams();
+
+  const isMdScreen = useMediaQuery(theme.breakpoints.only("md"));
+  const isLgScreen = useMediaQuery(theme.breakpoints.only("lg"));
 
   function getIconsToDisplay() {
     var icons = Object.keys(allCatIcons);
@@ -51,7 +56,7 @@ export default function MyCats({
           return false;
         } else {
           const currentRarity = ALL_CAT_RARITIES.find(
-            (b) => b.breed === currentBreed,
+            (b) => b.breed === currentBreed
           )["rarity"];
           return currentRarity === params.rarity;
         }
@@ -112,6 +117,20 @@ export default function MyCats({
       : `/details/${CATICON_TO_BREEDID[catIcon]}`;
   };
 
+  const getTitleTopMargin = (name) => {
+    var margin = -4;
+    if (name.length > 16) {
+      if (!isMdScreen) {
+        margin -= 2;
+      }
+      if (isLgScreen) {
+        margin += 4;
+      }
+    }
+
+    return margin.toString() + "vh";
+  };
+
   const skipDisplay = (currentBreedId) => {
     // Don't display the cat if the breed is undefined,
     // or if we are not showing cats the user doesn't own
@@ -123,10 +142,10 @@ export default function MyCats({
 
   const resetFunction = () => {
     const icons = importAll(
-      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
     );
     const mythicIcons = importAll(
-      require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/),
+      require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
     );
     const allIcons = Object.assign({}, icons, mythicIcons);
     setAllCatIcons(allIcons);
@@ -256,7 +275,7 @@ export default function MyCats({
               cats.length +
               "/" +
               (Object.keys(allCatIcons).length - 1) +
-              ")",
+              ")"
           );
         }
       }
@@ -326,7 +345,7 @@ export default function MyCats({
                 marginTop: 3,
               }}
               maxWidth="1100px"
-              columns={{ xs: 4, sm: 8, md: 12 }}
+              columns={{ xs: 6, sm: 8, md: 12 }}
             >
               {getIconsToDisplay().map((catIcon, index) => {
                 const currentBreedId = CATICON_TO_BREEDID[catIcon];
@@ -334,12 +353,12 @@ export default function MyCats({
                   return null;
                 }
                 const rarity = ALL_CAT_RARITIES.find(
-                  (b) => b.breed === currentBreedId,
+                  (b) => b.breed === currentBreedId
                 )["rarity"];
                 const [name, src, imageClass, textColor] = getIconData(
                   catIcon,
                   currentBreedId,
-                  rarity,
+                  rarity
                 );
                 return (
                   <Grid
@@ -358,21 +377,30 @@ export default function MyCats({
                       href={getHref(rarity, catIcon)}
                       className="hover"
                     >
-                      <img
+                      <Box
+                        component="img"
                         className={imageClass}
                         src={src}
-                        width={160}
-                        height={160}
                         alt={catIcon}
+                        sx={{
+                          width: { xs: 100, sm: 120, md: 140, lg: 160 },
+                          height: { xs: 100, sm: 120, md: 140, lg: 160 },
+                        }}
                       />
                       <Typography
                         variant="h5"
                         color={textColor}
                         textAlign="left"
                         position="absolute"
-                        marginTop={name.length < 14 ? "-35px" : "-52px"}
-                        marginLeft="10px"
+                        marginTop={getTitleTopMargin(name)}
+                        marginLeft="1vh"
                         sx={{
+                          fontSize: {
+                            xs: "1rem",
+                            sm: "1.1rem",
+                            md: "1.2rem",
+                            lg: "1.3rem",
+                          },
                           textShadow:
                             "2px 1px 1px black, 2px 2px 1px black, 50px 50px 50px black",
                           wordWrap: "break-word",
