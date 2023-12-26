@@ -1,25 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, TextField } from "@mui/material";
+import {
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Backdrop,
+  Tooltip,
+  CircularProgress,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { getCurrentUser, storeCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
+import DefaultIcon from "../assets/profileIcons/A1.png";
+import SelectProfilePhoto from "./SelectProfilePhoto";
 
 export default function MyProfile() {
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const [profilePictureMenu, setProfilePictureMenu] = useState(false);
   const navigate = useNavigate();
   const user = getCurrentUser();
 
+  const handleProfilePictureClick = () => {
+    setProfilePictureMenu(true);
+  };
+
   const handleSave = async () => {
-    const updatedFields = { username, firstName, lastName };
+    const updatedFields = { username, firstName, lastName, profilePicture };
     const updatedUser = { ...user, ...updatedFields };
     try {
       setLoading(true);
@@ -49,6 +65,12 @@ export default function MyProfile() {
       setUsername(getCurrentUser().username);
       setFirstName(getCurrentUser().firstName);
       setLastName(getCurrentUser().lastName);
+      setProfilePicture(
+        getCurrentUser().profilePicture
+          ? getCurrentUser().profilePicture
+          : DefaultIcon
+      );
+      setLoading(false);
     }
   }, []);
 
@@ -88,6 +110,34 @@ export default function MyProfile() {
         marginTop={1}
         marginBottom={2}
       >
+        <Box component="div" marginBottom={2}>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              onClick={handleProfilePictureClick}
+              sx={{
+                alignItems: "center",
+                borderRadius: "160px",
+                transition: "all 0.3s ease",
+                bgcolor: "secondary.main",
+                "&:hover": {
+                  bgcolor: "secondary.dark",
+                },
+              }}
+            >
+              <Box
+                component="img"
+                src={profilePicture}
+                sx={{
+                  width: { xs: 100, sm: 150, md: 180, lg: 200 },
+                  height: { xs: 100, sm: 150, md: 180, lg: 200 },
+                  borderRadius: "160px",
+                }}
+              ></Box>
+            </Button>
+          )}
+        </Box>
         <TextField
           size="small"
           label="username"
@@ -117,10 +167,22 @@ export default function MyProfile() {
         color="primary"
         variant="contained"
         onClick={handleSave}
-        sx={{ marginTop: 3 }}
+        sx={{ marginTop: 2, marginBottom: 1 }}
       >
         save changes
       </LoadingButton>
+      <Backdrop
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={profilePictureMenu}
+      >
+        <SelectProfilePhoto
+          setProfilePictureMenu={setProfilePictureMenu}
+          setProfilePicture={setProfilePicture}
+          currentProfilePicture={profilePicture}
+        />
+      </Backdrop>
     </Box>
   );
 }

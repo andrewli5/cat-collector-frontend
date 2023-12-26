@@ -3,10 +3,12 @@ import { Typography, Box, Button } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserByUsername } from "../client";
 import { APP_NAME } from "../constants";
+import DefaultIcon from "../assets/profileIcons/A1.png";
 
 export default function OtherProfile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
   const navigate = useNavigate();
   const { username } = useParams();
 
@@ -24,6 +26,9 @@ export default function OtherProfile() {
         }
         setFirstName(user.firstName);
         setLastName(user.lastName);
+        setProfilePicture(
+          user.profilePicture ? user.profilePicture : DefaultIcon
+        );
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
@@ -37,23 +42,34 @@ export default function OtherProfile() {
       textAlign={"center"}
       display="flex"
       flexDirection="column"
-      sx={{ width: 300, padding: 2 }}
+      sx={{
+        border: "1px solid white",
+        borderRadius: "10px",
+        marginTop: 3,
+        width: "45vh",
+        padding: 2,
+      }}
     >
-      <Typography variant="h3">{`${username}'s profile`}</Typography>
-      <Typography variant="h5" color="grey">
-        {"username" + ": " + username}
-      </Typography>
-      <Typography variant="h5" color="grey">
-        {"first name" + ": " + firstName}
-      </Typography>
-      <Typography variant="h5" color="grey">
-        {"last name" + ": " + lastName}
+      <Typography variant="h6">uid {username}</Typography>
+      <Box
+        component="img"
+        src={profilePicture}
+        sx={{
+          borderRadius: "10vh",
+          bgcolor: "secondary.main",
+          width: "14vh",
+          height: "14vh",
+          marginTop: 1,
+        }}
+      />
+      <Typography variant="h4" color="grey">
+        {firstName}
       </Typography>
       <Button
         onClick={handleViewCats}
         variant="contained"
         color="primary"
-        sx={{ marginTop: 2, width: "50%" }}
+        sx={{ marginTop: 1, width: "50%" }}
       >
         view cats
       </Button>
