@@ -32,10 +32,10 @@ if (getCurrentUser() && getCurrentUser().role === "ADMIN") {
 }
 
 const NAV_ITEMS_SM = NAV_ITEMS.slice(0, 2);
-const NAV_ITEMS_SM_MENU = NAV_ITEMS.slice(3, NAV_ITEMS.length);
+const NAV_ITEMS_SM_MENU = NAV_ITEMS.slice(2, NAV_ITEMS.length);
 
-const NAV_ITEMS_MD = NAV_ITEMS.slice(0, 4);
-const NAV_ITEMS_MD_MENU = NAV_ITEMS.slice(5, NAV_ITEMS.length);
+const NAV_ITEMS_MD = NAV_ITEMS.slice(0, 3);
+const NAV_ITEMS_MD_MENU = NAV_ITEMS.slice(3, NAV_ITEMS.length);
 
 export default function NavBar({
   coins,
@@ -56,7 +56,7 @@ export default function NavBar({
   });
 
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString(),
+    Math.round(val).toLocaleString()
   );
 
   const NavItem = ({ name, path }) => {

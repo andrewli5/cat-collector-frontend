@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { getCurrentUser, storeCurrentUser } from "../client";
-import { APP_NAME } from "../constants";
+import { APP_NAME, ERRORS } from "../constants";
 import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import DefaultIcon from "../assets/profileIcons/A1.png";
@@ -36,6 +36,7 @@ export default function MyProfile() {
 
   const handleSave = async () => {
     const updatedFields = { username, firstName, lastName, profilePicture };
+
     const updatedUser = { ...user, ...updatedFields };
     try {
       setLoading(true);
@@ -51,9 +52,28 @@ export default function MyProfile() {
       }, 500);
     } catch (error) {
       if (error.response) {
+        const errorMessage = generateErrorMessage(error.response.data.message);
         setError(true);
-        setErrorMessage(error.response.data.message);
+        setErrorMessage(errorMessage);
       }
+      setLoading(false);
+    }
+  };
+
+  const generateErrorMessage = (message) => {
+    if (message.includes(ERRORS.UsernameExists)) {
+      return `username "${username}" is already taken!`;
+    }
+    if (message.includes(ERRORS.UsernameEmpty)) {
+      return "username is a required field.";
+    }
+    if (message.includes(ERRORS.FirstNameEmpty)) {
+      return "first name is a required field.";
+    }
+    if (message.includes(ERRORS.LastNameEmpty)) {
+      return "last name is a required field.";
+    } else {
+      return message;
     }
   };
 

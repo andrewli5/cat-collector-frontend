@@ -6,8 +6,6 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { importAll } from "../utils/importAll";
 import { getCurrentUser } from "../client";
 import DefaultIcon from "../assets/profileIcons/A1.png";
-import HelpOutline from "@mui/icons-material/HelpOutline";
-import "../css/styles.css";
 
 export default function SelectProfilePhoto({
   setProfilePictureMenu,
@@ -16,7 +14,6 @@ export default function SelectProfilePhoto({
 }) {
   const [selectedPicture, setSelectedPicture] = useState("");
   const [availableIcons, setAvailableIcons] = useState([]);
-  const [toolTip, setToolTip] = useState(false);
 
   const profileIcons = importAll(
     require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/)
@@ -35,14 +32,6 @@ export default function SelectProfilePhoto({
     setSelectedPicture(currentProfilePicture);
     setProfilePictureMenu(false);
   };
-
-  const CustomWidthTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))({
-    [`& .${tooltipClasses.tooltip}`]: {
-      maxWidth: "30vh",
-    },
-  });
 
   useEffect(() => {
     if (!getCurrentUser()) {
@@ -145,39 +134,6 @@ export default function SelectProfilePhoto({
         >
           Close
         </Button>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "right",
-            width: "100%",
-          }}
-        >
-          <CustomWidthTooltip
-            open={toolTip}
-            onClose={() => {
-              setToolTip(false);
-            }}
-            arrow
-            title={
-              <Typography>
-                Unlock more profile icons by discovering new cats!
-              </Typography>
-            }
-            sx={{
-              paddingRight: 1,
-              paddingBottom: 1,
-            }}
-          >
-            <IconButton
-              onClick={() => {
-                setToolTip(!toolTip);
-              }}
-            >
-              <HelpOutline />
-            </IconButton>
-          </CustomWidthTooltip>
-        </Box>
       </Box>
     </Box>
   );
