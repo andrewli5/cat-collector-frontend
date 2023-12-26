@@ -211,21 +211,34 @@ export default function TopBar() {
                       padding: 2,
                     }}
                   >
-                    <Box
-                      component="img"
-                      src={
-                        getCurrentUser().profilePicture
-                          ? getCurrentUser().profilePicture
-                          : DefaultIcon
-                      }
+                    <Button
+                      disabled
                       sx={{
+                        clickable: false,
+                        alignItems: "center",
                         borderRadius: "160px",
                         bgcolor: "secondary.main",
-                        width: 60,
-                        height: 60,
-                        marginBottom: 1,
+                        "&:hover": {
+                          bgcolor: "secondary.main",
+                        },
                       }}
-                    />
+                    >
+                      <Box
+                        component="img"
+                        src={
+                          getCurrentUser().profilePicture
+                            ? getCurrentUser().profilePicture
+                            : DefaultIcon
+                        }
+                        sx={{
+                          borderRadius: "160px",
+                          bgcolor: "secondary.main",
+                          width: 60,
+                          height: 60,
+                          marginBottom: 1,
+                        }}
+                      />
+                    </Button>
                     <Typography variant="h5" color="white">
                       logged in as: {getCurrentUser().username}
                     </Typography>
