@@ -234,7 +234,7 @@ export default function Admin() {
   );
 }
 
-function EditUserMobile({
+function EditUserMobileMenu({
   user,
   mobileUserBeingEdited,
   openMobileMenu,
@@ -539,10 +539,11 @@ function EditableUserRow({
     <Grid container columnSpacing={3} item key={user._id} xs={12}>
       <EditUser
         {...arguments[0]}
+        emphasized={isMobileScreen ? false : emphasized}
         isMobileScreen={isMobileScreen}
         setOpenMobileMenu={setOpenMobileMenu}
       />
-      <EditUserMobile
+      <EditUserMobileMenu
         user={user}
         mobileUserBeingEdited={mobileUserBeingEdited}
         handleFieldEdited={handleFieldEdited}
