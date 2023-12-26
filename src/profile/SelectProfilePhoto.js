@@ -87,7 +87,8 @@ export default function SelectProfilePhoto({
           overflow: "scroll",
           maxHeight: "50vh",
           maxWidth: "50vh",
-          marginTop: "0px",
+          marginTop: 0,
+          marginBottom: 1,
         }}
       >
         {Object.keys(availableIcons).map((icon) => (
@@ -153,20 +154,19 @@ export default function SelectProfilePhoto({
           }}
         >
           <CustomWidthTooltip
-            className="profilePictureTooltip"
             open={toolTip}
             onClose={() => {
               setToolTip(false);
             }}
+            arrow
             title={
               <Typography>
                 Unlock more profile icons by discovering new cats!
               </Typography>
             }
             sx={{
-              "&:hover": {
-                open: true,
-              },
+              paddingRight: 1,
+              paddingBottom: 1,
             }}
           >
             <IconButton
