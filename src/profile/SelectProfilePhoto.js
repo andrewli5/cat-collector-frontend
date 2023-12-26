@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-
-import { importAll } from "../utils/importAll";
+import { importAll } from "../utils/utils";
 import { getCurrentUser } from "../client";
 import DefaultIcon from "../assets/profileIcons/A1.png";
 

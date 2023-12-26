@@ -14,7 +14,7 @@ import {
   getUserDataByUserId,
 } from "../client";
 import { useNavigate, useParams } from "react-router-dom";
-import { importAll } from "../utils/importAll";
+import { importAll } from "../utils/utils";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 import UnknownCat from "../assets/unknown_cat.png";

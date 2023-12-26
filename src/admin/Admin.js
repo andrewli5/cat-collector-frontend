@@ -23,6 +23,7 @@ import { LoadingButton } from "@mui/lab";
 import SearchIcon from "@mui/icons-material/Search";
 import JumpingCat from "../assets/gifs/jumping_cat.gif";
 import Coin from "../assets/coin_icon.png";
+import { generateErrorMessage } from "../utils/utils";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -73,57 +74,26 @@ export default function Admin() {
     }
   };
 
-  const generateErrorMessage = (user) => {
-    var errorMsg = "";
-    // given a user, generate an error message
+  const handleSave = async () => {
+    const user = mobileUserBeingEdited._id
+      ? mobileUserBeingEdited
+      : userBeingEdited;
+
+    // users cannot edit their own role
     if (
       getCurrentUser()._id === user._id &&
       getCurrentUser().role !== user.role
     ) {
-      errorMsg += "cannot edit your own role.\n";
-    }
-    if (!user.username) {
-      errorMsg += "username is a required field.\n";
-    }
-    if (!user.firstName) {
-      errorMsg += "first name is a required field.\n";
-    }
-    if (!user.coins || user.coins < 0) {
-      errorMsg += "invalid coin value. must be a positive integer.\n";
-    }
-    const usernameExists = users.some((u) => {
-      return u.username === user.username && u._id !== user._id;
-    });
-    if (usernameExists) {
-      errorMsg += "username is taken.\n";
-    }
-
-    console.log(users);
-    return errorMsg;
-  };
-
-  const handleSave = async () => {
-    const errorMessage = generateErrorMessage(
-      mobileUserBeingEdited._id ? mobileUserBeingEdited : userBeingEdited
-    );
-    if (errorMessage !== "") {
       setError(true);
-      setErrorMessage(errorMessage);
+      setErrorMessage("cannot edit your own role.");
       return;
     }
 
     try {
       setSaveLoading(true);
-      var _ = null;
-      if (mobileUserBeingEdited._id) {
-        _ = await client.updateUserByUserId(mobileUserBeingEdited._id, {
-          ...mobileUserBeingEdited,
-        });
-      } else {
-        _ = await client.updateUserByUserId(userBeingEdited._id, {
-          ...userBeingEdited,
-        });
-      }
+      const _ = await client.updateUserByUserId(user._id, {
+        ...user,
+      });
 
       setSuccess(true);
       setTimeout(() => {
@@ -132,9 +102,15 @@ export default function Admin() {
       }, 500);
     } catch (error) {
       if (error.response) {
+        const errorMessage = generateErrorMessage(
+          error.response.data.message,
+          user.username
+        );
+        console.log("error message: ", errorMessage);
         setError(true);
-        setErrorMessage(error.response.data.message);
+        setErrorMessage(errorMessage);
       }
+      setSaveLoading(false);
     }
   };
 
@@ -362,7 +338,7 @@ function EditUserMobile({
             value={
               user._id === mobileUserBeingEdited._id
                 ? mobileUserBeingEdited.coins
-                : user.coins
+                : 0
             }
             onChange={(event) => {
               handleFieldEdited("coins", event.target.value, true);
@@ -498,11 +474,7 @@ function EditUser({
           small
           fullWidth
           label="coins"
-          value={
-            user._id === userBeingEdited._id
-              ? userBeingEdited.coins
-              : user.coins
-          }
+          value={user._id === userBeingEdited._id ? userBeingEdited.coins : 0}
           onChange={(event) => {
             handleFieldEdited("coins", event.target.value);
           }}
