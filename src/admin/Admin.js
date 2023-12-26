@@ -209,7 +209,12 @@ export default function Admin() {
         <Grid
           container
           rowSpacing={3}
-          sx={{ marginBottom: "30px", maxWidth: "1200px" }}
+          sx={{
+            marginBottom: "30px",
+            maxWidth: "1200px",
+            paddingLeft: 3,
+            paddingRight: 3,
+          }}
         >
           <UserRowHeaders />
           <Grid item xs={12}>
