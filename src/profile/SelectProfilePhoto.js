@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+
 import { importAll } from "../utils/importAll";
 import { getCurrentUser } from "../client";
 import DefaultIcon from "../assets/profileIcons/A1.png";
 import HelpOutline from "@mui/icons-material/HelpOutline";
+import "../css/styles.css";
 
 export default function SelectProfilePhoto({
   setProfilePictureMenu,
@@ -12,6 +16,7 @@ export default function SelectProfilePhoto({
 }) {
   const [selectedPicture, setSelectedPicture] = useState("");
   const [availableIcons, setAvailableIcons] = useState([]);
+  const [toolTip, setToolTip] = useState(false);
 
   const profileIcons = importAll(
     require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/)
@@ -30,6 +35,14 @@ export default function SelectProfilePhoto({
     setSelectedPicture(currentProfilePicture);
     setProfilePictureMenu(false);
   };
+
+  const CustomWidthTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))({
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: "30vh",
+    },
+  });
 
   useEffect(() => {
     if (!getCurrentUser()) {
@@ -137,12 +150,33 @@ export default function SelectProfilePhoto({
             display: "flex",
             justifyContent: "right",
             width: "100%",
-            marginTop: 1,
           }}
         >
-          <Tooltip title="Unlock more profile icons by discovering new cats!">
-            <HelpOutline />
-          </Tooltip>
+          <CustomWidthTooltip
+            className="profilePictureTooltip"
+            open={toolTip}
+            onClose={() => {
+              setToolTip(false);
+            }}
+            title={
+              <Typography>
+                Unlock more profile icons by discovering new cats!
+              </Typography>
+            }
+            sx={{
+              "&:hover": {
+                open: true,
+              },
+            }}
+          >
+            <IconButton
+              onClick={() => {
+                setToolTip(!toolTip);
+              }}
+            >
+              <HelpOutline />
+            </IconButton>
+          </CustomWidthTooltip>
         </Box>
       </Box>
     </Box>
