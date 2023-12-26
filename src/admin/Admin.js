@@ -73,23 +73,49 @@ export default function Admin() {
     }
   };
 
-  const handleSave = async (mobile = false) => {
-    // user shouldn't be able to edit their own role
+  const generateErrorMessage = (user) => {
+    var errorMsg = "";
+    // given a user, generate an error message
     if (
-      (getCurrentUser()._id === userBeingEdited._id &&
-        getCurrentUser().role !== userBeingEdited.role) ||
-      (getCurrentUser()._id === mobileUserBeingEdited._id &&
-        getCurrentUser().role !== mobileUserBeingEdited.role)
+      getCurrentUser()._id === user._id &&
+      getCurrentUser().role !== user.role
     ) {
+      errorMsg += "cannot edit your own role.\n";
+    }
+    if (!user.username) {
+      errorMsg += "username is a required field.\n";
+    }
+    if (!user.firstName) {
+      errorMsg += "first name is a required field.\n";
+    }
+    if (!user.coins || user.coins < 0) {
+      errorMsg += "invalid coin value. must be a positive integer.\n";
+    }
+    const usernameExists = users.some((u) => {
+      return u.username === user.username && u._id !== user._id;
+    });
+    if (usernameExists) {
+      errorMsg += "username is taken.\n";
+    }
+
+    console.log(users);
+    return errorMsg;
+  };
+
+  const handleSave = async () => {
+    const errorMessage = generateErrorMessage(
+      mobileUserBeingEdited._id ? mobileUserBeingEdited : userBeingEdited
+    );
+    if (errorMessage !== "") {
       setError(true);
-      setErrorMessage("cannot edit your own role.");
+      setErrorMessage(errorMessage);
       return;
     }
 
     try {
       setSaveLoading(true);
       var _ = null;
-      if (mobile) {
+      if (mobileUserBeingEdited._id) {
         _ = await client.updateUserByUserId(mobileUserBeingEdited._id, {
           ...mobileUserBeingEdited,
         });
@@ -244,123 +270,149 @@ function EditUserMobile({
       }}
       open={openMobileMenu}
     >
-      <Box
-        item
+      <Grid
+        container
+        direction="column"
+        spacing={1}
         key={user._id}
-        xs={12}
         sx={{
-          display: "flex",
-          flexDirection: "column",
           border: "1px solid white",
           borderRadius: "10px",
           backgroundColor: "secondary.main",
-          marginLeft: 2,
-          marginRight: 2,
+          paddingLeft: 2,
+          paddingRight: 3,
+          maxWidth: "50vh",
+          maxHeight: "80vh",
         }}
       >
-        <Typography
-          sx={{
-            textAlign: "center",
-          }}
-        >
-          Edit User
-        </Typography>
-        <EditableText
-          edit={openMobileMenu}
-          emphasized={emphasized}
-          fullWidth
-          small
-          label="username"
-          value={mobileUserBeingEdited.username}
-          onChange={(event) => {
-            handleFieldEdited("username", event.target.value, true);
-          }}
-        />
-        <EditableText
-          edit={openMobileMenu}
-          emphasized={emphasized}
-          fullWidth
-          small
-          label="first name"
-          value={mobileUserBeingEdited.firstName}
-          onChange={(event) => {
-            handleFieldEdited("firstName", event.target.value, true);
-          }}
-        />
-        <EditableText
-          edit={openMobileMenu}
-          emphasized={emphasized}
-          fullWidth
-          small
-          label="last name"
-          value={mobileUserBeingEdited.lastName}
-          onChange={(event) => {
-            handleFieldEdited("lastName", event.target.value, true);
-          }}
-        />
-        <EditableText
-          edit={openMobileMenu}
-          emphasized={emphasized}
-          small
-          select
-          fullWidth
-          value={mobileUserBeingEdited.role}
-          label="role"
-          menuItems={[
-            { value: "ADMIN", text: "admin" },
-            { value: "USER", text: "user" },
-          ]}
-          onChange={(event) => {
-            handleFieldEdited("role", event.target.value, true);
-          }}
-        />
-        <EditableText
-          edit={openMobileMenu}
-          emphasized={emphasized}
-          small
-          fullWidth
-          label="coins"
-          value={
-            user._id === mobileUserBeingEdited._id
-              ? mobileUserBeingEdited.coins
-              : user.coins
-          }
-          onChange={(event) => {
-            handleFieldEdited("coins", event.target.value, true);
-          }}
-          type="number"
-        />
-        <Button onClick={handleSave}> save </Button>
-        <Button
-          onClick={() => {
-            setOpenMobileMenu(false);
-          }}
-        >
-          cancel
-        </Button>
-      </Box>
+        <Grid item>
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Edit User
+          </Typography>
+        </Grid>
+        <Grid item>
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            small
+            label="username"
+            value={mobileUserBeingEdited.username}
+            onChange={(event) => {
+              handleFieldEdited("username", event.target.value, true);
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            small
+            label="first name"
+            value={mobileUserBeingEdited.firstName}
+            onChange={(event) => {
+              handleFieldEdited("firstName", event.target.value, true);
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            small
+            label="last name"
+            value={mobileUserBeingEdited.lastName}
+            onChange={(event) => {
+              handleFieldEdited("lastName", event.target.value, true);
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            small
+            select
+            value={mobileUserBeingEdited.role}
+            label="role"
+            menuItems={[
+              { value: "ADMIN", text: "admin" },
+              { value: "USER", text: "user" },
+            ]}
+            onChange={(event) => {
+              handleFieldEdited("role", event.target.value, true);
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <EditableText
+            edit={openMobileMenu}
+            emphasized={emphasized}
+            small
+            label="coins"
+            value={
+              user._id === mobileUserBeingEdited._id
+                ? mobileUserBeingEdited.coins
+                : user.coins
+            }
+            onChange={(event) => {
+              handleFieldEdited("coins", event.target.value, true);
+            }}
+            type="number"
+          />
+        </Grid>
+        <Grid item>
+          <Box component="div" sx={{ marginBottom: 1 }}>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                handleSave();
+              }}
+              sx={{
+                width: "fit-content",
+                marginRight: 1,
+              }}
+            >
+              save
+            </Button>
+            <Button
+              color="white"
+              variant="outlined"
+              onClick={() => {
+                setOpenMobileMenu(false);
+              }}
+              sx={{ width: "fit-content" }}
+            >
+              cancel
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
     </Backdrop>
   );
 }
-function EditableUserRow({
+
+function EditUser({
   edit,
   loading,
   user,
   userBeingEdited,
   setUserBeingEdited,
-  mobileUserBeingEdited,
   setMobileUserBeingEdited,
   handleFieldEdited,
   handleSave,
   handleCancel,
   emphasized,
+  isMobileScreen,
+  setOpenMobileMenu,
 }) {
-  const theme = useTheme();
-  const isMobileScreen = useMediaQuery(theme.breakpoints.down("xs"));
-  const [openMobileMenu, setOpenMobileMenu] = useState(false);
-
   return (
-    <Grid container columnSpacing={3} item key={user._id} xs={12}>
+    <>
       <Grid item xs={2}>
         <EditableText
           edit={edit}
@@ -488,6 +540,28 @@ function EditableUserRow({
           </Box>
         )}
       </Grid>
+    </>
+  );
+}
+
+function EditableUserRow({
+  user,
+  mobileUserBeingEdited,
+  handleFieldEdited,
+  handleSave,
+  emphasized,
+}) {
+  const theme = useTheme();
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [openMobileMenu, setOpenMobileMenu] = useState(false);
+
+  return (
+    <Grid container columnSpacing={3} item key={user._id} xs={12}>
+      <EditUser
+        {...arguments[0]}
+        isMobileScreen={isMobileScreen}
+        setOpenMobileMenu={setOpenMobileMenu}
+      />
       <EditUserMobile
         user={user}
         mobileUserBeingEdited={mobileUserBeingEdited}
@@ -518,7 +592,9 @@ function UserRowHeaders() {
             variant="h4"
             style={{ fontWeight: "bold" }}
             sx={{
-              fontSize: { xs: "1em", sm: "2em" },
+              // display: "flex",
+              // justifyContent: "left",
+              fontSize: { xs: "1em", sm: "1.5em", md: "2em" },
             }}
             xs={2}
           >
@@ -530,7 +606,7 @@ function UserRowHeaders() {
             variant="h4"
             style={{ fontWeight: "bold" }}
             sx={{
-              fontSize: { xs: "1em", sm: "2em" },
+              fontSize: { xs: "1em", sm: "1.5em", md: "2em" },
             }}
           >
             first name
@@ -541,7 +617,7 @@ function UserRowHeaders() {
             variant="h4"
             style={{ fontWeight: "bold" }}
             sx={{
-              fontSize: { xs: "1em", sm: "2em" },
+              fontSize: { xs: "1em", sm: "1.5em", md: "2em" },
             }}
           >
             last name
@@ -552,7 +628,7 @@ function UserRowHeaders() {
             variant="h4"
             style={{ fontWeight: "bold" }}
             sx={{
-              fontSize: { xs: "1em", sm: "2em" },
+              fontSize: { xs: "1em", sm: "1.5em", md: "2em" },
             }}
           >
             role
@@ -566,11 +642,11 @@ function UserRowHeaders() {
               sx={{
                 width: {
                   xs: "18px",
-                  sm: "30px",
+                  md: "30px",
                 },
                 height: {
                   xs: "18px",
-                  sm: "30px",
+                  md: "30px",
                 },
               }}
             />
@@ -581,7 +657,7 @@ function UserRowHeaders() {
             variant="h4"
             style={{ fontWeight: "bold" }}
             sx={{
-              fontSize: { xs: 0, sm: "2em" },
+              fontSize: { xs: 0, sm: "1.5em", md: "2em" },
             }}
           >
             actions
