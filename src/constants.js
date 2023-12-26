@@ -14,7 +14,8 @@ export const CAT_API_URL_IMAGES =
     UsernameEmpty: "username empty",
     FirstNameEmpty: "first name empty",
     LastNameEmpty: "last name empty",
-    InvalidCoins: "invalid coins",
+    CoinsInvalid: "coins invalid",
+    CoinsEmpty: "coins empty",
   }
 
 export const BREEDID_TO_CATICON = {

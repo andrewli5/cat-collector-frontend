@@ -106,7 +106,6 @@ export default function Admin() {
           error.response.data.message,
           user.username
         );
-        console.log("error message: ", errorMessage);
         setError(true);
         setErrorMessage(errorMessage);
       }
@@ -338,7 +337,7 @@ function EditUserMobile({
             value={
               user._id === mobileUserBeingEdited._id
                 ? mobileUserBeingEdited.coins
-                : 0
+                : user.coins
             }
             onChange={(event) => {
               handleFieldEdited("coins", event.target.value, true);
@@ -474,7 +473,11 @@ function EditUser({
           small
           fullWidth
           label="coins"
-          value={user._id === userBeingEdited._id ? userBeingEdited.coins : 0}
+          value={
+            user._id === userBeingEdited._id
+              ? userBeingEdited.coins
+              : user.coins
+          }
           onChange={(event) => {
             handleFieldEdited("coins", event.target.value);
           }}
