@@ -9,7 +9,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { APP_NAME, ERRORS } from "../constants";
+import { APP_NAME } from "../constants";
 import { getCurrentUser } from "../client";
 import { useNavigate } from "react-router-dom";
 import * as client from "../client";
@@ -19,6 +19,7 @@ import EditableText from "../reusable/EditableText";
 import { LoadingButton } from "@mui/lab";
 import SearchIcon from "@mui/icons-material/Search";
 import JumpingCat from "../assets/gifs/jumping_cat.gif";
+import { generateErrorMessage } from "../utils/utils";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -88,8 +89,12 @@ export default function Admin() {
       }, 500);
     } catch (error) {
       if (error.response) {
+        const errorMessage = generateErrorMessage(
+          error.response.data.message,
+          userBeingEdited.username
+        );
         setError(true);
-        setErrorMessage(error.response.data.message);
+        setErrorMessage(errorMessage);
       }
       setSaveLoading(false);
     }

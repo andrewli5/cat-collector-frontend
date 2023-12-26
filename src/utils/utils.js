@@ -8,7 +8,7 @@ export function importAll(r) {
   return images;
 }
 
-export function generateErrorMessage(message) {
+export function generateErrorMessage(message, username="") {
   if (message.includes(ERRORS.UsernameExists)) {
     return `username "${username}" is already taken!`;
   }
