@@ -21,7 +21,7 @@ import { useState } from "react";
 import SadCat from "../assets/crying_cat_icon.png";
 import Logo from "../assets/main_icon.png";
 import IconButton from "@mui/material/IconButton";
-import PersonIcon from "@mui/icons-material/Person";
+import DefaultIcon from "../assets/profileIcons/A1.png";
 import { useTheme } from "@emotion/react";
 
 export default function TopBar() {
@@ -172,14 +172,26 @@ export default function TopBar() {
                     onClick={() => setDrawer(true)}
                     color="white"
                     sx={{
-                      bgcolor: "tertiary.main",
+                      bgcolor: "secondary.main",
                       "&:hover": {
-                        bgcolor: "tertiary.main",
+                        bgcolor: "secondary.dark",
                       },
                       marginLeft: 1,
                     }}
                   >
-                    <PersonIcon />
+                    <Box
+                      component="img"
+                      src={
+                        getCurrentUser().profilePicture
+                          ? getCurrentUser().profilePicture
+                          : DefaultIcon
+                      }
+                      sx={{
+                        borderRadius: "160px",
+                        width: 50,
+                        height: 50,
+                      }}
+                    />
                   </IconButton>
                 </Grid>
                 <SwipeableDrawer
@@ -199,6 +211,34 @@ export default function TopBar() {
                       padding: 2,
                     }}
                   >
+                    <Button
+                      disabled
+                      sx={{
+                        clickable: false,
+                        alignItems: "center",
+                        borderRadius: "160px",
+                        bgcolor: "secondary.main",
+                        "&:hover": {
+                          bgcolor: "secondary.main",
+                        },
+                      }}
+                    >
+                      <Box
+                        component="img"
+                        src={
+                          getCurrentUser().profilePicture
+                            ? getCurrentUser().profilePicture
+                            : DefaultIcon
+                        }
+                        sx={{
+                          borderRadius: "160px",
+                          bgcolor: "secondary.main",
+                          width: 60,
+                          height: 60,
+                          marginBottom: 1,
+                        }}
+                      />
+                    </Button>
                     <Typography variant="h5" color="white">
                       logged in as: {getCurrentUser().username}
                     </Typography>
