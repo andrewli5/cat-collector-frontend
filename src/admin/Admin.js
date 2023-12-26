@@ -112,12 +112,9 @@ export default function Admin() {
     }
   };
 
-  const handleCancel = (mobile = false) => {
-    if (mobile) {
-      setMobileUserBeingEdited({});
-    } else {
-      setUserBeingEdited({});
-    }
+  const handleCancel = () => {
+    setMobileUserBeingEdited({});
+    setUserBeingEdited({});
   };
 
   const fetchAllUsers = async () => {
@@ -231,6 +228,120 @@ export default function Admin() {
   );
 }
 
+function EditUserMobile({
+  user,
+  mobileUserBeingEdited,
+  openMobileMenu,
+  setOpenMobileMenu,
+  handleFieldEdited,
+  handleSave,
+  emphasized,
+}) {
+  return (
+    <Backdrop
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+      }}
+      open={openMobileMenu}
+    >
+      <Box
+        item
+        key={user._id}
+        xs={12}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          border: "1px solid white",
+          borderRadius: "10px",
+          backgroundColor: "secondary.main",
+          marginLeft: 2,
+          marginRight: 2,
+        }}
+      >
+        <Typography
+          sx={{
+            textAlign: "center",
+          }}
+        >
+          Edit User
+        </Typography>
+        <EditableText
+          edit={openMobileMenu}
+          emphasized={emphasized}
+          fullWidth
+          small
+          label="username"
+          value={mobileUserBeingEdited.username}
+          onChange={(event) => {
+            handleFieldEdited("username", event.target.value, true);
+          }}
+        />
+        <EditableText
+          edit={openMobileMenu}
+          emphasized={emphasized}
+          fullWidth
+          small
+          label="first name"
+          value={mobileUserBeingEdited.firstName}
+          onChange={(event) => {
+            handleFieldEdited("firstName", event.target.value, true);
+          }}
+        />
+        <EditableText
+          edit={openMobileMenu}
+          emphasized={emphasized}
+          fullWidth
+          small
+          label="last name"
+          value={mobileUserBeingEdited.lastName}
+          onChange={(event) => {
+            handleFieldEdited("lastName", event.target.value, true);
+          }}
+        />
+        <EditableText
+          edit={openMobileMenu}
+          emphasized={emphasized}
+          small
+          select
+          fullWidth
+          value={mobileUserBeingEdited.role}
+          label="role"
+          menuItems={[
+            { value: "ADMIN", text: "admin" },
+            { value: "USER", text: "user" },
+          ]}
+          onChange={(event) => {
+            handleFieldEdited("role", event.target.value, true);
+          }}
+        />
+        <EditableText
+          edit={openMobileMenu}
+          emphasized={emphasized}
+          small
+          fullWidth
+          label="coins"
+          value={
+            user._id === mobileUserBeingEdited._id
+              ? mobileUserBeingEdited.coins
+              : user.coins
+          }
+          onChange={(event) => {
+            handleFieldEdited("coins", event.target.value, true);
+          }}
+          type="number"
+        />
+        <Button onClick={handleSave}> save </Button>
+        <Button
+          onClick={() => {
+            setOpenMobileMenu(false);
+          }}
+        >
+          cancel
+        </Button>
+      </Box>
+    </Backdrop>
+  );
+}
 function EditableUserRow({
   edit,
   loading,
@@ -245,7 +356,7 @@ function EditableUserRow({
   emphasized,
 }) {
   const theme = useTheme();
-  const isMobileScreen = useMediaQuery(theme.breakpoints.up("xs"));
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
   return (
@@ -377,107 +488,16 @@ function EditableUserRow({
           </Box>
         )}
       </Grid>
-      <Backdrop
-        sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}
-        open={openMobileMenu}
-      >
-        {
-          //TODO fix handleFieldEdited for mobile
-        }
-        <Box
-          item
-          key={user._id}
-          xs={12}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            border: "1px solid white",
-            borderRadius: "10px",
-            backgroundColor: "secondary.main",
-            marginLeft: 2,
-            marginRight: 2,
-          }}
-        >
-          <Typography
-            sx={{
-              textAlign: "center",
-            }}
-          >
-            Edit User
-          </Typography>
-          <EditableText
-            edit={openMobileMenu}
-            emphasized={emphasized}
-            fullWidth
-            small
-            label="username"
-            value={mobileUserBeingEdited.username}
-            onChange={(event) => {
-              handleFieldEdited("username", event.target.value);
-            }}
-          />
-          <EditableText
-            edit={openMobileMenu}
-            emphasized={emphasized}
-            fullWidth
-            small
-            label="first name"
-            value={mobileUserBeingEdited.firstName}
-            onChange={(event) => {
-              handleFieldEdited("firstName", event.target.value);
-            }}
-          />
-          <EditableText
-            edit={openMobileMenu}
-            emphasized={emphasized}
-            fullWidth
-            small
-            label="last name"
-            value={mobileUserBeingEdited.lastName}
-            onChange={(event) => {
-              handleFieldEdited("lastName", event.target.value);
-            }}
-          />
-          <EditableText
-            edit={openMobileMenu}
-            emphasized={emphasized}
-            small
-            select
-            fullWidth
-            value={mobileUserBeingEdited.role}
-            label="role"
-            menuItems={[
-              { value: "ADMIN", text: "admin" },
-              { value: "USER", text: "user" },
-            ]}
-            onChange={(event) => {
-              handleFieldEdited("role", event.target.value);
-            }}
-          />
-          <EditableText
-            edit={openMobileMenu}
-            emphasized={emphasized}
-            small
-            fullWidth
-            label="coins"
-            value={user.coins}
-            onChange={(event) => {
-              handleFieldEdited("coins", event.target.value);
-            }}
-            type="number"
-          />
-          <Button onClick={handleSave}> save </Button>
-          <Button
-            onClick={() => {
-              setOpenMobileMenu(false);
-            }}
-          >
-            cancel
-          </Button>
-        </Box>
-      </Backdrop>
+      <EditUserMobile
+        user={user}
+        mobileUserBeingEdited={mobileUserBeingEdited}
+        handleFieldEdited={handleFieldEdited}
+        openMobileMenu={openMobileMenu}
+        setOpenMobileMenu={setOpenMobileMenu}
+        handleSave={handleSave}
+        emphasized={emphasized}
+        theme={theme}
+      />
     </Grid>
   );
 }
