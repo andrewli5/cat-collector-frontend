@@ -114,34 +114,28 @@ export default function MyProfile() {
           {loading ? (
             <CircularProgress />
           ) : (
-            <Tooltip
-              title="change profile picture"
-              placement="top"
-              marginTop={2}
+            <Button
+              onClick={handleProfilePictureClick}
+              sx={{
+                alignItems: "center",
+                borderRadius: "160px",
+                transition: "all 0.3s ease",
+                bgcolor: "secondary.main",
+                "&:hover": {
+                  bgcolor: "secondary.dark",
+                },
+              }}
             >
-              <Button
-                onClick={handleProfilePictureClick}
+              <Box
+                component="img"
+                src={profilePicture}
                 sx={{
-                  alignItems: "center",
+                  width: { xs: 100, sm: 150, md: 180, lg: 200 },
+                  height: { xs: 100, sm: 150, md: 180, lg: 200 },
                   borderRadius: "160px",
-                  transition: "all 0.3s ease",
-                  bgcolor: "secondary.main",
-                  "&:hover": {
-                    bgcolor: "secondary.dark",
-                  },
                 }}
-              >
-                <Box
-                  component="img"
-                  src={profilePicture}
-                  sx={{
-                    width: { xs: 100, sm: 150, md: 180, lg: 200 },
-                    height: { xs: 100, sm: 150, md: 180, lg: 200 },
-                    borderRadius: "160px",
-                  }}
-                ></Box>
-              </Button>
-            </Tooltip>
+              ></Box>
+            </Button>
           )}
         </Box>
         <TextField
