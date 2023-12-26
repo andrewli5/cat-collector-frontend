@@ -19,6 +19,7 @@ import EditableText from "../reusable/EditableText";
 import { LoadingButton } from "@mui/lab";
 import SearchIcon from "@mui/icons-material/Search";
 import JumpingCat from "../assets/gifs/jumping_cat.gif";
+import { generateErrorMessage } from "../utils/utils";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -88,9 +89,14 @@ export default function Admin() {
       }, 500);
     } catch (error) {
       if (error.response) {
+        const errorMessage = generateErrorMessage(
+          error.response.data.message,
+          userBeingEdited.username
+        );
         setError(true);
-        setErrorMessage(error.response.data.message);
+        setErrorMessage(errorMessage);
       }
+      setSaveLoading(false);
     }
   };
 

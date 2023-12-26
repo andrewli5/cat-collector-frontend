@@ -1,9 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { APP_NAME } from "../constants";
-import CatSilhouette from "../assets/unknown_cat.png";
 import Dice from "../assets/dice.png";
-import { importAll } from "../utils/importAll";
+import { importAll } from "../utils/utils";
 import { useState } from "react";
 import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";

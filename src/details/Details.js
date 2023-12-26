@@ -10,7 +10,7 @@ import {
   RARITY_TO_STRING,
 } from "../constants";
 import { Box, Chip, Grid, Typography } from "@mui/material";
-import { importAll } from "../utils/importAll";
+import { importAll } from "../utils/utils";
 import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
 import "../css/styles.css";

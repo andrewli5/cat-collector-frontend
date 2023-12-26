@@ -16,6 +16,7 @@ import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import DefaultIcon from "../assets/profileIcons/A1.png";
 import SelectProfilePhoto from "./SelectProfilePhoto";
+import { generateErrorMessage } from "../utils/utils";
 
 export default function MyProfile() {
   const [success, setSuccess] = useState(false);
@@ -57,23 +58,6 @@ export default function MyProfile() {
         setErrorMessage(errorMessage);
       }
       setLoading(false);
-    }
-  };
-
-  const generateErrorMessage = (message) => {
-    if (message.includes(ERRORS.UsernameExists)) {
-      return `username "${username}" is already taken!`;
-    }
-    if (message.includes(ERRORS.UsernameEmpty)) {
-      return "username is a required field.";
-    }
-    if (message.includes(ERRORS.FirstNameEmpty)) {
-      return "first name is a required field.";
-    }
-    if (message.includes(ERRORS.LastNameEmpty)) {
-      return "last name is a required field.";
-    } else {
-      return message;
     }
   };
 
