@@ -565,16 +565,14 @@ function UserRowHeaders() {
         columnSpacing={3}
         item
         xs={12}
-        alignItems="center"
-        justifyContent="center"
+        textAlign="left"
+        justifyContent="left"
       >
-        <Grid item>
+        <Grid item xs={2}>
           <Typography
             variant="h4"
             style={{ fontWeight: "bold" }}
             sx={{
-              // display: "flex",
-              // justifyContent: "left",
               fontSize: { xs: "1em", sm: "1.5em", md: "2em" },
             }}
             xs={2}
@@ -619,6 +617,7 @@ function UserRowHeaders() {
           <Typography variant="h4" style={{ fontWeight: "bold" }}>
             <Box
               component="img"
+              display="flex"
               src={Coin}
               sx={{
                 width: {
