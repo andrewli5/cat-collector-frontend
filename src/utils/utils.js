@@ -8,7 +8,7 @@ export function importAll(r) {
   return images;
 }
 
-export function generateErrorMessage(message, username="") {
+export function generateErrorMessage(message, username) {
   if (message.includes(ERRORS.UsernameExists)) {
     return `username "${username}" is already taken!`;
   }
@@ -20,6 +20,12 @@ export function generateErrorMessage(message, username="") {
   }
   if (message.includes(ERRORS.LastNameEmpty)) {
     return "last name is a required field.";
+  }
+  if (message.includes(ERRORS.CoinsInvalid)) {
+    return "coins must be greater than 0.";
+  }
+  if (message.includes(ERRORS.CoinsEmpty)) {
+    return "coins is a required field.";
   } else {
     return message;
   }

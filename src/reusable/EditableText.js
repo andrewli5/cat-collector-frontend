@@ -1,4 +1,11 @@
-import { MenuItem, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  MenuItem,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@emotion/react";
 
 export default function EditableText({
   edit,
@@ -11,6 +18,9 @@ export default function EditableText({
   small,
   emphasized,
 }) {
+  const theme = useTheme();
+  const isMobileScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   return edit ? (
     <TextField
       fullWidth
@@ -29,15 +39,19 @@ export default function EditableText({
         ))}
     </TextField>
   ) : (
-    <Typography
-      variant="h5"
-      sx={
-        emphasized
-          ? { fontWeight: "bold", color: "yellow" }
-          : { fontWeight: "normal", color: "white" }
-      }
-    >
-      {type === "number" ? value.toLocaleString() : value}
-    </Typography>
+    <Box component="div" sx={{ overflow: "visible", textOverflow: "ellipsis" }}>
+      <Typography
+        variant="h5"
+        noWrap
+        sx={{
+          fontWeight: emphasized ? "bold" : "normal",
+          fontSize: isMobileScreen ? "1rem" : "1.25rem",
+          color: emphasized ? "yellow" : "white",
+          textOverflow: "scroll",
+        }}
+      >
+        {type === "number" ? value.toLocaleString() : value}
+      </Typography>
+    </Box>
   );
 }

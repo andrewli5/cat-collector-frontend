@@ -13,7 +13,7 @@ export default function SelectProfilePhoto({
   const [availableIcons, setAvailableIcons] = useState([]);
 
   const profileIcons = importAll(
-    require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/)
+    require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/),
   );
 
   const handleIconClick = (icon) => {
@@ -38,7 +38,7 @@ export default function SelectProfilePhoto({
       setSelectedPicture(
         getCurrentUser().profilePicture
           ? getCurrentUser().profilePicture
-          : DefaultIcon
+          : DefaultIcon,
       );
     }
   }, []);

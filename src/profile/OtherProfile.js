@@ -27,7 +27,7 @@ export default function OtherProfile() {
         setFirstName(user.firstName);
         setLastName(user.lastName);
         setProfilePicture(
-          user.profilePicture ? user.profilePicture : DefaultIcon
+          user.profilePicture ? user.profilePicture : DefaultIcon,
         );
       })
       .catch((error) => {
