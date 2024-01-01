@@ -2,7 +2,7 @@ import axios from "axios";
 import { LOCAL_API_URL } from "./constants";
 import { importAll } from "./utils/utils";
 
-export const BASE_API_URL = process.env.REACT_APP_API_URL_PROD || LOCAL_API_URL;
+export const BASE_API_URL = process.env.REACT_APP_API_URL || LOCAL_API_URL;
 export const USERS_API = `${BASE_API_URL}/users`;
 export const CATS_API = `${BASE_API_URL}/cats`;
 
