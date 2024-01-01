@@ -104,7 +104,7 @@ export default function Admin() {
       if (error.response) {
         const errorMessage = generateErrorMessage(
           error.response.data.message,
-          user.username
+          user.username,
         );
         setError(true);
         setErrorMessage(errorMessage);

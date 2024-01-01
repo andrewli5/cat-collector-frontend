@@ -9,14 +9,14 @@ export const CAT_API_URL_IMAGES =
   "https://api.thecatapi.com/v1/images/search?limit=10&breed_ids={}&api_key=" +
   CAT_API_KEY;
 
-  export const ERRORS = {
-    UsernameExists: "duplicate key error",
-    UsernameEmpty: "username empty",
-    FirstNameEmpty: "first name empty",
-    LastNameEmpty: "last name empty",
-    CoinsInvalid: "coins invalid",
-    CoinsEmpty: "coins empty",
-  }
+export const ERRORS = {
+  UsernameExists: "duplicate key error",
+  UsernameEmpty: "username empty",
+  FirstNameEmpty: "first name empty",
+  LastNameEmpty: "last name empty",
+  CoinsInvalid: "coins invalid",
+  CoinsEmpty: "coins empty",
+};
 
 export const BREEDID_TO_CATICON = {
   abys: "abyssinian.png",

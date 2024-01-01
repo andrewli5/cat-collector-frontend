@@ -55,7 +55,7 @@ export default function MyProfile() {
       if (error.response) {
         const errorMessage = generateErrorMessage(
           error.response.data.message,
-          username
+          username,
         );
         setError(true);
         setErrorMessage(errorMessage);
@@ -75,7 +75,7 @@ export default function MyProfile() {
       setProfilePicture(
         getCurrentUser().profilePicture
           ? getCurrentUser().profilePicture
-          : DefaultIcon
+          : DefaultIcon,
       );
       setLoading(false);
     }
