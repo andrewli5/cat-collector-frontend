@@ -19,7 +19,6 @@ export default function SearchUsers() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const theme = useTheme();
-  const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -312,6 +312,6 @@ const getRarities = async () => {
   }
 };
 
-export const ALL_CAT_RARITIES = await getRarities();
-export const MULTIPLIERS = await getMultipliers();
-export const ODDS = await getOdds();
+export const ALL_CAT_RARITIES = DEFAULT_RARITIES;
+export const MULTIPLIERS = DEFAULT_MULTIPLIERS;
+export const ODDS = DEFAULT_ODDS;
