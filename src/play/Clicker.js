@@ -1,11 +1,4 @@
-import {
-  Backdrop,
-  Box,
-  Button,
-  Grow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Backdrop, Box, Button, Grow, Typography } from "@mui/material";
 import { APP_NAME } from "../constants";
 import { useEffect, useState } from "react";
 import minecraftButton from "../assets/sounds/minecraft_button.mp3";
@@ -18,9 +11,11 @@ import {
   storeCurrentUser,
   updateUserCoinsByUserId,
 } from "../client";
+import { CoinDiffLabel } from "../reusable/CoinDiffLabel";
 
 const CRIT_MULTIPLIER = 28.5;
 const BASE_CRIT_RATE = 0.005;
+const COINDIFF_MESSAGE_DURATION_MS = 500;
 
 export default function Clicker({
   coins,
@@ -48,14 +43,14 @@ export default function Clicker({
     if (saveTimeoutId) {
       clearTimeout(saveTimeoutId);
     }
+
     const newTimeoutId = setTimeout(() => {
       updateUserCoinsByUserId(getCurrentUser()._id, coins, () => {
-        setTimeout(() => {
-          setCoinDiff(0);
-        }, 250);
+        setCoinDiff(0);
         setSaving(false);
       });
-    }, 500);
+    }, COINDIFF_MESSAGE_DURATION_MS);
+
     setSaveTimeoutId(newTimeoutId);
   }, [coins]);
 
@@ -163,7 +158,7 @@ export default function Clicker({
             src={coinGif}
             alt="coin"
           />
-          <Grow in={saving && coinDiff >= 0}>
+          <Grow in={saving && coinDiff > 0}>
             <Typography
               variant="h4"
               alignItems="center"
@@ -177,8 +172,7 @@ export default function Clicker({
               borderRadius="30px"
               sx={{ fontSize: { xs: "1rem", sm: "2rem", lg: "3rem" } }}
             >
-              {coinDiff >= 0 ? "+" : "-"}
-              {Math.abs(coinDiff).toLocaleString()}
+              <CoinDiffLabel coinDiff={coinDiff} />
             </Typography>
           </Grow>
         </Button>

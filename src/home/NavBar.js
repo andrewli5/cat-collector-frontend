@@ -17,6 +17,7 @@ import { useTheme } from "@emotion/react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
+import { CoinDiffLabel } from "../reusable/CoinDiffLabel";
 
 const NAV_ITEMS = [
   { name: "home", path: "/home" },
@@ -56,7 +57,7 @@ export default function NavBar({
   });
 
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString(),
+    Math.round(val).toLocaleString()
   );
 
   const NavItem = ({ name, path }) => {
@@ -184,8 +185,7 @@ export default function NavBar({
                 style={{ marginRight: 12 }}
                 color={coinDiff >= 0 ? "lightgreen" : "error"}
               >
-                {coinDiff >= 0 ? "+" : "-"}
-                {Math.abs(coinDiff).toLocaleString()}
+                <CoinDiffLabel coinDiff={coinDiff} />
               </Typography>
             </Grow>
             <Typography

@@ -6,7 +6,7 @@ import { importAll } from "../utils/utils";
 import { useState } from "react";
 import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";
-import { BREEDID_TO_CATICON, RARITY_TO_TEXT_COLOR } from "../constants";
+import { BREEDID_TO_CATICON } from "../constants";
 import _ from "lodash";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import coin from "../assets/coin_icon.png";
@@ -19,6 +19,7 @@ import Backdrop from "@mui/material/Backdrop";
 import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
 import { styled } from "@mui/material/styles";
+
 
 const buttonSx = {
   marginTop: "5px",
@@ -33,18 +34,6 @@ const buttonSx = {
 };
 
 const useStyles = styled((theme) => ({
-  button: {
-    margin: theme.spacing(1),
-    sx: buttonSx,
-    [theme.breakpoints.down("sm")]: {
-      minWidth: 32,
-      paddingLeft: 8,
-      paddingRight: 8,
-      "& .MuiButton-startIcon": {
-        margin: 0,
-      },
-    },
-  },
   buttonText: {
     [theme.breakpoints.down("sm")]: {
       display: "none",
@@ -268,15 +257,13 @@ export default function Roll({
         severity="error"
         autoHideDuration={6000}
       />
-      {!_.isEmpty(rollResults) ? (
+      {!_.isEmpty(rollResults) && (
         <NotificationSnackbar
           icon={false}
           open={displayResults}
           setOpen={setDisplayResults}
           message={<RollResultsMessage rollResults={rollResults} />}
         />
-      ) : (
-        <></>
       )}
       <Box
         component="div"
@@ -324,8 +311,6 @@ export default function Roll({
             isRolling ||
             !getCurrentUser() ||
             getCurrentUser().coins < getCurrentUser().rollCost
-              ? true
-              : false
           }
           variant="contained"
           sx={{
