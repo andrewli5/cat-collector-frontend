@@ -20,20 +20,22 @@ import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
 import { styled } from "@mui/material/styles";
 
+const buttonSx = {
+  marginTop: "5px",
+  margin: "3vh",
+  width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+  height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  borderRadius: "140px",
+  transition: "all 0.3s ease",
+};
+
 const useStyles = styled((theme) => ({
   button: {
     margin: theme.spacing(1),
-    sx: {
-      marginTop: "5px",
-      margin: "3vh",
-      width: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
-      height: { xs: "15vh", sm: "30vh", md: "40vh", lg: "40vh" },
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      borderRadius: "140px",
-      transition: "all 0.3s ease",
-    },
+    sx: buttonSx,
     [theme.breakpoints.down("sm")]: {
       minWidth: 32,
       paddingLeft: 8,
@@ -50,6 +52,31 @@ const useStyles = styled((theme) => ({
   },
 }));
 
+const playAudio = (music, audioFile, volume, currentTime) => {
+  if (music) {
+    const audio = new Audio(audioFile);
+    audio.currentTime = currentTime || 0;
+    audio.volume = volume || 1.0;
+    audio.play();
+  }
+};
+
+const catIcons = importAll(
+  require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+);
+
+const mythicCatIcons = importAll(
+  require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
+);
+
+const getIconSizes = (isDiceRoll) => {
+  const diceRollSizes = { xs: "25vh", sm: "50vh", md: "80vh" };
+  const notDiceRollSizes = { xs: "15vh", sm: "30vh", md: "40vh" };
+  return isDiceRoll
+    ? { width: diceRollSizes, height: diceRollSizes }
+    : { width: notDiceRollSizes, height: notDiceRollSizes };
+};
+
 export default function Roll({
   coins,
   setCoins,
@@ -59,7 +86,7 @@ export default function Roll({
 }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100,
+    getCurrentUser() ? getCurrentUser().rollCost : 100
   );
   const [displayedIcon, setDisplayedIcon] = useState(diceSpin);
   const [rollResults, setRollResults] = useState({});
@@ -67,16 +94,7 @@ export default function Roll({
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showOdds, setShowOdds] = useState(false);
-
   const classes = useStyles();
-
-  const catIcons = importAll(
-    require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
-  );
-
-  const mythicCatIcons = importAll(
-    require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/),
-  );
 
   var results = null;
 
@@ -88,34 +106,30 @@ export default function Roll({
     setShowOdds(false);
   };
 
-  const playAudio = (audioFile, volume, currentTime) => {
-    if (music) {
-      const audio = new Audio(audioFile);
-      audio.currentTime = currentTime || 0;
-      audio.volume = volume || 1.0;
-      audio.play();
-    }
+  const displayError = (message, ms) => {
+    setTimeout(() => {
+      setError(true);
+      setErrorMessage(message);
+      setIsRolling(false);
+    }, ms);
   };
 
   const handleRoll = async () => {
     // start rolling animation
     setIsRolling(true);
     if (!getCurrentUser()) {
-      setTimeout(() => {
-        setError(true);
-        setErrorMessage("please sign in to roll.");
-        setIsRolling(false);
-      }, 150);
+      displayError("you must be logged in to roll.", 150);
       return;
     }
+
     try {
-      playAudio(rollSound, 0.6);
+      playAudio(music, rollSound, 0.6);
       const ans = await client.rollCatForUser(getCurrentUser()._id);
       results = ans;
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK"),
+        u.includes("LUCK")
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds =
@@ -134,17 +148,13 @@ export default function Roll({
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier,
+            getCurrentUser().coinsPerClick * multiplier
           ),
         };
       }
     } catch (error) {
       if (error.response) {
-        setTimeout(() => {
-          setError(true);
-          setErrorMessage(error.response.data.message);
-          setIsRolling(false);
-        }, 500);
+        displayError(error.response.data.message, 500);
         return;
       }
     }
@@ -178,7 +188,7 @@ export default function Roll({
       const randomIcon =
         iconNames[Math.floor(Math.random() * iconNames.length)];
       setDisplayedIcon(catIcons[randomIcon]);
-    }, 100);
+    }, 150);
 
     setTimeout(() => {
       const allCatIcons = Object.assign(catIcons, mythicCatIcons);
@@ -198,16 +208,16 @@ export default function Roll({
           coinsPerClick: results["newCoinsPerClick"],
         });
         if (["E", "L", "M"].includes(results["rarity"])) {
-          playAudio(superItemGet, 0.25, 0.4);
+          playAudio(music, superItemGet, 0.25, 0.4);
         } else {
-          playAudio(itemGet, 0.25, 0.4);
+          playAudio(music, itemGet, 0.25, 0.4);
         }
       } else {
         client.storeCurrentUser({
           ...getCurrentUser(),
           coins: coins - rollCost + results["addedCoins"],
         });
-        playAudio(duplicateGet);
+        playAudio(music, duplicateGet);
       }
     }, 2000);
   };
@@ -215,6 +225,8 @@ export default function Roll({
   useEffect(() => {
     document.title = "roll | " + APP_NAME;
   }, []);
+
+  const iconSizes = getIconSizes(displayedIcon === diceSpin);
 
   return (
     <div
@@ -225,7 +237,6 @@ export default function Roll({
         flexDirection: "column",
       }}
     >
-      {" "}
       <Box display="flex" flexDirection="column">
         <Typography
           variant="h3"
@@ -286,17 +297,7 @@ export default function Roll({
               ? true
               : false
           }
-          sx={{
-            marginTop: "5px",
-            margin: "3vh",
-            width: { xs: "15vh", sm: "30vh", md: "40vh" },
-            height: { xs: "15vh", sm: "30vh", md: "40vh" },
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            borderRadius: "140px",
-            transition: "all 0.3s ease",
-          }}
+          sx={buttonSx}
           disableRipple
         >
           <Box
@@ -304,22 +305,7 @@ export default function Roll({
             alt="cat-display"
             src={displayedIcon}
             sx={{
-              width:
-                displayedIcon === diceSpin
-                  ? {
-                      xs: "25vh",
-                      sm: "50vh",
-                      md: "80vh",
-                    }
-                  : { xs: "15vh", sm: "30vh", md: "40vh" },
-              height:
-                displayedIcon === diceSpin
-                  ? {
-                      xs: "25vh",
-                      sm: "50vh",
-                      md: "80vh",
-                    }
-                  : { xs: "15vh", sm: "30vh", md: "40vh" },
+              ...iconSizes,
               WebkitUserDrag: "none",
               margin: "3vh",
             }}
