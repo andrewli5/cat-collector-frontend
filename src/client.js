@@ -242,6 +242,17 @@ export const rollCatForUser = async (userId) => {
   return response.data;
 };
 
+// GAME INFO API FUNCTIONS
+export const getMultipliers = async () => {
+  const response = await REQUEST.get(`${BASE_API_URL}/info/multipliers`);
+  return response.data;
+};
+
+export const getOdds = async () => {
+  const response = await REQUEST.get(`${BASE_API_URL}/info/odds`);
+  return response.data;
+}
+
 const catGifs = importAll(require.context("./assets/gifs", false, /\.(gif)$/));
 
 const getRandomCatGif = () => {
