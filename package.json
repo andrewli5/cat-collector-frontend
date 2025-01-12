@@ -1,5 +1,5 @@
 {
-  "name": "cs4550-fp",
+  "name": "cat-collector",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.25.9"
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
+    "typescript": "^5.7.3"
   }
 }
