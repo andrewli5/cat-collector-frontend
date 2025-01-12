@@ -20,7 +20,6 @@ import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
 import { styled } from "@mui/material/styles";
 
-
 const buttonSx = {
   marginTop: "5px",
   margin: "3vh",
@@ -51,11 +50,11 @@ const playAudio = (music, audioFile, volume, currentTime) => {
 };
 
 const catIcons = importAll(
-  require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/)
+  require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
 );
 
 const mythicCatIcons = importAll(
-  require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/)
+  require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/),
 );
 
 const getIconSizes = (isDiceRoll) => {
@@ -75,7 +74,7 @@ export default function Roll({
 }) {
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
-    getCurrentUser() ? getCurrentUser().rollCost : 100
+    getCurrentUser() ? getCurrentUser().rollCost : 100,
   );
   const [displayedIcon, setDisplayedIcon] = useState(diceSpin);
   const [rollResults, setRollResults] = useState({});
@@ -118,7 +117,7 @@ export default function Roll({
       const userData = await client.getUserDataByUserId(getCurrentUser()._id);
 
       const luckUpgrades = userData["upgrades"].filter((u) =>
-        u.includes("LUCK")
+        u.includes("LUCK"),
       );
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds =
@@ -137,7 +136,7 @@ export default function Roll({
           multiplier: multiplier,
           oldCoinsPerClick: getCurrentUser().coinsPerClick,
           newCoinsPerClick: Math.round(
-            getCurrentUser().coinsPerClick * multiplier
+            getCurrentUser().coinsPerClick * multiplier,
           ),
         };
       }

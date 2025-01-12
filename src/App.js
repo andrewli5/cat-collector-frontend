@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignIn from "./login/SignIn";
 import { ThemeProvider } from "@emotion/react";
 import { THEME } from "./theme/theme";

@@ -57,7 +57,7 @@ export default function NavBar({
   });
 
   const formattedAnimatedCoins = animatedCoins.to((val) =>
-    Math.round(val).toLocaleString()
+    Math.round(val).toLocaleString(),
   );
 
   const NavItem = ({ name, path }) => {
