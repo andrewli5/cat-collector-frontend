@@ -10,12 +10,10 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useNavigate } from "react-router-dom";
 import { APP_NAME } from "../constants";
 import * as client from "../client";
-import { FormControlLabel, Switch } from "@mui/material";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Footer from "../home/Footer";
 
 export default function SignUp() {
-  const [admin, setAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -51,14 +49,6 @@ export default function SignUp() {
       setError(false);
       setLoading(true);
       var user = null;
-      if (admin) {
-        user = await client.signUpAsAdmin({
-          ...userObj,
-          admin_password: data.get("adminPassword"),
-        });
-      } else {
-        user = await client.signUpAsUser(userObj);
-      }
       const userData = await client.getUserDataByUserId(user._id);
       client.storeCurrentUser({ ...userData });
       setSuccess(true);
@@ -164,28 +154,6 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        onChange={(event) => setAdmin(event.target.checked)}
-                      />
-                    }
-                    label="admin"
-                  />
-                  {admin && (
-                    <TextField
-                      required
-                      fullWidth
-                      name="adminPassword"
-                      label="admin password"
-                      type="password"
-                      id="adminPassword"
-                    />
-                  )}
-                </div>
-              </Grid>
             </Grid>
             <Box
               sx={{
@@ -213,7 +181,7 @@ export default function SignUp() {
           </Box>
         </Box>
       </Container>
-      <Footer></Footer>
+      <Footer />
     </Box>
   );
 }

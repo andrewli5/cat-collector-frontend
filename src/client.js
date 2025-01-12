@@ -128,6 +128,7 @@ const DEFAULT_RARITIES = [
   { _id: "6576c7ddb34abbbf6149cbff", breed: "rory", rarity: "M" },
   { _id: "6576c7f2b34abbbf6149cc00", breed: "mimi", rarity: "M" },
 ];
+
 const REQUEST = axios.create({
   withCredentials: true,
 });
@@ -174,11 +175,6 @@ export const getUserDataByUserId = async (userId) => {
 
 export const signUpAsUser = async (user) => {
   const response = await REQUEST.post(`${USERS_API}/signup/user`, user);
-  return response.data;
-};
-
-export const signUpAsAdmin = async (user) => {
-  const response = await REQUEST.post(`${USERS_API}/signup/admin`, user);
   return response.data;
 };
 
