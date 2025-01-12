@@ -4,7 +4,7 @@ export async function importAll(globResult) {
   let images = {};
   const promises = Object.keys(globResult).map(async (path) => {
     const module = await globResult[path]();
-    images[path.replace("./", "")] = module.default;
+    images[path.substring(path.lastIndexOf("/") + 1)] = module.default;
   });
 
   return Promise.all(promises).then(() => images);

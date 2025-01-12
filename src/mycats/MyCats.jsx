@@ -126,7 +126,7 @@ export default function MyCats({
     const mythicIcons = await importAll(
       import.meta.glob("../assets/mythicCatIcons/*.jpg")
     );
-    
+
     const allIcons = Object.assign({}, icons, mythicIcons);
     setAllCatIcons(allIcons);
     setMythicCatIcons(mythicIcons);
@@ -233,38 +233,33 @@ export default function MyCats({
     resetFunction();
   }, []);
 
-  useEffect(() => {
-    const renderTitle = () => {
-      if (view) {
-        if (isLoading) {
-          setTitle("loading " + params.username + "'s cats...");
-          setIsLoading(false);
-        } else {
-          setTitle(params.username + "'s cats");
-        }
-      } else if (favorites) {
-        setTitle("favorites");
-      } else if (rarity) {
-        setTitle(RARITY_TO_STRING[params.rarity].toLowerCase() + " cats");
+  const assignTitle = () => {
+    if (view) {
+      if (isLoading) {
+        setTitle("loading " + params.username + "'s cats...");
+        setIsLoading(false);
       } else {
-        if (isLoading) {
-          setTitle("loading my cats...");
-          setIsLoading(false);
-        } else {
-          setTitle(
-            "my cats " +
-              "(" +
-              cats.length +
-              "/" +
-              (Object.keys(allCatIcons).length - 1) +
-              ")"
-          );
-        }
+        setTitle(params.username + "'s cats");
       }
-    };
+    } else if (favorites) {
+      setTitle("favorites");
+    } else if (rarity) {
+      setTitle(RARITY_TO_STRING[params.rarity].toLowerCase() + " cats");
+    } else {
+      if (isLoading) {
+        setTitle("loading my cats...");
+        setIsLoading(false);
+      } else {
+        setTitle(
+          `my cats (${cats.length}/${Object.keys(allCatIcons).length - 1})`
+        );
+      }
+    }
+  };
 
-    renderTitle();
-  }, [isLoading]);
+  useEffect(() => {
+    assignTitle();
+  }, [isLoading, allCatIcons]);
 
   return (
     <Box sx={{ marginBottom: "10px" }}>
