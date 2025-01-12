@@ -238,7 +238,9 @@ export const rollCatForUser = async (userId) => {
   return response.data;
 };
 
-const catGifs = importAll(require.context("./assets/gifs", false, /\.(gif)$/));
+const catGifs = importAll(
+  import.meta.globEager("./assets/gifs/*.gif")
+);
 
 const getRandomCatGif = () => {
   const keys = Object.keys(catGifs);

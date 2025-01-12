@@ -19,16 +19,16 @@
     "list-react-files": "^0.2.0",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
-    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.1",
     "react-router-dom": "^6.20.1",
     "react-spring": "^9.7.3",
     "redux": "^5.0.0",
+    "typescript": "^5.7.3",
     "vite": "^6.0.7",
     "vite-tsconfig-paths": "^5.1.4",
     "web-vitals": "^2.1.4"
-  },  
+  },
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
