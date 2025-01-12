@@ -50,11 +50,11 @@ const playAudio = (music, audioFile, volume, currentTime) => {
 };
 
 const catIcons = importAll(
-  require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+  import.meta.glob("../assets/catIcons/*.png"),
 );
 
 const mythicCatIcons = importAll(
-  require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/),
+  import.meta.glob("../assets/mythicCatIcons/*.jpg"),
 );
 
 const getIconSizes = (isDiceRoll) => {

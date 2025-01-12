@@ -238,9 +238,7 @@ export const rollCatForUser = async (userId) => {
   return response.data;
 };
 
-const catGifs = importAll(
-  import.meta.globEager("./assets/gifs/*.gif")
-);
+const catGifs = await importAll(import.meta.glob("./assets/gifs/*.gif"));
 
 const getRandomCatGif = () => {
   const keys = Object.keys(catGifs);
@@ -249,6 +247,7 @@ const getRandomCatGif = () => {
 };
 
 export const catGif = getRandomCatGif();
+
 if (getCurrentUser()) {
   const updatedUser = await getUserDataByUserId(getCurrentUser()._id);
   storeCurrentUser({ ...getCurrentUser(), ...updatedUser });

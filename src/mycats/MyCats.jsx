@@ -51,7 +51,7 @@ export default function MyCats({
           return false;
         } else {
           const currentRarity = ALL_CAT_RARITIES.find(
-            (b) => b.breed === currentBreed,
+            (b) => b.breed === currentBreed
           )["rarity"];
           return currentRarity === params.rarity;
         }
@@ -121,13 +121,12 @@ export default function MyCats({
     );
   };
 
-  const resetFunction = () => {
-    const icons = importAll(
-      require.context("../assets/catIcons", false, /\.(png|jpe?g|svg)$/),
+  const resetFunction = async () => {
+    const icons = await importAll(import.meta.glob("../assets/catIcons/*.png"));
+    const mythicIcons = await importAll(
+      import.meta.glob("../assets/mythicCatIcons/*.jpg")
     );
-    const mythicIcons = importAll(
-      require.context("../assets/mythicCatIcons", false, /\.(png|jpe?g|svg)$/),
-    );
+    
     const allIcons = Object.assign({}, icons, mythicIcons);
     setAllCatIcons(allIcons);
     setMythicCatIcons(mythicIcons);
@@ -198,23 +197,23 @@ export default function MyCats({
     setAllCatIcons(sortedIconsObj);
   };
 
-  useEffect(() => {
-    async function getUserCats() {
-      setIsLoading(true);
-      const username = params.username;
-      try {
-        const user = await getUserByUsername(username);
-        const userId = user["_id"];
-        const userData = await getUserDataByUserId(userId);
-        setCats(userData.cats);
-      } catch (error) {
-        if ((error.name = "ERR_BAD_REQUEST")) {
-          // TODO: nav to 404 page
-          return;
-        }
+  async function getUserCats() {
+    setIsLoading(true);
+    const username = params.username;
+    try {
+      const user = await getUserByUsername(username);
+      const userId = user["_id"];
+      const userData = await getUserDataByUserId(userId);
+      setCats(userData.cats);
+    } catch (error) {
+      if ((error.name = "ERR_BAD_REQUEST")) {
+        // TODO: nav to 404 page
+        return;
       }
     }
+  }
 
+  useEffect(() => {
     document.title =
       (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") +
       APP_NAME;
@@ -223,12 +222,14 @@ export default function MyCats({
     } else if (getCurrentUser() && !view) {
       setCats(getCurrentUser().cats);
     }
+
     if (getCurrentUser() && favorites) {
       const favorites = getCurrentUser().favorites;
       setIsEmptyFavorites(favorites.length === 0);
     } else if (view) {
       getUserCats();
     }
+
     resetFunction();
   }, []);
 
@@ -256,7 +257,7 @@ export default function MyCats({
               cats.length +
               "/" +
               (Object.keys(allCatIcons).length - 1) +
-              ")",
+              ")"
           );
         }
       }
@@ -334,12 +335,12 @@ export default function MyCats({
                   return null;
                 }
                 const rarity = ALL_CAT_RARITIES.find(
-                  (b) => b.breed === currentBreedId,
+                  (b) => b.breed === currentBreedId
                 )["rarity"];
                 const [name, src, imageClass, textColor] = getIconData(
                   catIcon,
                   currentBreedId,
-                  rarity,
+                  rarity
                 );
                 return (
                   <Grid
