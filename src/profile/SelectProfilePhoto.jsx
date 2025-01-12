@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { importAll } from "../utils/utils";
 import { getCurrentUser } from "../client";
 import DefaultIcon from "../assets/profileIcons/A1.png";
@@ -12,9 +12,16 @@ export default function SelectProfilePhoto({
   const [selectedPicture, setSelectedPicture] = useState("");
   const [availableIcons, setAvailableIcons] = useState([]);
 
-  const profileIcons = importAll(
-    require.context("../assets/profileIcons", false, /\.(png|jpe?g|svg)$/),
-  );
+  const getProfileIcons = async () => {
+    const icons = await importAll(
+      import.meta.glob("../assets/profileIcons/*.png")
+    );
+    setAvailableIcons(icons);
+  };
+
+  useEffect(() => {
+    getProfileIcons();
+  }, []);
 
   const handleIconClick = (icon) => {
     setSelectedPicture(availableIcons[icon]);
@@ -34,11 +41,10 @@ export default function SelectProfilePhoto({
     if (!getCurrentUser()) {
       navigate("/signin");
     } else {
-      setAvailableIcons(profileIcons);
       setSelectedPicture(
         getCurrentUser().profilePicture
           ? getCurrentUser().profilePicture
-          : DefaultIcon,
+          : DefaultIcon
       );
     }
   }, []);

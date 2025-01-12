@@ -2,6 +2,7 @@
   "name": "cat-collector",
   "version": "0.1.0",
   "private": true,
+  "main": "src/index.jsx",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -13,26 +14,25 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "axios": "^1.6.2",
-    "eslint": "^8.55.0",
     "list-react-files": "^0.2.0",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
-    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.1",
     "react-router-dom": "^6.20.1",
-    "react-scripts": "^5.0.1",
     "react-spring": "^9.7.3",
     "redux": "^5.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7",
+    "vite-tsconfig-paths": "^5.1.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format": "npx prettier '**/*.{js,css}' --write"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [

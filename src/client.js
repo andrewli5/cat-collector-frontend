@@ -2,7 +2,7 @@ import axios from "axios";
 import { LOCAL_API_URL } from "./constants";
 import { importAll } from "./utils/utils";
 
-export const BASE_API_URL = process.env.REACT_APP_API_URL || LOCAL_API_URL;
+export const BASE_API_URL = import.meta.env.VITE_APP_API_URL || LOCAL_API_URL;
 export const USERS_API = `${BASE_API_URL}/users`;
 export const CATS_API = `${BASE_API_URL}/cats`;
 
@@ -154,7 +154,7 @@ export const clearBrowserStorage = () => {
 export const updateUserCoinsByUserId = async (
   userId,
   coins,
-  completionHandler,
+  completionHandler
 ) => {
   const response = await REQUEST.put(`${USERS_API}/${userId}/coins`, {
     coins: coins,
@@ -228,7 +228,7 @@ export const addUserFavorites = async (userId, breed) => {
 
 export const removeUserFavorites = async (userId, breed) => {
   const response = await REQUEST.delete(
-    `${CATS_API}/favorites/${userId}/${breed}`,
+    `${CATS_API}/favorites/${userId}/${breed}`
   );
   return response.data;
 };
@@ -238,7 +238,7 @@ export const rollCatForUser = async (userId) => {
   return response.data;
 };
 
-const catGifs = importAll(require.context("./assets/gifs", false, /\.(gif)$/));
+const catGifs = await importAll(import.meta.glob("./assets/gifs/*.gif"));
 
 const getRandomCatGif = () => {
   const keys = Object.keys(catGifs);
@@ -247,6 +247,7 @@ const getRandomCatGif = () => {
 };
 
 export const catGif = getRandomCatGif();
+
 if (getCurrentUser()) {
   const updatedUser = await getUserDataByUserId(getCurrentUser()._id);
   storeCurrentUser({ ...getCurrentUser(), ...updatedUser });
@@ -261,7 +262,7 @@ export const getMultipliers = async () => {
       new Promise((_, reject) => {
         setTimeout(
           () => reject(new Error("Request for multipliers timed out")),
-          DEFAULT_TIMEOUT,
+          DEFAULT_TIMEOUT
         );
       }),
     ]);
@@ -279,7 +280,7 @@ export const getOdds = async () => {
       new Promise((_, reject) => {
         setTimeout(
           () => reject(new Error("Request for odds timed out")),
-          DEFAULT_TIMEOUT,
+          DEFAULT_TIMEOUT
         );
       }),
     ]);
@@ -297,7 +298,7 @@ const getRarities = async () => {
       new Promise((_, reject) => {
         setTimeout(
           () => reject(new Error("Request for rarities timed out")),
-          DEFAULT_TIMEOUT,
+          DEFAULT_TIMEOUT
         );
       }),
     ]);

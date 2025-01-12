@@ -1,11 +1,13 @@
 import { ERRORS } from "../constants";
 
-export function importAll(r) {
+export async function importAll(globResult) {
   let images = {};
-  r.keys().map((item) => {
-    images[item.replace("./", "")] = r(item);
+  const promises = Object.keys(globResult).map(async (path) => {
+    const module = await globResult[path]();
+    images[path.substring(path.lastIndexOf("/") + 1)] = module.default;
   });
-  return images;
+
+  return Promise.all(promises).then(() => images);
 }
 
 export function generateErrorMessage(message, username) {
