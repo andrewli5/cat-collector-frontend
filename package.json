@@ -53,7 +53,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
-    "typescript": "^5.7.3"
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9"
   }
 }
