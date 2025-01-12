@@ -12,6 +12,7 @@ import { APP_NAME } from "../constants";
 import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Footer from "../home/Footer";
+import { PasswordField } from "./PasswordField";
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ export default function SignUp() {
     try {
       setError(false);
       setLoading(true);
-      var user = null;
+      var user = await client.signUpAsUser(userObj);
       const userData = await client.getUserDataByUserId(user._id);
       client.storeCurrentUser({ ...userData });
       setSuccess(true);
@@ -144,15 +145,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
+                <PasswordField register />
               </Grid>
             </Grid>
             <Box
