@@ -11,6 +11,7 @@ import { APP_NAME } from "../constants";
 import * as client from "../client";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import Footer from "../home/Footer";
+import { PasswordField } from "./PasswordField";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -106,17 +107,7 @@ export default function SignIn() {
               autoComplete="username"
               autoFocus
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-
+            <PasswordField register={false} />
             <LoadingButton
               loading={loading}
               type="submit"

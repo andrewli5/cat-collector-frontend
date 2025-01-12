@@ -1,5 +1,5 @@
 {
-  "name": "cs4550-fp",
+  "name": "cat-collector",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
