@@ -5,6 +5,5 @@
     "moduleResolution": "nodenext",
     "strict": true,
     "esModuleInterop": true,
-    "typeRoots": ["node_modules/@types"]
   }
 }
