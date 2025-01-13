@@ -64,7 +64,7 @@ export default function Roll({
   setCoinsPerClick,
   music,
 }) {
-  const { catIcons, mythicCatIcons } = useContext(CatCollectorContext);
+  const { catIcons, mythicCatIcons, gameInfo } = useContext(CatCollectorContext);
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
     getCurrentUser() ? getCurrentUser().rollCost : 100,
@@ -115,15 +115,15 @@ export default function Roll({
       const highestUpgrade = luckUpgrades.sort().reverse()[0];
       const currentOdds =
         highestUpgrade !== undefined
-          ? client.ODDS[highestUpgrade]
-          : client.ODDS["BASE"];
+          ? gameInfo.odds[highestUpgrade]
+          : gameInfo.odds["BASE"];
       const rarity = results.rarity;
       const rarityPercentage = currentOdds[rarity] * 100;
       results = { ...results, odds: rarityPercentage };
 
       // if user rolls a new cat, show old coins per click -> new coins per click
       if (!results["duplicate"]) {
-        const multiplier = client.MULTIPLIERS[rarity];
+        const multiplier = gameInfo.multipliers[rarity];
         results = {
           ...results,
           multiplier: multiplier,

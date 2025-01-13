@@ -208,3 +208,128 @@ export const UPGRADES = {
     price: 5000000,
   },
 };
+
+const FALLBACK_MULTIPLIERS = {
+  C: 1.08,
+  U: 1.12,
+  R: 1.2,
+  E: 1.3,
+  L: 1.6,
+  M: 2,
+};
+
+const BASE_ODDS = {
+  C: 0.8,
+  U: 0.15,
+  R: 0.04,
+  E: 0.009,
+  L: 0.001,
+  M: 0.0,
+};
+
+const LUCK1_ODDS = {
+  C: 0.6,
+  U: 0.25,
+  R: 0.1,
+  E: 0.045,
+  L: 0.005,
+  M: 0.0,
+};
+
+const LUCK2_ODDS = {
+  C: 0.4,
+  U: 0.3,
+  R: 0.15,
+  E: 0.1,
+  L: 0.01,
+  M: 0.0,
+};
+
+const LUCK3_ODDS = {
+  C: 0.2,
+  U: 0.4,
+  R: 0.2,
+  E: 0.15,
+  L: 0.05,
+  M: 0.01,
+};
+
+const FALLBACK_ODDS = {
+  BASE: BASE_ODDS,
+  LUCK1: LUCK1_ODDS,
+  LUCK2: LUCK2_ODDS,
+  LUCK3: LUCK3_ODDS,
+};
+
+const FALLBACK_RARITIES = [
+  { breed: "cspa", rarity: "L" },
+  { breed: "java", rarity: "R" },
+  { breed: "abob", rarity: "U" },
+  { breed: "birm", rarity: "C" },
+  { breed: "aege", rarity: "C" },
+  { breed: "tonk", rarity: "E" },
+  { breed: "crex", rarity: "E" },
+  { breed: "tang", rarity: "E" },
+  { breed: "bslo", rarity: "R" },
+  { breed: "amis", rarity: "U" },
+  { breed: "kora", rarity: "U" },
+  { breed: "mcoo", rarity: "U" },
+  { breed: "buri", rarity: "C" },
+  { breed: "ragd", rarity: "C" },
+  { breed: "bsho", rarity: "C" },
+  { breed: "hima", rarity: "C" },
+  { breed: "manx", rarity: "E" },
+  { breed: "siam", rarity: "E" },
+  { breed: "sing", rarity: "E" },
+  { breed: "bomb", rarity: "U" },
+  { breed: "nebe", rarity: "U" },
+  { breed: "char", rarity: "C" },
+  { breed: "acur", rarity: "C" },
+  { breed: "srex", rarity: "C" },
+  { breed: "rblu", rarity: "C" },
+  { breed: "abys", rarity: "L" },
+  { breed: "bamb", rarity: "E" },
+  { breed: "bali", rarity: "E" },
+  { breed: "beng", rarity: "E" },
+  { breed: "ocic", rarity: "E" },
+  { breed: "bure", rarity: "R" },
+  { breed: "lape", rarity: "U" },
+  { breed: "emau", rarity: "C" },
+  { breed: "esho", rarity: "C" },
+  { breed: "sava", rarity: "L" },
+  { breed: "toyg", rarity: "R" },
+  { breed: "tvan", rarity: "R" },
+  { breed: "sfol", rarity: "C" },
+  { breed: "khao", rarity: "C" },
+  { breed: "lihu", rarity: "C" },
+  { breed: "cymr", rarity: "E" },
+  { breed: "kuri", rarity: "E" },
+  { breed: "soma", rarity: "E" },
+  { breed: "ycho", rarity: "E" },
+  { breed: "munc", rarity: "R" },
+  { breed: "pixi", rarity: "R" },
+  { breed: "snow", rarity: "U" },
+  { breed: "raga", rarity: "U" },
+  { breed: "asho", rarity: "C" },
+  { breed: "drex", rarity: "L" },
+  { breed: "jbob", rarity: "E" },
+  { breed: "sibe", rarity: "E" },
+  { breed: "ctif", rarity: "R" },
+  { breed: "chee", rarity: "R" },
+  { breed: "sphy", rarity: "U" },
+  { breed: "cypr", rarity: "U" },
+  { breed: "dons", rarity: "C" },
+  { breed: "orie", rarity: "E" },
+  { breed: "chau", rarity: "R" },
+  { breed: "ebur", rarity: "R" },
+  { breed: "hbro", rarity: "U" },
+  { breed: "amau", rarity: "U" },
+  { breed: "norw", rarity: "C" },
+  { breed: "awir", rarity: "C" },
+  { breed: "csho", rarity: "C" },
+  { breed: "pers", rarity: "C" },
+  { breed: "rory", rarity: "M" },
+  { breed: "mimi", rarity: "M" },
+];
+
+export { FALLBACK_MULTIPLIERS, FALLBACK_ODDS, FALLBACK_RARITIES };
