@@ -46,27 +46,6 @@ export function MyCatsSort({
     setShowOwnedOnly(!showOwnedOnly);
   };
 
-  const ShowOwnedCheckbox = () => {
-    if (getCurrentUser()) {
-      return (
-        <Checkbox
-          onClick={handleCheckboxClick}
-          style={{ color: "white" }}
-          checked={showOwnedOnly}
-        />
-      );
-    } else {
-      return (
-        <Checkbox
-          disabled
-          onClick={handleCheckboxClick}
-          style={{ color: "white" }}
-          checked={true}
-        />
-      );
-    }
-  };
-
   const StyledMenu = styled((props) => (
     <Menu
       elevation={0}
@@ -98,7 +77,7 @@ export function MyCatsSort({
         "&:active": {
           backgroundColor: alpha(
             theme.palette.secondary.main,
-            theme.palette.action.selectedOpacity,
+            theme.palette.action.selectedOpacity
           ),
         },
       },
@@ -114,7 +93,13 @@ export function MyCatsSort({
           color: "white",
           paddingRight: "8px",
         }}
-        control={<ShowOwnedCheckbox />}
+        control={
+          <Checkbox
+            onClick={handleCheckboxClick}
+            style={{ color: "white" }}
+            checked={showOwnedOnly}
+          />
+        }
         label={<Typography variant="h5">{"only show cats i own"}</Typography>}
       />
       <Button
