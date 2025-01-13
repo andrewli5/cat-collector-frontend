@@ -49,9 +49,7 @@ const playAudio = (music, audioFile, volume, currentTime) => {
   }
 };
 
-const catIcons = importAll(
-  import.meta.glob("../assets/catIcons/*.png"),
-);
+const catIcons = importAll(import.meta.glob("../assets/catIcons/*.png"));
 
 const mythicCatIcons = importAll(
   import.meta.glob("../assets/mythicCatIcons/*.jpg"),

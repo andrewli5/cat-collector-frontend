@@ -77,7 +77,7 @@ export default function Details() {
         setFavorite(false);
         await client.removeUserFavorites(getCurrentUser()._id, breedId);
         const newFavorites = getCurrentUser().favorites.filter(
-          (e) => e !== breedId
+          (e) => e !== breedId,
         );
         const user = { ...getCurrentUser(), favorites: newFavorites };
         storeCurrentUser(user);
@@ -114,7 +114,9 @@ export default function Details() {
   const initializeCatIcons = async () => {
     var icons = [];
     if (rarity === "M") {
-      icons = await importAll(import.meta.glob("../assets/mythicCatIcons/*.jpg"));
+      icons = await importAll(
+        import.meta.glob("../assets/mythicCatIcons/*.jpg"),
+      );
     } else {
       icons = await importAll(import.meta.glob("../assets/catIcons/*.png"));
     }
@@ -151,7 +153,7 @@ export default function Details() {
             headers: {
               "x-api-key": CAT_API_KEY,
             },
-          }
+          },
         );
         const data = await response.json();
         for (const datum of data) {
@@ -196,8 +198,6 @@ export default function Details() {
       getImageURLS();
       getBreedData();
     }
-
-
   }, []);
 
   useEffect(() => {

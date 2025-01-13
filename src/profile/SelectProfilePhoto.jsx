@@ -14,7 +14,7 @@ export default function SelectProfilePhoto({
 
   const getProfileIcons = async () => {
     const icons = await importAll(
-      import.meta.glob("../assets/profileIcons/*.png")
+      import.meta.glob("../assets/profileIcons/*.png"),
     );
     setAvailableIcons(icons);
   };
@@ -44,7 +44,7 @@ export default function SelectProfilePhoto({
       setSelectedPicture(
         getCurrentUser().profilePicture
           ? getCurrentUser().profilePicture
-          : DefaultIcon
+          : DefaultIcon,
       );
     }
   }, []);

@@ -154,7 +154,7 @@ export const clearBrowserStorage = () => {
 export const updateUserCoinsByUserId = async (
   userId,
   coins,
-  completionHandler
+  completionHandler,
 ) => {
   const response = await REQUEST.put(`${USERS_API}/${userId}/coins`, {
     coins: coins,
@@ -228,7 +228,7 @@ export const addUserFavorites = async (userId, breed) => {
 
 export const removeUserFavorites = async (userId, breed) => {
   const response = await REQUEST.delete(
-    `${CATS_API}/favorites/${userId}/${breed}`
+    `${CATS_API}/favorites/${userId}/${breed}`,
   );
   return response.data;
 };
@@ -262,7 +262,7 @@ export const getMultipliers = async () => {
       new Promise((_, reject) => {
         setTimeout(
           () => reject(new Error("Request for multipliers timed out")),
-          DEFAULT_TIMEOUT
+          DEFAULT_TIMEOUT,
         );
       }),
     ]);
@@ -280,7 +280,7 @@ export const getOdds = async () => {
       new Promise((_, reject) => {
         setTimeout(
           () => reject(new Error("Request for odds timed out")),
-          DEFAULT_TIMEOUT
+          DEFAULT_TIMEOUT,
         );
       }),
     ]);
@@ -298,7 +298,7 @@ const getRarities = async () => {
       new Promise((_, reject) => {
         setTimeout(
           () => reject(new Error("Request for rarities timed out")),
-          DEFAULT_TIMEOUT
+          DEFAULT_TIMEOUT,
         );
       }),
     ]);

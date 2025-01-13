@@ -51,7 +51,7 @@ export default function MyCats({
           return false;
         } else {
           const currentRarity = ALL_CAT_RARITIES.find(
-            (b) => b.breed === currentBreed
+            (b) => b.breed === currentBreed,
           )["rarity"];
           return currentRarity === params.rarity;
         }
@@ -124,7 +124,7 @@ export default function MyCats({
   const resetFunction = async () => {
     const icons = await importAll(import.meta.glob("../assets/catIcons/*.png"));
     const mythicIcons = await importAll(
-      import.meta.glob("../assets/mythicCatIcons/*.jpg")
+      import.meta.glob("../assets/mythicCatIcons/*.jpg"),
     );
 
     const allIcons = Object.assign({}, icons, mythicIcons);
@@ -251,7 +251,7 @@ export default function MyCats({
         setIsLoading(false);
       } else {
         setTitle(
-          `my cats (${cats.length}/${Object.keys(allCatIcons).length - 1})`
+          `my cats (${cats.length}/${Object.keys(allCatIcons).length - 1})`,
         );
       }
     }
@@ -330,12 +330,12 @@ export default function MyCats({
                   return null;
                 }
                 const rarity = ALL_CAT_RARITIES.find(
-                  (b) => b.breed === currentBreedId
+                  (b) => b.breed === currentBreedId,
                 )["rarity"];
                 const [name, src, imageClass, textColor] = getIconData(
                   catIcon,
                   currentBreedId,
-                  rarity
+                  rarity,
                 );
                 return (
                   <Grid
