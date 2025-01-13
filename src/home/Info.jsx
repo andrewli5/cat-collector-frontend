@@ -13,7 +13,6 @@ import * as meows from "../assets/meows";
 import "../css/styles.css";
 import { useTheme } from "@emotion/react";
 import { CatCollectorContext } from "../context/CatCollectorProvider";
-import { get } from "lodash";
 
 export default function Info({ music }) {
   const { getRandomCatGif, getRandomMeowSound } =
