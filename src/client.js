@@ -1,6 +1,5 @@
 import axios from "axios";
 import { LOCAL_API_URL } from "./constants";
-import { importAll } from "./utils/utils";
 
 export const BASE_API_URL = import.meta.env.VITE_APP_API_URL || LOCAL_API_URL;
 export const USERS_API = `${BASE_API_URL}/users`;
@@ -237,16 +236,6 @@ export const rollCatForUser = async (userId) => {
   const response = await REQUEST.get(`${CATS_API}/roll/${userId}`);
   return response.data;
 };
-
-const catGifs = await importAll(import.meta.glob("./assets/gifs/*.gif"));
-
-const getRandomCatGif = () => {
-  const keys = Object.keys(catGifs);
-  const randomKey = keys[Math.floor(Math.random() * keys.length)];
-  return catGifs[randomKey];
-};
-
-export const catGif = getRandomCatGif();
 
 if (getCurrentUser()) {
   const updatedUser = await getUserDataByUserId(getCurrentUser()._id);

@@ -1,8 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { APP_NAME } from "../constants";
 import Dice from "../assets/dice.png";
-import { importAll } from "../utils/utils";
 import { useState } from "react";
 import * as client from "../client";
 import { storeCurrentUser, getCurrentUser } from "../client";
@@ -19,6 +18,7 @@ import Backdrop from "@mui/material/Backdrop";
 import RollOdds from "../roll/RollOdds";
 import RollResultsMessage from "./RollResultsMessage";
 import { styled } from "@mui/material/styles";
+import { CatCollectorContext } from "../context/CatCollectorProvider";
 
 const buttonSx = {
   marginTop: "5px",
@@ -49,12 +49,6 @@ const playAudio = (music, audioFile, volume, currentTime) => {
   }
 };
 
-const catIcons = importAll(import.meta.glob("../assets/catIcons/*.png"));
-
-const mythicCatIcons = importAll(
-  import.meta.glob("../assets/mythicCatIcons/*.jpg"),
-);
-
 const getIconSizes = (isDiceRoll) => {
   const diceRollSizes = { xs: "25vh", sm: "50vh", md: "80vh" };
   const notDiceRollSizes = { xs: "15vh", sm: "30vh", md: "40vh" };
@@ -70,6 +64,7 @@ export default function Roll({
   setCoinsPerClick,
   music,
 }) {
+  const { catIcons, mythicCatIcons } = useContext(CatCollectorContext);
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
     getCurrentUser() ? getCurrentUser().rollCost : 100,

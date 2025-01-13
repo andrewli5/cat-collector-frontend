@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import mythicCatData from "../assets/mythicCatData.json";
 import {
   APP_NAME,
@@ -10,7 +10,6 @@ import {
   RARITY_TO_STRING,
 } from "../constants";
 import { Box, Chip, Grid, Typography } from "@mui/material";
-import { importAll } from "../utils/utils";
 import Heart from "../assets/heart_icon.png";
 import Star from "../assets/star_icon.png";
 import "../css/styles.css";
@@ -22,17 +21,18 @@ import { ALL_CAT_RARITIES } from "../client";
 import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import JumpingCat from "../assets/gifs/jumping_cat.gif";
+import { CatCollectorContext } from "../context/CatCollectorProvider";
 
 const IMAGE_HEIGHT = 400;
 const IMAGE_WIDTH = IMAGE_HEIGHT * 1.2;
 
 export default function Details() {
+  const { catIcons, mythicCatIcons } = useContext(CatCollectorContext);
   const [breedData, setBreedData] = useState("");
   const [rarity, setRarity] = useState("");
   const [imageUrls, setImageUrls] = useState([]);
   const [imageIdx, setImageIdx] = useState(0);
-  const [catIcon, setCatIcon] = useState("");
-  const [catIcons, setCatIcons] = useState([]);
+  const [currentIcon, setCurrentIcon] = useState("");
   const [owned, setOwned] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [warning, setWarning] = useState(false);
@@ -92,35 +92,12 @@ export default function Details() {
     }
   };
 
-  const getMythicCatImages = async () => {
-    // rory, mimi
-    var images = [];
-    if (breedId === "rory") {
-      images = await importAll(import.meta.glob("../assets/rory/*.jpg"));
-    } else if (breedId === "mimi") {
-      images = await importAll(import.meta.glob("../assets/mimi/*.jpg"));
-    }
-    return images;
-  };
-
   const getMythicCatData = () => {
     if (breedId === "rory") {
       return mythicCatData.rory;
     } else if (breedId === "mimi") {
       return mythicCatData.mimi;
     }
-  };
-
-  const initializeCatIcons = async () => {
-    var icons = [];
-    if (rarity === "M") {
-      icons = await importAll(
-        import.meta.glob("../assets/mythicCatIcons/*.jpg"),
-      );
-    } else {
-      icons = await importAll(import.meta.glob("../assets/catIcons/*.png"));
-    }
-    setCatIcons(icons);
   };
 
   useEffect(() => {
@@ -144,7 +121,7 @@ export default function Details() {
       }
     }
 
-    async function getImageURLS(retries = 2) {
+    async function getImageUrls(retries = 2) {
       try {
         const urls = [];
         const response = await fetch(
@@ -181,21 +158,18 @@ export default function Details() {
     }
 
     const r = ALL_CAT_RARITIES.find((b) => b.breed === breedId)["rarity"];
-    var icons = [];
     setRarity(r);
     if (r === "M") {
       if (!cats.includes(breedId)) {
         // nav away from this page because they don't even own this mythic cat
         navigate("/details/???");
       }
-      icons = importAll(import.meta.glob("../assets/mythicCatIcons/*.jpg"));
       const images = getMythicCatImages();
       const currentBreed = getMythicCatData();
       setImageUrls(Object.values(images));
       setBreedData(currentBreed);
     } else {
-      initializeCatIcons();
-      getImageURLS();
+      getImageUrls();
       getBreedData();
     }
   }, []);
@@ -206,12 +180,12 @@ export default function Details() {
         ? "details | " + APP_NAME
         : breedData.name.toLowerCase() + " | " + APP_NAME;
 
-    const catIconName =
+    const icon =
       breedData.name === undefined
         ? ""
         : breedData.name.toLowerCase().replaceAll(" ", "_") +
           (rarity === "M" ? ".jpg" : ".png");
-    setCatIcon(catIconName);
+    setCurrentIcon(icon);
   }, [breedData]);
 
   return (
@@ -237,7 +211,6 @@ export default function Details() {
         spacing={2}
         maxHeight="lg"
         maxWidth="lg"
-        className="hakefjdksl"
         sx={{ marginTop: "2px", marginBottom: "15px" }}
       >
         <Grid style={{ paddingLeft: "70px" }} item xs={4} sm={5} md={6}>
@@ -267,8 +240,8 @@ export default function Details() {
                 objectFit: "cover",
                 objectPosition: "center",
                 borderRadius: "15px",
-                boxShadow: `0px 0px 50px ${RARITY_TO_TEXT_COLOR[rarity]}`,
-                border: `5px solid ${RARITY_TO_TEXT_COLOR[rarity]}`,
+                boxShadow: `0px 0px 10px ${RARITY_TO_TEXT_COLOR[rarity]}`,
+                border: `3px solid ${RARITY_TO_TEXT_COLOR[rarity]}`,
               }}
               alt={`display`}
             />
@@ -291,7 +264,7 @@ export default function Details() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={10} sm={8} md={6}>
+        <Grid item xs={10} sm={8} md={5}>
           <Typography variant="h3" sx={{ margin: "0px", marginBottom: "20px" }}>
             {breedData.name !== undefined
               ? breedData.name.replace("Cat", "")
@@ -340,7 +313,7 @@ export default function Details() {
               {" "}
               <img
                 style={{ float: "right" }}
-                src={catIcons[catIcon]}
+                src={catIcons[currentIcon] || mythicCatIcons[currentIcon]}
                 width={60}
                 height={60}
                 alt={`icon`}
