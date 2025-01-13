@@ -5,17 +5,20 @@ import { THEME } from "./theme/theme";
 import { CssBaseline } from "@mui/material";
 import SignUp from "./login/SignUp";
 import Home from "./home/Home";
+import { CatCollectorProvider } from "./context/CatCollectorProvider";
 
 function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={THEME}>
-        <CssBaseline />
-        <Routes>
-          <Route path="*" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
+        <CatCollectorProvider>
+          <CssBaseline />
+          <Routes>
+            <Route path="*" element={<Home />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </CatCollectorProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

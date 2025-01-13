@@ -17,8 +17,8 @@ import { getCurrentUser } from "../client";
 export function MyCatsSort({
   sortFunction,
   reverseFunction,
-  showUnowned,
-  setShowUnowned,
+  showOwnedOnly,
+  setShowOwnedOnly,
 }) {
   const [sortAnchorEl, setSortAnchorEl] = useState(null);
   const sortMenuOpen = Boolean(sortAnchorEl);
@@ -42,20 +42,24 @@ export function MyCatsSort({
     setSortAnchorEl(null);
   };
 
-  const handleCheckbox = () => {
-    setShowUnowned(!showUnowned);
+  const handleCheckboxClick = () => {
+    setShowOwnedOnly(!showOwnedOnly);
   };
 
-  const getCheckBox = () => {
+  const ShowOwnedCheckbox = () => {
     if (getCurrentUser()) {
-      setShowUnowned(showUnowned);
-      return <Checkbox onClick={handleCheckbox} style={{ color: "white" }} />;
+      return (
+        <Checkbox
+          onClick={handleCheckboxClick}
+          style={{ color: "white" }}
+          checked={showOwnedOnly}
+        />
+      );
     } else {
-      setShowUnowned(true);
       return (
         <Checkbox
           disabled
-          onClick={handleCheckbox}
+          onClick={handleCheckboxClick}
           style={{ color: "white" }}
           checked={true}
         />
@@ -107,12 +111,11 @@ export function MyCatsSort({
         sx={{
           height: "36px",
           borderRadius: "4px",
-          bgcolor: "primary.main",
           color: "white",
           paddingRight: "8px",
         }}
-        control={getCheckBox()}
-        label={<Typography variant="h5">{"show unowned"}</Typography>}
+        control={<ShowOwnedCheckbox />}
+        label={<Typography variant="h5">{"only show cats i own"}</Typography>}
       />
       <Button
         id="sort-button"

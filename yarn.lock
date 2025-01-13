@@ -1630,6 +1630,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:^19.0.6":
+  version: 19.0.6
+  resolution: "@types/react@npm:19.0.6"
+  dependencies:
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/4ddb0ad2a92940c0323996c2efbae9712e562e1d60d1015ba5088ca8e8db32f1804516a2971e6fa7a95bda9aa9c1896c86c32739213ef12527924c021b0145bf
+  languageName: node
+  linkType: hard
+
 "@types/stack-utils@npm:^2.0.0":
   version: 2.0.3
   resolution: "@types/stack-utils@npm:2.0.3"
@@ -2049,6 +2058,7 @@ __metadata:
     "@testing-library/react": "npm:^13.4.0"
     "@testing-library/user-event": "npm:^13.5.0"
     "@types/lodash": "npm:^4"
+    "@types/react": "npm:^19.0.6"
     "@vitejs/plugin-react": "npm:^4.3.4"
     axios: "npm:^1.6.2"
     eslint: "npm:^9.18.0"
@@ -2057,7 +2067,7 @@ __metadata:
     list-react-files: "npm:^0.2.0"
     lodash: "npm:^4.17.21"
     prettier: "npm:^3.1.0"
-    react: "npm:^18.2.0"
+    react: "npm:^19.0.0"
     react-dom: "npm:^18.2.0"
     react-redux: "npm:^9.0.1"
     react-router-dom: "npm:^6.20.1"
@@ -4544,12 +4554,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.2.0":
-  version: 18.3.1
-  resolution: "react@npm:18.3.1"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+"react@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "react@npm:19.0.0"
+  checksum: 10c0/9cad8f103e8e3a16d15cb18a0d8115d8bd9f9e1ce3420310aea381eb42aa0a4f812cf047bb5441349257a05fba8a291515691e3cb51267279b2d2c3253f38471
   languageName: node
   linkType: hard
 

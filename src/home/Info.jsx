@@ -6,14 +6,18 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { catGif, getCurrentUser } from "../client";
+import { getCurrentUser } from "../client";
 import { APP_NAME } from "../constants";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import * as meows from "../assets/meows";
 import "../css/styles.css";
 import { useTheme } from "@emotion/react";
+import { CatCollectorContext } from "../context/CatCollectorProvider";
 
 export default function Info({ music }) {
+  const { getRandomCatGif, getRandomMeowSound } =
+    useContext(CatCollectorContext);
+
   const getAnimationDelay = (index) => {
     return { transitionDelay: index * 100 };
   };
@@ -36,9 +40,7 @@ export default function Info({ music }) {
     if (!music) {
       return;
     }
-    const randomIndex = Math.floor(Math.random() * meowFiles.length);
-    const audio = new Audio(meowFiles[randomIndex]);
-    audio.play();
+    getRandomMeowSound().play();
   };
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function Info({ music }) {
           <Fade style={getAnimationDelay(0)} in timeout={1000}>
             <Box
               component="img"
-              src={catGif}
+              src={getRandomCatGif()}
               onClick={playSoundEffect}
               width={"20vh"}
               height={"20vh"}

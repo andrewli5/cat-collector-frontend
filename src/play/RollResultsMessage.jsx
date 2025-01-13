@@ -4,13 +4,17 @@ import {
   RARITY_TO_STRING,
   RARITY_TO_TEXT_COLOR,
 } from "../constants";
-import { catGif } from "../client";
 import coin from "../assets/coin_icon.png";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
+import { useContext } from "react";
+import { CatCollectorContext } from "../context/CatCollectorProvider";
 
 export default function RollResultsMessage({ rollResults }) {
+  const { getRandomCatGif } = useContext(CatCollectorContext);
+
   const getNewCatUnlockedTitle = () => {
     const imgSize = 25;
+    const catGif = getRandomCatGif();
     return (
       <>
         <img

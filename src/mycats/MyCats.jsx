@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Typography, Link, Box } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import "../css/styles.css";
@@ -14,39 +14,42 @@ import {
   getUserDataByUserId,
 } from "../client";
 import { useNavigate, useParams } from "react-router-dom";
-import { importAll } from "../utils/utils";
 import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 import UnknownCat from "../assets/unknown_cat.png";
 import Heart from "../assets/heart_icon.png";
 import CatchingHeart from "../assets//gifs/cat_catching_heart.gif";
+import { CatCollectorContext } from "../context/CatCollectorProvider";
 
 export default function MyCats({
   favorites = false,
   rarity = false,
   view = false,
 }) {
+  const { catIcons, mythicCatIcons } = useContext(CatCollectorContext);
+  const [collection, setCollection] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isEmptyFavorites, setIsEmptyFavorites] = useState(false);
   const [title, setTitle] = useState("");
-  const [showUnowned, setShowUnowned] = useState(false);
-  const [allCatIcons, setAllCatIcons] = useState([]);
-  const [mythicCatIcons, setMythicCatIcons] = useState([]);
+  const [showOwnedOnly, setShowOwnedOnly] = useState(false);
   const [cats, setCats] = useState([]);
   const navigate = useNavigate();
   const params = useParams();
 
-  function getIconsToDisplay() {
-    var icons = Object.keys(allCatIcons);
+  const getIconsToDisplay = () => {
+    var catsToShow = Object.keys(collection);
+
     if (favorites && getCurrentUser()) {
+      // favorites page
       const userFavorites = getCurrentUser().favorites;
-      icons = icons.filter((catIcon) => {
-        const currentBreed = CATICON_TO_BREEDID[catIcon];
+      catsToShow = catsToShow.filter((cat) => {
+        const currentBreed = CATICON_TO_BREEDID[cat];
         return userFavorites.includes(currentBreed);
       });
     } else if (rarity) {
-      icons = icons.filter((catIcon) => {
-        const currentBreed = CATICON_TO_BREEDID[catIcon];
+      // rarities page
+      catsToShow = catsToShow.filter((cat) => {
+        const currentBreed = CATICON_TO_BREEDID[cat];
         if (currentBreed === undefined) {
           return false;
         } else {
@@ -57,8 +60,9 @@ export default function MyCats({
         }
       });
     }
-    return icons;
-  }
+
+    return catsToShow;
+  };
 
   const getIconSrcForMythicCat = (catIcon, currentBreedId) => {
     var c = cats;
@@ -87,7 +91,7 @@ export default function MyCats({
       name = getIconNameForMythicCat(catIcon, currentBreedId);
     } else {
       name = catIcon.replace(".png", "").replace("_", " ").replace(" cat", "");
-      src = allCatIcons[catIcon];
+      src = catIcons[catIcon];
     }
     if (cats.includes(currentBreedId)) {
       imageClass = "owned-" + rarity;
@@ -116,35 +120,29 @@ export default function MyCats({
     // Don't display the cat if the breed is undefined,
     // or if we are not showing cats the user doesn't own
     return (
-      (!showUnowned && !cats.includes(currentBreedId)) ||
+      (showOwnedOnly && !cats.includes(currentBreedId)) ||
       currentBreedId === undefined
     );
   };
 
-  const resetFunction = async () => {
-    const icons = await importAll(import.meta.glob("../assets/catIcons/*.png"));
-    const mythicIcons = await importAll(
-      import.meta.glob("../assets/mythicCatIcons/*.jpg"),
-    );
-
-    const allIcons = Object.assign({}, icons, mythicIcons);
-    setAllCatIcons(allIcons);
-    setMythicCatIcons(mythicIcons);
+  const resetFunction = () => {
+    const allIcons = Object.assign({}, catIcons, mythicCatIcons);
+    setCollection(allIcons);
   };
 
   const reverseFunction = () => {
     const reversedIcons = {};
-    Object.keys(allCatIcons)
+    Object.keys(collection)
       .reverse()
       .forEach((icon) => {
-        reversedIcons[icon] = allCatIcons[icon];
+        reversedIcons[icon] = collection[icon];
       });
-    setAllCatIcons(reversedIcons);
+    setCollection(reversedIcons);
   };
 
   const sortFunction = (term) => {
     // sort all cat icon png/jpg files
-    var sortedIcons = Object.keys(allCatIcons).sort();
+    var sortedIcons = Object.keys(collection).sort();
     var sortedIconsObj = {};
     if (term === "name") {
       // A-Z sorting but put unowned mythic cats at the end
@@ -184,7 +182,7 @@ export default function MyCats({
         return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
       });
     } else if (term === "owned") {
-      sortedIcons = Object.keys(allCatIcons);
+      sortedIcons = Object.keys(catIcons);
       sortedIcons.sort((a, b) => {
         const aOwned = cats.includes(CATICON_TO_BREEDID[a]);
         const bOwned = cats.includes(CATICON_TO_BREEDID[b]);
@@ -192,12 +190,12 @@ export default function MyCats({
       });
     }
     sortedIcons.forEach((icon) => {
-      sortedIconsObj[icon] = allCatIcons[icon];
+      sortedIconsObj[icon] = catIcons[icon];
     });
-    setAllCatIcons(sortedIconsObj);
+    setCollection(sortedIconsObj);
   };
 
-  async function getUserCats() {
+  const getUserCats = async () => {
     setIsLoading(true);
     const username = params.username;
     try {
@@ -211,27 +209,7 @@ export default function MyCats({
         return;
       }
     }
-  }
-
-  useEffect(() => {
-    document.title =
-      (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") +
-      APP_NAME;
-    if (!getCurrentUser() && favorites) {
-      navigate("/signin");
-    } else if (getCurrentUser() && !view) {
-      setCats(getCurrentUser().cats);
-    }
-
-    if (getCurrentUser() && favorites) {
-      const favorites = getCurrentUser().favorites;
-      setIsEmptyFavorites(favorites.length === 0);
-    } else if (view) {
-      getUserCats();
-    }
-
-    resetFunction();
-  }, []);
+  };
 
   const assignTitle = () => {
     if (view) {
@@ -251,15 +229,35 @@ export default function MyCats({
         setIsLoading(false);
       } else {
         setTitle(
-          `my cats (${cats.length}/${Object.keys(allCatIcons).length - 1})`,
+          `my cats (${cats.length}/${Object.keys(collection).length - 1})`,
         );
       }
     }
   };
 
   useEffect(() => {
+    document.title =
+      (favorites ? "favorites | " : rarity ? "rarities | " : "my cats | ") +
+      APP_NAME;
+    if (!getCurrentUser() && favorites) {
+      navigate("/signin");
+    } else if (getCurrentUser() && !view) {
+      setCats(getCurrentUser().cats);
+    }
+
+    if (getCurrentUser() && favorites) {
+      const favorites = getCurrentUser().favorites;
+      setIsEmptyFavorites(favorites.length === 0);
+    } else if (view) {
+      getUserCats();
+    }
+
+    resetFunction();
+  }, [catIcons]);
+
+  useEffect(() => {
     assignTitle();
-  }, [isLoading, allCatIcons]);
+  }, [isLoading, collection]);
 
   return (
     <Box sx={{ marginBottom: "10px" }}>
@@ -310,8 +308,8 @@ export default function MyCats({
               <MyCatsSort
                 sortFunction={sortFunction}
                 reverseFunction={reverseFunction}
-                showUnowned={showUnowned}
-                setShowUnowned={setShowUnowned}
+                showOwnedOnly={showOwnedOnly}
+                setShowOwnedOnly={setShowOwnedOnly}
               />
             </Typography>
           )}
