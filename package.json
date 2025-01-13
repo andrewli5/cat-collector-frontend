@@ -4,17 +4,20 @@
   "private": true,
   "main": "src/index.jsx",
   "dependencies": {
-    "@emotion/react": "^11.11.1",
+    "@babel/core": "^7.26.0",
+    "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.14.19",
     "@mui/lab": "^5.0.0-alpha.155",
     "@mui/material": "^5.14.20",
     "@reduxjs/toolkit": "^2.0.1",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/react": "^19.0.6",
+    "@types/react-dom": "18.2.6",
     "@vitejs/plugin-react": "^4.3.4",
     "axios": "^1.6.2",
     "eslint": "^9.18.0",
@@ -24,11 +27,12 @@
     "lodash": "^4.17.21",
     "prettier": "^3.1.0",
     "react": "^19.0.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "18.2.0",
     "react-redux": "^9.0.1",
     "react-router-dom": "^6.20.1",
     "react-spring": "^9.7.3",
     "redux": "^5.0.0",
+    "scheduler": "0.23.x",
     "typescript": "^5.7.3",
     "vite": "^6.0.7",
     "vite-tsconfig-paths": "^5.1.4",
@@ -61,6 +65,8 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.25.9",
-    "@types/lodash": "^4"
+    "@types/babel__core": "^7",
+    "@types/lodash": "^4",
+    "@types/scheduler": "^0.23.0"
   }
 }

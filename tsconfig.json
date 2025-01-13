@@ -4,6 +4,7 @@
     "target": "ESNext",
     "moduleResolution": "nodenext",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types"]
   }
 }
