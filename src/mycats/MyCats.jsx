@@ -14,7 +14,6 @@ import {
   getUserDataByUserId,
 } from "../client";
 import { useNavigate, useParams } from "react-router-dom";
-import { ALL_CAT_RARITIES } from "../client";
 import { MyCatsSort } from "./MyCatsSort";
 import UnknownCat from "../assets/unknown_cat.png";
 import Heart from "../assets/heart_icon.png";
@@ -26,7 +25,7 @@ export default function MyCats({
   rarity = false,
   view = false,
 }) {
-  const { catIcons, mythicCatIcons } = useContext(CatCollectorContext);
+  const { catIcons, mythicCatIcons, gameInfo } = useContext(CatCollectorContext);
   const [collection, setCollection] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isEmptyFavorites, setIsEmptyFavorites] = useState(false);
@@ -53,9 +52,9 @@ export default function MyCats({
         if (currentBreed === undefined) {
           return false;
         } else {
-          const currentRarity = ALL_CAT_RARITIES.find(
-            (b) => b.breed === currentBreed,
-          )["rarity"];
+          const currentRarity = gameInfo.rarities.find((b) => b.breed === currentBreed)[
+            "rarity"
+          ];
           return currentRarity === params.rarity;
         }
       });
@@ -152,12 +151,8 @@ export default function MyCats({
         if (breed1 === undefined || breed2 === undefined) {
           return breed1 === undefined ? -1 : 1;
         }
-        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)[
-          "rarity"
-        ];
-        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)[
-          "rarity"
-        ];
+        const b1Rarity = gameInfo.rarities.find((b) => b.breed === breed1)["rarity"];
+        const b2Rarity = gameInfo.rarities.find((b) => b.breed === breed2)["rarity"];
         if (b1Rarity === "M" || b2Rarity === "M") {
           return b1Rarity === "M" && !cats.includes(CATICON_TO_BREEDID[breed1])
             ? 1
@@ -173,12 +168,8 @@ export default function MyCats({
         if (breed1 === undefined || breed2 === undefined) {
           return breed1 === undefined ? -1 : 1;
         }
-        const b1Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed1)[
-          "rarity"
-        ];
-        const b2Rarity = ALL_CAT_RARITIES.find((b) => b.breed === breed2)[
-          "rarity"
-        ];
+        const b1Rarity = gameInfo.rarities.find((b) => b.breed === breed1)["rarity"];
+        const b2Rarity = gameInfo.rarities.find((b) => b.breed === breed2)["rarity"];
         return RARITY_TO_VALUE[b1Rarity] - RARITY_TO_VALUE[b2Rarity];
       });
     } else if (term === "owned") {
@@ -229,7 +220,7 @@ export default function MyCats({
         setIsLoading(false);
       } else {
         setTitle(
-          `my cats (${cats.length}/${Object.keys(collection).length - 1})`,
+          `my cats (${cats.length}/${Object.keys(collection).length - 1})`
         );
       }
     }
@@ -327,13 +318,13 @@ export default function MyCats({
                 if (skipDisplay(currentBreedId)) {
                   return null;
                 }
-                const rarity = ALL_CAT_RARITIES.find(
-                  (b) => b.breed === currentBreedId,
-                )["rarity"];
+                const rarity = gameInfo.rarities.find((b) => b.breed === currentBreedId)[
+                  "rarity"
+                ];
                 const [name, src, imageClass, textColor] = getIconData(
                   catIcon,
                   currentBreedId,
-                  rarity,
+                  rarity
                 );
                 return (
                   <Grid

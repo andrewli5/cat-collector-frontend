@@ -17,7 +17,6 @@ import { Button } from "@mui/material";
 import { storeCurrentUser, getCurrentUser } from "../client";
 import * as client from "../client";
 import StarRateRoundedIcon from "@mui/icons-material/StarRateRounded";
-import { ALL_CAT_RARITIES } from "../client";
 import { useNavigate } from "react-router-dom";
 import NotificationSnackbar from "../reusable/NotificationSnackbar";
 import JumpingCat from "../assets/gifs/jumping_cat.gif";
@@ -27,7 +26,7 @@ const IMAGE_HEIGHT = 400;
 const IMAGE_WIDTH = IMAGE_HEIGHT * 1.2;
 
 export default function Details() {
-  const { catIcons, mythicCatIcons } = useContext(CatCollectorContext);
+  const { catIcons, mythicCatIcons, gameInfo } = useContext(CatCollectorContext);
   const [breedData, setBreedData] = useState("");
   const [rarity, setRarity] = useState("");
   const [imageUrls, setImageUrls] = useState([]);
@@ -157,7 +156,7 @@ export default function Details() {
       setFavorite(true);
     }
 
-    const r = ALL_CAT_RARITIES.find((b) => b.breed === breedId)["rarity"];
+    const r = gameInfo.rarities.find((b) => b.breed === breedId)["rarity"];
     setRarity(r);
     if (r === "M") {
       if (!cats.includes(breedId)) {
