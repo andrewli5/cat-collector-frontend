@@ -1,7 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
 import * as meows from "../assets/meows";
 import { importAll } from "../utils/utils";
-import { getMultipliers, getOdds } from "../client";
+import { getMultipliers, getOdds, getRarities } from "../client";
+import {
+  FALLBACK_MULTIPLIERS,
+  FALLBACK_ODDS,
+  FALLBACK_RARITIES,
+} from "../constants";
 
 export const CatCollectorContext = createContext();
 
@@ -10,7 +15,11 @@ export const CatCollectorProvider = ({ children }) => {
   const [mythicCatIcons, setMythicCatIcons] = useState([]);
   const [catGifs, setCatGifs] = useState([]);
   const [profileIcons, setProfileIcons] = useState([]);
-  const [gameInfo, setGameInfo] = useState({});
+  const [gameInfo, setGameInfo] = useState({
+    rarities: FALLBACK_RARITIES,
+    multipliers: FALLBACK_MULTIPLIERS,
+    odds: FALLBACK_ODDS,
+  });
 
   const getRandomCatGif = () => {
     const keys = Object.keys(catGifs);
@@ -37,14 +46,14 @@ export const CatCollectorProvider = ({ children }) => {
   useEffect(() => {
     const getCatIcons = async () => {
       const icons = await importAll(
-        import.meta.glob("../assets/catIcons/*.png")
+        import.meta.glob("../assets/catIcons/*.png"),
       );
       setCatIcons(icons);
     };
 
     const getMythicCatIcons = async () => {
       const icons = await importAll(
-        import.meta.glob("../assets/mythicCatIcons/*.jpg")
+        import.meta.glob("../assets/mythicCatIcons/*.jpg"),
       );
       setMythicCatIcons(icons);
     };
@@ -56,7 +65,7 @@ export const CatCollectorProvider = ({ children }) => {
 
     const getProfileIcons = async () => {
       const profileIcons = await importAll(
-        import.meta.glob("../assets/profileIcons/*.png")
+        import.meta.glob("../assets/profileIcons/*.png"),
       );
       setProfileIcons(profileIcons);
     };

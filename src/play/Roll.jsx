@@ -64,7 +64,8 @@ export default function Roll({
   setCoinsPerClick,
   music,
 }) {
-  const { catIcons, mythicCatIcons, gameInfo } = useContext(CatCollectorContext);
+  const { catIcons, mythicCatIcons, gameInfo } =
+    useContext(CatCollectorContext);
   const [isRolling, setIsRolling] = useState(false);
   const [rollCost, setRollCost] = useState(
     getCurrentUser() ? getCurrentUser().rollCost : 100,

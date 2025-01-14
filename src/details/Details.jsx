@@ -26,7 +26,8 @@ const IMAGE_HEIGHT = 400;
 const IMAGE_WIDTH = IMAGE_HEIGHT * 1.2;
 
 export default function Details() {
-  const { catIcons, mythicCatIcons, gameInfo } = useContext(CatCollectorContext);
+  const { catIcons, mythicCatIcons, gameInfo } =
+    useContext(CatCollectorContext);
   const [breedData, setBreedData] = useState("");
   const [rarity, setRarity] = useState("");
   const [imageUrls, setImageUrls] = useState([]);
